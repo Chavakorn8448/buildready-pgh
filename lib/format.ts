@@ -8,7 +8,7 @@ export function formatResult(r: ScoreResult): string {
   L.push(`Rule set: ${r.ruleSet.label} — ${r.ruleSet.status.toUpperCase()}`);
   if (r.ruleSet.status === 'proposed') L.push(`  ${r.ruleSet.statusNote}`);
   L.push('');
-  L.push(r.score === null ? 'DEVELOPMENT EASE SCORE: no score (see gates)' : `DEVELOPMENT EASE SCORE: ${r.score} / 100${r.uncappedScore !== r.score ? `  (uncapped ${r.uncappedScore})` : ''}`);
+  L.push(r.score === null ? 'DEVELOPMENT EASE SCORE: no score (see gates)' : `DEVELOPMENT EASE SCORE: ${r.score} / 100${r.uncappedScore !== null && r.score !== null && r.uncappedScore - r.score >= 1 ? `  (uncapped ${r.uncappedScore})` : ''}`);
   L.push('');
   L.push('GATES');
   for (const g of r.gates) L.push(`  ${g.id} ${g.triggered ? (g.effect === 'no_score' ? '✖ NO SCORE' : '▲ CAP') : '✔ ok'}  ${g.name}: ${g.message}${g.reviewBy ? `  [review by: ${g.reviewBy}]` : ''}`);

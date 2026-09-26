@@ -118,7 +118,7 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
                 {res.ruleSet.label}
                 {delta !== null && rs === 'reform-2025-1545' && <span className="ml-2 rounded-full border border-line px-2 py-0.5 text-xs" style={{ color: delta > 0 ? 'var(--green)' : delta < 0 ? 'var(--red)' : 'var(--muted)' }}>{delta > 0 ? '+' : ''}{delta} vs current ({cmp.current.score})</span>}
               </div>
-              {res.score !== null && res.uncappedScore !== res.score && <p className="mt-1 text-xs text-[var(--amber)]">Capped from {res.uncappedScore} by a zoning gate.</p>}
+              {res.score !== null && capGate?.cap != null && res.uncappedScore !== null && res.uncappedScore > capGate.cap && <p className="mt-1 text-xs text-[var(--amber)]">Capped from {res.uncappedScore} by a zoning gate.</p>}
               {!isDefaultWeights && <p className="mt-1 text-xs text-[var(--amber)]">Custom weights in use.</p>}
               <p className="mt-2 text-xs leading-relaxed text-muted">Rule-based and reproducible: the same inputs always give the same score. Every number below cites its source.</p>
             </div>

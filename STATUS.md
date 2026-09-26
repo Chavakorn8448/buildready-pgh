@@ -1,6 +1,12 @@
 # STATUS
 
-Running build log. Phases 0–5 run autonomously.
+> **NEEDS FROM YOU (nothing blocks the demo, but these improve it):**
+> 1. **`ANTHROPIC_API_KEY`** was not available in this environment. Phases 8 and 12 are fully implemented and unit-tested, but **no Claude call has ever been made**: `data/ai-cache/` is empty (flag cards show the engine's own text) and the cached Ask answers in `data/ask-cache.json` were produced by the **engine-only router (not an LLM)** and are labeled that way in the UI. To enable: copy `env.example` to `.env.local`, add the key, then `npm run ai-explain -- --limit=50 && npm run ask-cache`, commit `data/ai-cache` and `data/ask-cache.json`, and set the key in Vercel.
+> 2. **Deploy:** not done from here (needs your Vercel login). `vercel` from the repo root works with defaults; data ships via `outputFileTracingIncludes`. Then paste the URL into README/SUBMISSION.
+> 3. **Verify the zoning use table against the live code** (see Known issues, item 1).
+
+Running build log. Phases 0-5 were built earlier (below); Phases 6-13 follow.
+
 
 ## Phase 0 — Scaffold
 - Next.js 16 (App Router) + TS + Tailwind, Turf 7, zod 4; dev: tsx, vitest.
@@ -599,3 +605,44 @@ PROPOSED, not law (Bill 2025-1545: Held In Council; public hearing 2026-09-23; s
 11. **Speed:** ~30 ms/parcel for full scoring (turf intersections); scanning the whole city takes ~25 min (see `scripts/pick-golden.ts`). Fine for lookups; batch/opportunity map will need precomputed overlaps.
 12. Licenses: WPRDC lists the zoning dataset as "License not specified"; city ArcGIS services state none. Confirm reuse terms before redistributing raw data (raw files are gitignored, not committed).
 13. Rule-source documents (Legistar PDFs, RTF) were read by hand into `data/raw/code/` (gitignored); the fetch script doesn't re-download them — URLs are in `data/SOURCES.md`.
+
+---
+# Phases 6–13 (this session)
+
+## Known-issue fixes done first
+- **Speed (known issue 11):** `computeOverlaps` now skips `turf.area` when no layer feature's bbox touches the parcel (fast path); precompute shards across 8 worker processes.
+- **House-number-0 lookup (issue 10):** addresses like "0 Rosedale St" are indexed; multiple matches return the ambiguity list (42 for that street) instead of nothing.
+- **Race found:** a `npm run fetch` run concurrently with my `preprocess` produced a half-written assessments file (115k of 142k parcels joined). Re-running preprocess fixed it; the raw data and results are identical to before. (If you re-fetch, don't run preprocess until fetch exits.)
+- Not fixed (still true): items 1-9, 12-13 (see Known issues below).
+
+## Phase 6 — Precompute (`npm run precompute`, ~17 min on 8 cores)
+- Scope decision (conservative, size-driven): full scoring under both rule sets for **every vacant parcel + every publicly owned parcel (City/URA/HACP/County) + 7 demo parcels = 33,507 parcels** (32,675 get a score; the rest hit G1/G2). Lot-size + ADU classification runs for **all 142,365 parcels** (Reform Impact). The web snapshot does **not** contain other occupied private parcels (they would add ~110 MB); the CLI scores any parcel.
+- Outputs (committed): `data/scores/index.json` (3.1 MB compact rows), `data/scores/packets/<neighborhood>.json` (91 shards, 55 MB total, max 2.5 MB; raw engine inputs + overlaps, **not** scores), `data/scores/meta.json`, `data/opportunity.json` (13,211 vacant public lots, 6.5 MB), `data/reform-impact.json` (citywide + 91 neighborhoods).
+- **Design decision:** packets store the engine's *inputs*; the web app runs the same pure engine in the browser, so the reform toggle and editable weights are instant and consistent with the CLI. Overlap pieces (for drawing slope/flood/etc. on the lot) are stored per parcel.
+- Reform Impact (citywide): 21,005 lots no longer need a lot-size variance (Bill 2025-1579, in effect); 118,800 could gain by-right ADU potential if Bill 2025-1545 passes (PROPOSED, upper bound). `data/reform-impact.json` has the neighborhood breakdown (top: Squirrel Hill South 1,221 / Brookline 5,989).
+- Map layers for display: `public/layers/*.json` (1 MB). **Decision:** the slope-25% layer is *not* shipped as a layer (600k+ raster-stairstep vertices even after simplification, 13 MB); the map draws the per-parcel overlap piece instead.
+
+## Phase 7 — Web app (`npm run dev`; verified with `next build` + headless-Chromium screenshots)
+- Routes: `/` (search + demo parcels), `/parcel/[id]` (Lot Report + Site X-ray), `/parcel/[id]/memo` (one-page memo, print to PDF via print CSS — **decision:** no jsPDF dependency), `/compare?ids=`, `/map`, `/impact`; APIs `/api/search`, `/api/opportunity`, `/api/ask`.
+- Lot Report: MapLibre dark basemap (CARTO Dark Matter, no key; if tiles fail it falls back to a plain dark background), lot outline, overlap pieces, context layers with toggles, numbered pins (red gate / amber friction / green in your favor) that highlight their flag card on hover and vice versa; score dial that animates; 5 sub-score bars; flag cards each with source link and "Confirm with: <reviewBy>"; Reform toggle (labels the rule set "Proposed (Bill 2025-1545)", animates the score, changes pins/flags); editable weights with reset; evidence list with "Unverified" badges; glossary tooltips (lot, zoning district, variance, ADU, geotechnical review, PWSA, PHFA, …); disclaimer footer on every page.
+- **Fix found by screenshot:** MapLibre 6's worker failed under Turbopack ("Worker failed to load"); worker + shared chunk are copied to `public/maplibre/` (`npm run sync-maplibre`, run on `prebuild`) and set via `setWorkerUrl`.
+- Dependencies added (authorized by the brief): `maplibre-gl` only (Claude API is called with `fetch`, no SDK).
+
+## Phase 8 — AI explanations (`lib/ai/explain.ts`, `npm run ai-explain`)
+- Evidence packet → Claude → JSON `{flags:{id:text}, nextSteps:[]}`; **validator drops any sentence without a valid `[fact-id]`** (ids are semantic, e.g. `[zoning.district]`, not `[F-07]`; logged decision), unknown flag ids are dropped, and the final step "Confirm with: …" is appended from engine data, not from the model. UI reads `data/ai-cache/{pin}_{ruleset}.json` and falls back to engine flag text.
+- **Unverified / mocked:** no API key here, so **zero real model outputs exist**. Tests use fixtures (`tests/ai.test.ts`, 3 tests incl. a mock-fetch call). A bug the tests caught: sentence splitting broke on the dots inside `[zoning.district]`.
+
+## Phase 9 — Reform Impact view (`/impact`)
+- Headline numbers, top-15 neighborhood bars for each count, methods/limits box, and the "How we know" panel (Phase 10). Uses `data/reform-impact.json` only.
+
+## Phase 11 — Opportunity map (`/map`)
+- 13,211 vacant public lots (City 7,565 as of the data), points at city zoom and polygons at lot zoom, colored by score; filters owner / neighborhood / score range / starter-home ready (no gates, 70+) / ADU-ready-under-reform; "combine with adjacent lot?" in popups; click → lot report; top-lots list.
+
+## Phase 12 — Ask agent (`lib/agent/*`, `/api/ask`)
+- 7 tools (search_parcels, get_parcel, score_parcels, check_hazards, lookup_zoning_rule, reform_impact, draft_site_memo) over the local snapshot; Claude tool-use loop with max 8 calls, system-prompt guardrails, a refusal pre-check (legal/financial/determination requests), "Confirm with" enforced, and a **numbers-must-come-from-tool-results** check that annotates unmatched numbers. Collapsible tool trace and map highlights in the UI.
+- **Engine-only router** (used when no key): deterministic parsing of neighborhood/owner/score/"duplex"/"ADU"/"how many" questions into the same tools. Answers are labeled "Engine-only answer (no LLM key configured)".
+- 3 showcase answers cached in `data/ask-cache.json` (labeled "Cached showcase answer"; generated by the engine-only router):
+  1. "Top 3 city-owned vacant lots in Homewood for a duplex if the ADU bill passes, and what is blocking them" → 1,051 matching lots; top 3 are 0 Bennett St / 0 Kelly St ×2 at 100 under the proposed rules, no gate or warning flags.
+  2. "Which URA-owned vacant lots score 70 or higher and are smaller than their district minimum?" → 110 matches; top: 0 Crawford St (77) etc., each flagged "variance likely, or combine with adjacent lot".
+  3. "How many lots would gain by-right ADU potential in Hazelwood if Bill 2025-1545 passes?" → 2,627 (proposed; upper bound); 493 no longer need a lot-size variance.
+- **Eight-question test (`npx tsx scripts/ask-test.ts`; engine-only router, run and verified):** (1-3) the showcase questions ✔; (4) "How many lots no longer need a variance citywide?" → 21,005 / 118,800 (proposed) ✔; (5) "Top 5 HACP-owned vacant lots" → 65 matches, top 1823 Cliff St (82), no flags ✔; (6) "Is it legal to build on 0 Tioga St?" → refused, points to Zoning Administrator / ZBA ✔; (7) "Should I invest in Homewood lots?" → refused ✔; (8) "Top 3 County-owned vacant lots in Perry South" → "No lots in the snapshot match" (there are none) ✔. Limitation: the router only understands these patterns; free-form questions need the Claude key (untested with a real model).

@@ -28,7 +28,7 @@ export function AskPanel({ onPins }: { onPins?: (pins: string[]) => void }) {
       if (j.pins?.length) onPins?.(j.pins);
     } catch (e: any) {
       setMsgs((m) => [...m, { role: 'assistant', text: `Sorry, that failed: ${e.message}`, error: true }]);
-    } finally { setBusy(false); setTimeout(() => end.current?.scrollIntoView({ behavior: 'smooth' }), 50); }
+    } finally { setBusy(false); setTimeout(() => end.current?.parentElement?.scrollTo({ top: 1e9, behavior: 'smooth' }), 50); }
   }
 
   return (
@@ -43,7 +43,7 @@ export function AskPanel({ onPins }: { onPins?: (pins: string[]) => void }) {
             {m.role === 'assistant' && m.mode && <div className="mb-1 text-[10px] uppercase tracking-wider text-muted">{m.mode === 'claude' ? 'Claude + engine tools' : m.mode === 'cached' ? 'Cached showcase answer' : 'Engine-only answer (no LLM key configured)'}</div>}
             <Rendered text={m.text} />
             {m.pins && m.pins.length > 0 && <div className="mt-2 flex flex-wrap gap-1.5">{m.pins.slice(0, 8).map((p) => <Link key={p} href={`/parcel/${p}`} className="btn font-mono text-[11px]">{p}</Link>)}</div>}
-            {m.confirmWith && m.confirmWith.length > 0 && <p className="mt-2 text-xs text-muted">Confirm with: {m.confirmWith.join('; ')}.</p>}
+            {m.confirmWith && m.confirmWith.length > 0 && !/confirm with:/i.test(m.text) && <p className="mt-2 text-xs text-muted">Confirm with: {m.confirmWith.join('; ')}.</p>}
             {m.trace && m.trace.length > 0 && (
               <details className="mt-2 text-xs text-muted"><summary className="cursor-pointer">Tool trace ({m.trace.length})</summary>
                 <ol className="mt-1 list-decimal space-y-1 pl-4">{m.trace.map((t, j) => <li key={j}><code className="font-mono text-fg">{t.tool}</code>({JSON.stringify(t.args)}) → {t.summary}</li>)}</ol></details>

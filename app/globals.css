@@ -30,11 +30,13 @@ body { font-family: var(--font-geist-sans), system-ui, sans-serif; -webkit-font-
 a { color: inherit; }
 ::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); }
 input, select, button { font: inherit; color: inherit; }
+@layer components {
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
 .btn { border: 1px solid var(--border); background: var(--surface-2); border-radius: 999px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: border-color .15s, background .15s; }
 .btn:hover { border-color: #3a4150; }
 .btn-accent { background: var(--accent); color: #07080a; border-color: transparent; font-weight: 600; }
 .btn-accent:hover { filter: brightness(1.08); }
+}
 .term { border-bottom: 1px dotted var(--muted); cursor: help; }
 input[type=range] { accent-color: var(--accent); }
 .maplibregl-ctrl-attrib { background: rgba(7,8,10,.7) !important; color: var(--muted) !important; }
