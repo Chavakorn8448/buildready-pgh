@@ -1,0 +1,859 @@
+{
+  "_meta": {
+    "description": "Which housing types each base zoning district allows by right / by exception / not at all, from Pittsburgh Zoning Code Chapter 911 (§911.02).",
+    "source": {
+      "primary": "Pittsburgh Zoning Code §911.02 Use Table, as printed in City Council File 2024-0701, attachment \"Use Table\" (printed 7/18/2024)",
+      "primaryUrl": "https://pittsburgh.legistar1.com/pittsburgh/attachments/1b80ecc1-c98f-4d48-8066-41fbea64c8b0.pdf",
+      "crossCheck": "Oct-2020 print of §911.02 (R1D..UNC + P/H/EMI/GT columns agree; only difference is Single-Unit Attached in R1D: blank in 2020, P/S in 2024 per Ord. 2024-0059, enacted 4/22/2024)",
+      "notVerifiedAgainst": "Live code text (ecode360.com / codelibrary.amlegal.com returned Cloudflare 403). Amendments after July 2024 are not reflected. Re-verify before relying on it.",
+      "legend": "P = permitted by right; A = Administrator Exception (§922.08); S = Special Exception; C = Conditional Use; P/S = permitted, special exception for some cases per §911.04.A.69; blank = not permitted",
+      "retrievedAt": "2026-09-26"
+    },
+    "districtColumns": [
+      "R1D",
+      "R1A",
+      "R2",
+      "R3",
+      "RM",
+      "NDO",
+      "LNC",
+      "NDI",
+      "UNC",
+      "HC",
+      "GI",
+      "UI",
+      "UC-MU",
+      "UC-E",
+      "R-MU",
+      "P",
+      "H",
+      "EMI",
+      "GT",
+      "RIV-RM",
+      "RIV-MU",
+      "RIV-NS",
+      "RIV-GI",
+      "RIV-IMU"
+    ],
+    "mapCodeToColumn": {
+      "GT-A": "GT",
+      "GT-B": "GT",
+      "GT-C": "GT",
+      "GT-D": "GT",
+      "GT-E": "GT"
+    },
+    "densitySuffix": "Zoning-map codes such as R1D-VL, RM-H use the same use-table column as the base district (R1D, RM); the suffix (VL/L/M/H/VH) only sets development standards (§903.03).",
+    "verifiedDistricts": [
+      "R1D",
+      "R1A",
+      "R2",
+      "R3",
+      "RM",
+      "NDO",
+      "LNC",
+      "NDI",
+      "UNC",
+      "HC",
+      "GI",
+      "UI",
+      "UC-MU",
+      "UC-E",
+      "R-MU",
+      "P",
+      "H",
+      "EMI",
+      "GT",
+      "RIV-RM",
+      "RIV-MU",
+      "RIV-NS",
+      "RIV-GI",
+      "RIV-IMU"
+    ],
+    "unverifiedDistricts": [
+      "RP",
+      "CP",
+      "AP",
+      "UPR-A",
+      "UPR-B",
+      "GPRA",
+      "GPRB",
+      "GPRC",
+      "OPR-B",
+      "MTOBOR",
+      "SP-1",
+      "SP-4",
+      "SP-5",
+      "SP-7",
+      "SP-8",
+      "SP-9",
+      "SP-10",
+      "SP-11"
+    ],
+    "unverifiedReasons": {
+      "RP": "Residential Planned Unit Development — Ch. 909 planned development; use table has no RP column",
+      "CP": "Commercial Planned Unit Development — Ch. 909",
+      "AP": "Airport / planned district — no column in use table",
+      "UPR-A": "Uptown Public Realm District A — Ch. 908 public realm districts, not in §911.02 columns",
+      "UPR-B": "Uptown Public Realm District B — Ch. 908",
+      "GPRA": "Grandview Public Realm District A — Ch. 908",
+      "GPRB": "Grandview Public Realm District B — Ch. 908",
+      "GPRC": "Grandview Public Realm District C — Ch. 908",
+      "OPR-B": "Oakland Public Realm District B — Ch. 908",
+      "MTOBOR": "Mount Oliver Borough — outside City of Pittsburgh zoning (see gate G1)",
+      "SP-1": "Special Purpose District (Ch. 905) — district-specific use lists; not in §911.02 columns",
+      "SP-4": "Special Purpose District (Ch. 905)",
+      "SP-5": "Special Purpose District (Ch. 905)",
+      "SP-7": "Special Purpose District (Ch. 905)",
+      "SP-8": "Special Purpose District (Ch. 905)",
+      "SP-9": "Special Purpose District (Ch. 905)",
+      "SP-10": "Special Purpose District (Ch. 905)",
+      "SP-11": "Special Purpose District (Ch. 905)"
+    }
+  },
+  "districts": {
+    "R1D": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column R1D; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P/S",
+          "status": "by_right_with_special_exception_cases",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column R1D; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column R1D"
+        },
+        "three_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column R1D"
+        },
+        "multi_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column R1D; use standard §911.04.A.85"
+        }
+      }
+    },
+    "R1A": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column R1A; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column R1A; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column R1A"
+        },
+        "three_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column R1A"
+        },
+        "multi_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column R1A; use standard §911.04.A.85"
+        }
+      }
+    },
+    "R2": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column R2; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column R2; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column R2"
+        },
+        "three_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column R2"
+        },
+        "multi_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column R2; use standard §911.04.A.85"
+        }
+      }
+    },
+    "R3": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column R3; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column R3; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column R3"
+        },
+        "three_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column R3"
+        },
+        "multi_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column R3; use standard §911.04.A.85"
+        }
+      }
+    },
+    "RM": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column RM; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column RM; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column RM"
+        },
+        "three_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column RM"
+        },
+        "multi_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column RM; use standard §911.04.A.85"
+        }
+      }
+    },
+    "NDO": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column NDO; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column NDO; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column NDO"
+        },
+        "three_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column NDO"
+        },
+        "multi_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column NDO; use standard §911.04.A.85"
+        }
+      }
+    },
+    "LNC": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column LNC; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column LNC; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column LNC"
+        },
+        "three_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column LNC"
+        },
+        "multi_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column LNC; use standard §911.04.A.85"
+        }
+      }
+    },
+    "NDI": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column NDI; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column NDI; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column NDI"
+        },
+        "three_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column NDI"
+        },
+        "multi_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column NDI; use standard §911.04.A.85"
+        }
+      }
+    },
+    "UNC": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column UNC; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column UNC; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column UNC"
+        },
+        "three_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column UNC"
+        },
+        "multi_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column UNC; use standard §911.04.A.85"
+        }
+      }
+    },
+    "HC": {
+      "verified": true,
+      "housingSummary": "not_permitted",
+      "uses": {
+        "single_unit_detached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column HC; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column HC; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column HC"
+        },
+        "three_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column HC"
+        },
+        "multi_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column HC; use standard §911.04.A.85"
+        }
+      }
+    },
+    "GI": {
+      "verified": true,
+      "housingSummary": "not_permitted",
+      "uses": {
+        "single_unit_detached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column GI; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column GI; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column GI"
+        },
+        "three_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column GI"
+        },
+        "multi_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column GI; use standard §911.04.A.85"
+        }
+      }
+    },
+    "UI": {
+      "verified": true,
+      "housingSummary": "exception_only",
+      "uses": {
+        "single_unit_detached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column UI; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column UI; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column UI"
+        },
+        "three_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column UI"
+        },
+        "multi_unit": {
+          "code": "S",
+          "status": "special_exception",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column UI; use standard §911.04.A.85"
+        }
+      }
+    },
+    "UC-MU": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column UC-MU; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column UC-MU; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column UC-MU"
+        },
+        "three_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column UC-MU"
+        },
+        "multi_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column UC-MU; use standard §911.04.A.85"
+        }
+      }
+    },
+    "UC-E": {
+      "verified": true,
+      "housingSummary": "exception_only",
+      "uses": {
+        "single_unit_detached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column UC-E; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column UC-E; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column UC-E"
+        },
+        "three_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column UC-E"
+        },
+        "multi_unit": {
+          "code": "A",
+          "status": "administrator_exception",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column UC-E; use standard §911.04.A.85"
+        }
+      }
+    },
+    "R-MU": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column R-MU; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column R-MU; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column R-MU"
+        },
+        "three_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column R-MU"
+        },
+        "multi_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column R-MU; use standard §911.04.A.85"
+        }
+      }
+    },
+    "P": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column P; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column P; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column P"
+        },
+        "three_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column P"
+        },
+        "multi_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column P; use standard §911.04.A.85"
+        }
+      }
+    },
+    "H": {
+      "verified": true,
+      "housingSummary": "exception_only",
+      "uses": {
+        "single_unit_detached": {
+          "code": "A",
+          "status": "administrator_exception",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column H; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "S",
+          "status": "special_exception",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column H; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column H"
+        },
+        "three_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column H"
+        },
+        "multi_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column H; use standard §911.04.A.85"
+        }
+      }
+    },
+    "EMI": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column EMI; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column EMI; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column EMI"
+        },
+        "three_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column EMI"
+        },
+        "multi_unit": {
+          "code": "A",
+          "status": "administrator_exception",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column EMI; use standard §911.04.A.85"
+        }
+      }
+    },
+    "GT": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column GT; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column GT; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column GT"
+        },
+        "three_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column GT"
+        },
+        "multi_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column GT; use standard §911.04.A.85"
+        }
+      }
+    },
+    "RIV-RM": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column RIV-RM; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column RIV-RM; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column RIV-RM"
+        },
+        "three_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column RIV-RM"
+        },
+        "multi_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column RIV-RM; use standard §911.04.A.85"
+        }
+      }
+    },
+    "RIV-MU": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column RIV-MU; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column RIV-MU; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column RIV-MU"
+        },
+        "three_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column RIV-MU"
+        },
+        "multi_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column RIV-MU; use standard §911.04.A.85"
+        }
+      }
+    },
+    "RIV-NS": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column RIV-NS; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column RIV-NS; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column RIV-NS"
+        },
+        "three_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column RIV-NS"
+        },
+        "multi_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column RIV-NS; use standard §911.04.A.85"
+        }
+      }
+    },
+    "RIV-GI": {
+      "verified": true,
+      "housingSummary": "not_permitted",
+      "uses": {
+        "single_unit_detached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column RIV-GI; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column RIV-GI; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column RIV-GI"
+        },
+        "three_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column RIV-GI"
+        },
+        "multi_unit": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column RIV-GI; use standard §911.04.A.85"
+        }
+      }
+    },
+    "RIV-IMU": {
+      "verified": true,
+      "housingSummary": "by_right",
+      "uses": {
+        "single_unit_detached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Detached Residential\", column RIV-IMU; use standard §911.04.A.69"
+        },
+        "single_unit_attached": {
+          "code": "",
+          "status": "not_permitted",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Single-Unit Attached Residential\", column RIV-IMU; use standard §911.04.A.69; 911.04.A.69A"
+        },
+        "two_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Two-Unit Residential\", column RIV-IMU"
+        },
+        "three_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Three-Unit Residential\", column RIV-IMU"
+        },
+        "multi_unit": {
+          "code": "P",
+          "status": "by_right",
+          "citation": "Pittsburgh Zoning Code §911.02 Use Table, row \"Multi-Unit Residential (4+ units)\", column RIV-IMU; use standard §911.04.A.85"
+        }
+      }
+    }
+  }
+}
