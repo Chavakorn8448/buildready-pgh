@@ -12,7 +12,7 @@
     "fetch": "tsx scripts/fetch.ts",
     "preprocess": "tsx scripts/preprocess.ts",
     "reform-impact": "tsx scripts/reform-impact.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit -p tsconfig.engine.json"
   },
   "dependencies": {
     "@turf/turf": "^7.4.0",
