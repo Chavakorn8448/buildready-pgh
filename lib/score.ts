@@ -251,8 +251,8 @@ export type Comparison = {
   flagsAdded: Flag[]; flagsRemoved: Flag[]; flagsChanged: { id: string; current: string; reform: string }[];
 };
 
-export function compareRuleSets(parcel: ProcessedParcel, data: EngineData, current: RuleSet, reform: RuleSet, config: Config = CONFIG): Comparison {
-  const overlaps = computeOverlaps(parcel.geometry, data.layers, config.minOverlapFraction);
+export function compareRuleSets(parcel: ProcessedParcel, data: EngineData, current: RuleSet, reform: RuleSet, config: Config = CONFIG, precomputed?: ParcelOverlaps): Comparison {
+  const overlaps = precomputed ?? computeOverlaps(parcel.geometry, data.layers, config.minOverlapFraction);
   const a = scoreParcel(parcel, data, current, config, overlaps);
   const b = scoreParcel(parcel, data, reform, config, overlaps);
   const A = new Map(a.flags.map((f) => [f.id, f])), B = new Map(b.flags.map((f) => [f.id, f]));

@@ -8,7 +8,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadEngineData, ParcelStore, ROOT } from '../lib/data/load';
-import { CURRENT_LOT_MIN, PRE_2025_1579_LOT_MIN, landUseOf, parseZoning, stricter } from '../lib';
+import { CURRENT_LOT_MIN, PRE_2025_1579_LOT_MIN, parseZoning } from '../lib';
+import { classifyImpact } from '../lib/impact';
 
 const store = new ParcelStore();
 const data = loadEngineData();
@@ -16,40 +17,27 @@ const DENS = ['VL', 'L', 'M', 'H', 'VH'] as const;
 
 const A = { total: 0, bothAgree: 0, vacant: 0, improved: 0, byDensity: {} as Record<string, number>, byDistrict: {} as Record<string, number>, resParcelsWithMin: 0 };
 const B = { total: 0, residentialDistricts: 0, otherDistricts: 0, vacantLots: 0, existingDwellings: 0, excludingCondoMobile: 0, byDistrict: {} as Record<string, number>, residentialParcels: 0, unknownZoningResidential: 0 };
-const CONDO = /CONDO|MOBILE HOME|COMMON AREA|HUD PROJ|METRO HOUSING|INDEPENDENT LIVING|GROUP HOME|RES AUX/;
 
 for (const pin of store.pins()) {
   const p = store.byPin(pin)!;
-  const lu = landUseOf(p);
-  const residentialParcel = lu.residentialUse || lu.vacant === true; // dwelling use, residential class, or vacant land
-  if (!residentialParcel) continue;
+  const f = classifyImpact(p, data.permittedUses);
+  if (!f.residential) continue;
   const z = parseZoning(p.zoningDistrict, data.permittedUses);
-  const alt = p.zoningParcelsPublic && p.zoningParcelsPublic !== p.zoningDistrict ? parseZoning(p.zoningParcelsPublic, data.permittedUses) : null;
-  const housing = alt ? stricter(z.housing, alt.housing) : z.housing;
-
-  // ---- A: old minimum failed, current minimum passed (residential-district parcels with a density suffix) ----
-  if (z.residentialFamily && z.density && p.lotAreaSqft !== null && (lu.residentialUse || lu.vacant === true) && !alt) {
-    A.resParcelsWithMin++;
-    const oldMin = PRE_2025_1579_LOT_MIN[z.density], newMin = CURRENT_LOT_MIN[z.density];
-    const fails = (area: number) => oldMin !== null && area < oldMin;
-    const passes = (area: number) => newMin === null || area >= newMin;
-    if (fails(p.lotAreaSqft) && passes(p.lotAreaSqft)) {
-      A.total++;
-      if (p.lotAreaAssessorSqft !== null && fails(p.lotAreaAssessorSqft) && passes(p.lotAreaAssessorSqft)) A.bothAgree++;
-      if (lu.vacant) A.vacant++; else A.improved++;
-      A.byDensity[z.density] = (A.byDensity[z.density] ?? 0) + 1;
-      A.byDistrict[z.column!] = (A.byDistrict[z.column!] ?? 0) + 1;
-    }
+  if (f.resWithLotMin) A.resParcelsWithMin++;
+  if (f.a) {
+    A.total++;
+    if (f.aBoth) A.bothAgree++;
+    if (f.vacant) A.vacant++; else A.improved++;
+    A.byDensity[z.density!] = (A.byDensity[z.density!] ?? 0) + 1;
+    A.byDistrict[z.column!] = (A.byDistrict[z.column!] ?? 0) + 1;
   }
-
-  // ---- B: ADU by right under the reform (verified by-right housing district + residential use or vacant) ----
-  if (housing === 'by_right') {
+  if (f.b) {
     B.total++;
-    if (z.residentialFamily) B.residentialDistricts++; else B.otherDistricts++;
-    if (lu.vacant) B.vacantLots++; else B.existingDwellings++;
-    if (!CONDO.test(p.useDesc ?? '') && !lu.vacant) B.excludingCondoMobile++;
+    if (f.inResidentialDistrict) B.residentialDistricts++; else B.otherDistricts++;
+    if (f.vacant) B.vacantLots++; else B.existingDwellings++;
+    if (f.bExcludingCondo) B.excludingCondoMobile++;
     B.byDistrict[z.column ?? '?'] = (B.byDistrict[z.column ?? '?'] ?? 0) + 1;
-  } else if (housing === 'unknown') B.unknownZoningResidential++;
+  } else if (f.unknownZoning) B.unknownZoningResidential++;
 }
 
 const out = {
