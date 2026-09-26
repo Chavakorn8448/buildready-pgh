@@ -1,0 +1,909 @@
+{
+  "generatedAt": "2026-09-26",
+  "zoningPolygonSource": "WPRDC zoning GeoJSON",
+  "all": {
+    "n": 142283,
+    "match": 141277
+  },
+  "publicLots": {
+    "n": 14930,
+    "match": 14897
+  },
+  "matchRateAll": 0.9929295839980883,
+  "matchRatePublicLots": 0.9977896851975887,
+  "parcelsWithNoPolygonDistrict": 82,
+  "parcelsWithoutZonNew": 6,
+  "splitZoningParcels": 2508,
+  "topMismatchPairs": [
+    [
+      "UC-MU (polygon) vs RM-VH (zon_new)",
+      685
+    ],
+    [
+      "UC-MU (polygon) vs OPR-B (zon_new)",
+      77
+    ],
+    [
+      "UC-MU (polygon) vs UI (zon_new)",
+      67
+    ],
+    [
+      "UC-MU (polygon) vs RM-M (zon_new)",
+      67
+    ],
+    [
+      "UC-MU (polygon) vs R1A-H (zon_new)",
+      30
+    ],
+    [
+      "RIV-IMU (polygon) vs RIV-GI (zon_new)",
+      29
+    ],
+    [
+      "P (polygon) vs R1D-M (zon_new)",
+      13
+    ],
+    [
+      "SP-9 (polygon) vs HC (zon_new)",
+      11
+    ],
+    [
+      "UC-E (polygon) vs UI (zon_new)",
+      7
+    ],
+    [
+      "UC-MU (polygon) vs SP-7 (zon_new)",
+      3
+    ],
+    [
+      "P (polygon) vs R1D-H (zon_new)",
+      3
+    ],
+    [
+      "UC-MU (polygon) vs H (zon_new)",
+      2
+    ],
+    [
+      "UI (polygon) vs HC (zon_new)",
+      2
+    ],
+    [
+      "UC-MU (polygon) vs R1D-H (zon_new)",
+      2
+    ],
+    [
+      "P (polygon) vs RIV-NS (zon_new)",
+      1
+    ],
+    [
+      "SP-9 (polygon) vs UI (zon_new)",
+      1
+    ],
+    [
+      "H (polygon) vs RIV-MU (zon_new)",
+      1
+    ],
+    [
+      "UI (polygon) vs LNC (zon_new)",
+      1
+    ],
+    [
+      "H (polygon) vs R2-L (zon_new)",
+      1
+    ],
+    [
+      "P (polygon) vs RP (zon_new)",
+      1
+    ],
+    [
+      "RM-M (polygon) vs RP (zon_new)",
+      1
+    ],
+    [
+      "LNC (polygon) vs R1A-H (zon_new)",
+      1
+    ]
+  ],
+  "sampleMismatches": [
+    {
+      "pin": "0027H00144004400",
+      "address": "166 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00160002500",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00033004300",
+      "address": "552 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026S00144000000",
+      "address": "4620 BAUM BLVD",
+      "polygon": "UC-MU",
+      "zon_new": "UI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026L00080000000",
+      "address": "450 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "UI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00083000000",
+      "address": "4450 BAYARD ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026S00148000000",
+      "address": "353 MELWOOD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-M",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00160005400",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052J00161000000",
+      "address": "4527 WINTHROP ST",
+      "polygon": "UC-MU",
+      "zon_new": "OPR-B",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00117100700",
+      "address": "220 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027D00289000000",
+      "address": "326 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-M",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00047080700",
+      "address": "540 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011051100",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00160003800",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00074100400",
+      "address": "146 N BELLEFIELD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00074110400",
+      "address": "146 N BELLEFIELD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00160009500",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00033000102",
+      "address": "552 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00047020200",
+      "address": "540 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00073001100",
+      "address": "504 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00047030400",
+      "address": "220 N BELLEFIELD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011080500",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027D00124000000",
+      "address": "315 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "OPR-B",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011090600",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011041500",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00058000002",
+      "address": "530 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0056N00095000000",
+      "address": "5167 BLAIR ST",
+      "polygon": "RIV-IMU",
+      "zon_new": "RIV-GI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027D00035000000",
+      "address": "4501 CENTRE AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "City"
+    },
+    {
+      "pin": "0027H00160008200",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011031000",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011080800",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00047120100",
+      "address": "220 N BELLEFIELD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052J00294000000",
+      "address": "4638 WINTHROP ST",
+      "polygon": "UC-MU",
+      "zon_new": "R1A-H",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00160001200",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00033008300",
+      "address": "552 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011031700",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026S00160000000",
+      "address": "325 MELWOOD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-M",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026S00236000000",
+      "address": "416 MELWOOD AVE",
+      "polygon": "UC-E",
+      "zon_new": "UI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027D00096000000",
+      "address": "233 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "OPR-B",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027D00166000000",
+      "address": "4619 CENTRE AVE",
+      "polygon": "UC-MU",
+      "zon_new": "OPR-B",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026R00310000000",
+      "address": "415 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00047080500",
+      "address": "540 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026S00197000000",
+      "address": "233 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-M",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026G00164000000",
+      "address": "643 MELWOOD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "UI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00033007300",
+      "address": "552 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00115000000",
+      "address": "234 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011080900",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00160009900",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00117030400",
+      "address": "220 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00144012400",
+      "address": "166 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0056N00096000000",
+      "address": "0 COURTLAND ST",
+      "polygon": "RIV-IMU",
+      "zon_new": "RIV-GI",
+      "share": 1,
+      "ownerType": "City"
+    },
+    {
+      "pin": "0052E00011040900",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026L00032000000",
+      "address": "509 MELWOOD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "UI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011060700",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00073000900",
+      "address": "504 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00117040600",
+      "address": "220 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026S00172000000",
+      "address": "326 MELWOOD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-M",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026G00173000000",
+      "address": "627 MELWOOD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "UI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00180000000",
+      "address": "143 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026S00054000400",
+      "address": "424 GOLD WAY",
+      "polygon": "UC-MU",
+      "zon_new": "UI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00047110100",
+      "address": "220 N BELLEFIELD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0084H00160000000",
+      "address": "0 PENN AVE",
+      "polygon": "SP-9",
+      "zon_new": "HC",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00117040100",
+      "address": "220 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011040500",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00047010100",
+      "address": "540 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026S00149000000",
+      "address": "347 MELWOOD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-M",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026S00144000A00",
+      "address": "4620 BAUM BLVD",
+      "polygon": "UC-MU",
+      "zon_new": "UI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00160007200",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00090000000",
+      "address": "211 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00033000000",
+      "address": "250 N BELLEFIELD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00074P00400",
+      "address": "146 N BELLEFIELD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026R00312000000",
+      "address": "417 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026G00170000000",
+      "address": "633 MELWOOD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "UI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052J00500000000",
+      "address": "300 S CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "OPR-B",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00047010400",
+      "address": "540 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011020900",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00160007100",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052J00299000000",
+      "address": "0 WINTHROP ST",
+      "polygon": "UC-MU",
+      "zon_new": "R1A-H",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00160007000",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026G00192000000",
+      "address": "610 MELWOOD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "UI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026M00065000000",
+      "address": "450 MELWOOD AVE",
+      "polygon": "UC-E",
+      "zon_new": "UI",
+      "share": 0.503,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027D00121000000",
+      "address": "309 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "OPR-B",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027D00295000000",
+      "address": "314 N NEVILLE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-M",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00102000000",
+      "address": "237 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052J00169000000",
+      "address": "207 S CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "OPR-B",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011060900",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00160002700",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011081100",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026G00176000000",
+      "address": "621 MELWOOD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "UI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00160004800",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0052E00011030800",
+      "address": "128 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00160004700",
+      "address": "144 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026S00029000000",
+      "address": "338 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-M",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00127000000",
+      "address": "200 N DITHRIDGE ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026R00308000000",
+      "address": "411 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026S00171000000",
+      "address": "322 MELWOOD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-M",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0026G00168000000",
+      "address": "637 MELWOOD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "UI",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027H00174000000",
+      "address": "135 N CRAIG ST",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027D00161000000",
+      "address": "4615 CENTRE AVE",
+      "polygon": "UC-MU",
+      "zon_new": "OPR-B",
+      "share": 1,
+      "ownerType": "Private"
+    },
+    {
+      "pin": "0027D00013000000",
+      "address": "250 N BELLEFIELD AVE",
+      "polygon": "UC-MU",
+      "zon_new": "RM-VH",
+      "share": 1,
+      "ownerType": "Private"
+    }
+  ]
+}

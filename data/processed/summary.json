@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-09-26",
+  "parcels": 142365,
+  "dupPinsDropped": 270,
+  "noGeometryDropped": 0,
+  "withAssessment": 142340,
+  "withoutAssessment": 25,
+  "inCityLimits": 142365,
+  "outsideCityLimits": 0,
+  "zoningJoin": {
+    "withDistrict": 142283,
+    "none": 82,
+    "splitParcels": 2508,
+    "agreesWithZonNew": 141277,
+    "disagrees": 1006
+  },
+  "lotAreaChecks": {
+    "meanRelDiffPolygonVsShapeArea": 0.0029882303434381786,
+    "meanRelDiffPolygonVsAssessor": 0.6277163687039947,
+    "assessorDiffOver5pct": 69746,
+    "assessorCompared": 137197
+  },
+  "ownerTypes": {
+    "City": 12356,
+    "Private": 127127,
+    "Other": 303,
+    "URA": 1387,
+    "HACP": 539,
+    "County": 653
+  }
+}

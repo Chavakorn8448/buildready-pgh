@@ -1,0 +1,101 @@
+{
+  "slope25": {
+    "key": "slope25",
+    "status": "ok",
+    "url": "https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebSlope25/FeatureServer/0",
+    "retrievedAt": "2026-09-26",
+    "count": 1714
+  },
+  "landslide": {
+    "key": "landslide",
+    "status": "ok",
+    "url": "https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebLandslideProne/FeatureServer/0",
+    "retrievedAt": "2026-09-26",
+    "count": 37
+  },
+  "undermined": {
+    "key": "undermined",
+    "status": "ok",
+    "url": "https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebUndermined/FeatureServer/0",
+    "retrievedAt": "2026-09-26",
+    "count": 47
+  },
+  "fema2014": {
+    "key": "fema2014",
+    "status": "ok",
+    "url": "https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebFEMA2014/FeatureServer/0",
+    "retrievedAt": "2026-09-26",
+    "count": 160
+  },
+  "historic": {
+    "key": "historic",
+    "status": "ok",
+    "url": "https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebCHDHistoricDistricts/FeatureServer/0",
+    "retrievedAt": "2026-09-26",
+    "count": 21
+  },
+  "iz_overlay": {
+    "key": "iz_overlay",
+    "status": "ok",
+    "url": "https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/InclusionaryHousingOverlayDistrict/FeatureServer/0",
+    "retrievedAt": "2026-09-26",
+    "count": 1
+  },
+  "parking_reduction": {
+    "key": "parking_reduction",
+    "status": "ok",
+    "url": "https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebParkingReductionOverlay/FeatureServer/0",
+    "retrievedAt": "2026-09-26",
+    "count": 9
+  },
+  "transit_buffer": {
+    "key": "transit_buffer",
+    "status": "ok",
+    "url": "https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebMajorTransitBuffer/FeatureServer/0",
+    "retrievedAt": "2026-09-26",
+    "count": 3
+  },
+  "city_limits": {
+    "key": "city_limits",
+    "status": "ok",
+    "url": "https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/City_Limits/FeatureServer/0",
+    "retrievedAt": "2026-09-26",
+    "count": 2
+  },
+  "zoning": {
+    "key": "zoning",
+    "status": "ok",
+    "url": "https://data.wprdc.org/dataset/zoning",
+    "retrievedAt": "2026-09-26",
+    "count": 1068,
+    "sourceUsed": "WPRDC zoning GeoJSON"
+  },
+  "parcels_public": {
+    "key": "parcels_public",
+    "status": "ok",
+    "url": "https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0",
+    "retrievedAt": "2026-09-26",
+    "count": 142635
+  },
+  "parcels_pgh": {
+    "key": "parcels_pgh",
+    "status": "ok",
+    "url": "https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPGH/FeatureServer/0",
+    "retrievedAt": "2026-09-26",
+    "count": 12696
+  },
+  "assessments": {
+    "key": "assessments",
+    "status": "ok",
+    "url": "https://data.wprdc.org/dataset/property-assessments",
+    "retrievedAt": "2026-09-26",
+    "count": 142395
+  },
+  "addresses": {
+    "key": "addresses",
+    "status": "ok",
+    "url": "https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/Addresses_GeneralUse/FeatureServer/0",
+    "retrievedAt": "2026-09-26",
+    "count": 169896
+  }
+}

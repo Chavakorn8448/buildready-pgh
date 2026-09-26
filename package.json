@@ -10,9 +10,10 @@
     "score": "tsx scripts/score.ts",
     "test": "vitest run",
     "fetch": "tsx scripts/fetch.ts",
-    "preprocess": "tsx scripts/preprocess.ts",
+    "preprocess": "node --max-old-space-size=8192 --import tsx scripts/preprocess.ts",
     "reform-impact": "tsx scripts/reform-impact.ts",
-    "typecheck": "tsc --noEmit -p tsconfig.engine.json"
+    "typecheck": "tsc --noEmit -p tsconfig.engine.json",
+    "check-pii": "tsx scripts/check-pii.ts"
   },
   "dependencies": {
     "@turf/turf": "^7.4.0",

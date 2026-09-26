@@ -40,7 +40,15 @@ type Manifest = Record<string, {
   key: string; status: 'ok' | 'unavailable'; url: string; retrievedAt: string; count?: number; expected?: number;
   file?: string; license?: string; note?: string; error?: string; sourceUsed?: string;
 }>;
-const manifest: Manifest = {};
+const MANIFEST_FILE = path.join(RAW, 'manifest.json');
+// partial re-fetches (npm run fetch -- slope25) keep the other layers' entries
+const manifest: Manifest = fs.existsSync(MANIFEST_FILE) ? JSON.parse(fs.readFileSync(MANIFEST_FILE, 'utf8')) : {};
+// service account / editor user-name fields are dropped at ingest too (defence in depth for the PII rule)
+const EDITOR_FIELD = /^(created_?us(er)?|last_?edite?d?_?(user|_1)?|last_edi_1|propertyow.*)$/i;
+function scrub(f: any) {
+  if (f?.properties) for (const k of Object.keys(f.properties)) if (EDITOR_FIELD.test(k)) delete f.properties[k];
+  return f;
+}
 
 function openOut(file: string) {
   const fd = fs.openSync(file, 'w');
@@ -78,7 +86,7 @@ async function fetchArcgis(cfg: LayerCfg, base: string, outName: string, idField
       }));
       const feats = j.features ?? [];
       if (!feats.length) break;
-      for (const f of feats) out.add(f);
+      for (const f of feats) out.add(scrub(f));
       got += feats.length;
       process.stdout.write(`\r  ${cfg.key}: ${got}/${expected}`);
     }
@@ -214,7 +222,7 @@ ${rows.join('\n')}
 - Zoning Code Chapter 911 (permitted use table) is cited from the City's Code of Ordinances (ecode360); see \`data/rules/permitted-uses.json\`.
 ${unavailable.length ? `\n## UNAVAILABLE layers\nThe engine treats these as confidence \`unknown\` (never a pass):\n${unavailable.map((m) => `- **${m.key}**: ${m.error}`).join('\n')}\n` : ''}`;
   fs.writeFileSync(path.join(ROOT, 'data/SOURCES.md'), md);
-  fs.writeFileSync(path.join(RAW, 'manifest.json'), JSON.stringify(manifest, null, 2));
+  fs.writeFileSync(MANIFEST_FILE, JSON.stringify(manifest, null, 2));
 }
 
 (async () => {
