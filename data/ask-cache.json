@@ -1,0 +1,160 @@
+{
+ "top 3 city owned vacant lots in homewood for a duplex if the adu bill passes and what is blocking them": {
+  "answer": "1051 matching lots in Homewood owned by City; the top 3 by score under the PROPOSED Bill 2025-1545 rules: A lot counts if a two-unit building is allowed by right in its zoning, or if it would be ADU-ready (house + ADU) under the proposed bill.\n1. 0 BENNETT ST (0125M00012000000), Homewood South: score 100 (current code 94). No gate or warning flags.\n2. 0 KELLY ST (0125M00173000000), Homewood South: score 100 (current code 94). No gate or warning flags.\n3. 0 KELLY ST (0125M00175000000), Homewood South: score 100 (current code 94). No gate or warning flags.\nWater and sewer capacity is unknown for every lot until PWSA issues an availability letter.\nConfirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria.",
+  "pins": [
+   "0125M00012000000",
+   "0125M00173000000",
+   "0125M00175000000",
+   "0125M00316000000",
+   "0125M00320000000"
+  ],
+  "trace": [
+   {
+    "tool": "search_parcels",
+    "args": {
+     "limit": 5,
+     "vacant": true,
+     "ruleset": "reform",
+     "neighborhood": "Homewood",
+     "owner": "City",
+     "allows_by_right": "two_unit"
+    },
+    "summary": "966 matches; showing 5, top 0 BENNETT ST (94)"
+   },
+   {
+    "tool": "search_parcels",
+    "args": {
+     "limit": 5,
+     "vacant": true,
+     "ruleset": "reform",
+     "neighborhood": "Homewood",
+     "owner": "City",
+     "adu_ready_under_reform": true
+    },
+    "summary": "1051 matches; showing 5, top 0 BENNETT ST (94)"
+   },
+   {
+    "tool": "get_parcel",
+    "args": {
+     "pin": "0125M00012000000",
+     "ruleset": "reform"
+    },
+    "summary": "0 BENNETT ST: score 100, 0 gate(s), 7 flag(s)"
+   },
+   {
+    "tool": "get_parcel",
+    "args": {
+     "pin": "0125M00173000000",
+     "ruleset": "reform"
+    },
+    "summary": "0 KELLY ST: score 100, 0 gate(s), 7 flag(s)"
+   },
+   {
+    "tool": "get_parcel",
+    "args": {
+     "pin": "0125M00175000000",
+     "ruleset": "reform"
+    },
+    "summary": "0 KELLY ST: score 100, 0 gate(s), 7 flag(s)"
+   }
+  ],
+  "mode": "engine-only",
+  "confirmWith": [
+   "PWSA",
+   "Zoning Administrator",
+   "Department of City Planning",
+   "PHFA / lender underwriting",
+   "PHFA application scoring criteria"
+  ]
+ },
+ "which ura owned vacant lots score 70 or higher and are smaller than their district minimum": {
+  "answer": "110 matching lots owned by URA; the top 5 by score:\n1. 0 CRAWFORD ST (0009R00156000000), Crawford-Roberts: score 77. Blocking or to review: Lot (1,238 sq ft) is below the 2,400 sq ft minimum for RM-M: variance likely, or combine with adjacent lot.\n2. 0 CRAWFORD ST (0009R00159000000), Crawford-Roberts: score 77. Blocking or to review: Lot (1,108 sq ft) is below the 2,400 sq ft minimum for RM-M: variance likely, or combine with adjacent lot.\n3. 0 CRAWFORD ST (0009R00160000000), Crawford-Roberts: score 77. Blocking or to review: Lot (1,112 sq ft) is below the 2,400 sq ft minimum for RM-M: variance likely, or combine with adjacent lot.\n4. 0 TRENT ST (0010J00080000000), Middle Hill: score 74. Blocking or to review: Lot (1,446 sq ft) is below the 2,400 sq ft minimum for RM-M: variance likely, or combine with adjacent lot.\n5. 0 TRENT ST (0010J00084000000), Middle Hill: score 74. Blocking or to review: Lot (1,182 sq ft) is below the 2,400 sq ft minimum for RM-M: variance likely, or combine with adjacent lot.\nWater and sewer capacity is unknown for every lot until PWSA issues an availability letter.\nConfirm with: PWSA; Zoning Board of Adjustment; Zoning Administrator; URA property-disposition process; PHFA / lender underwriting.",
+  "pins": [
+   "0009R00156000000",
+   "0009R00159000000",
+   "0009R00160000000",
+   "0010J00080000000",
+   "0010J00084000000"
+  ],
+  "trace": [
+   {
+    "tool": "search_parcels",
+    "args": {
+     "limit": 5,
+     "vacant": true,
+     "ruleset": "current",
+     "owner": "URA",
+     "min_score": 70,
+     "below_district_minimum": true
+    },
+    "summary": "110 matches; showing 5, top 0 CRAWFORD ST (77)"
+   },
+   {
+    "tool": "get_parcel",
+    "args": {
+     "pin": "0009R00156000000",
+     "ruleset": "current"
+    },
+    "summary": "0 CRAWFORD ST: score 77, 0 gate(s), 5 flag(s)"
+   },
+   {
+    "tool": "get_parcel",
+    "args": {
+     "pin": "0009R00159000000",
+     "ruleset": "current"
+    },
+    "summary": "0 CRAWFORD ST: score 77, 0 gate(s), 5 flag(s)"
+   },
+   {
+    "tool": "get_parcel",
+    "args": {
+     "pin": "0009R00160000000",
+     "ruleset": "current"
+    },
+    "summary": "0 CRAWFORD ST: score 77, 0 gate(s), 5 flag(s)"
+   },
+   {
+    "tool": "get_parcel",
+    "args": {
+     "pin": "0010J00080000000",
+     "ruleset": "current"
+    },
+    "summary": "0 TRENT ST: score 74, 0 gate(s), 7 flag(s)"
+   },
+   {
+    "tool": "get_parcel",
+    "args": {
+     "pin": "0010J00084000000",
+     "ruleset": "current"
+    },
+    "summary": "0 TRENT ST: score 74, 0 gate(s), 7 flag(s)"
+   }
+  ],
+  "mode": "engine-only",
+  "confirmWith": [
+   "PWSA",
+   "Zoning Board of Adjustment",
+   "Zoning Administrator",
+   "URA property-disposition process",
+   "PHFA / lender underwriting"
+  ]
+ },
+ "how many lots would gain by right adu potential in hazelwood if bill 2025 1545 passes": {
+  "answer": "Hazelwood: 493 residential lots no longer need a lot-size variance under Bill 2025-1579 (in effect), and up to 2,627 would gain by-right ADU potential if Bill 2025-1545 passes (PROPOSED, not law; an upper bound because current by-right ADU coverage is not in the data). Limits: Counts the lot-size rule and the ADU eligibility rule only; setbacks, height, building code and utilities are not checked.\nConfirm with: City Zoning Administrator; Zoning Board of Adjustment.",
+  "pins": [],
+  "trace": [
+   {
+    "tool": "reform_impact",
+    "args": {
+     "neighborhood": "Hazelwood"
+    },
+    "summary": "Hazelwood: 493 no longer need variance; 2,627 gain ADU (proposed)"
+   }
+  ],
+  "mode": "engine-only",
+  "confirmWith": [
+   "City Zoning Administrator",
+   "Zoning Board of Adjustment"
+  ]
+ }
+}
