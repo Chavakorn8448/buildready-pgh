@@ -188,7 +188,7 @@ for (const pc of parcelsOut) {
   fs.writeSync(fd, line);
   index[pc.pin] = [off, len - 1];
   off += len;
-  if (pc.house && pc.house !== '0' && pc.street) (byAddress[`${pc.house} ${pc.street}`.toUpperCase()] ??= []).push(pc.pin);
+  if (pc.house && pc.street) (byAddress[`${pc.house} ${pc.street}`.toUpperCase()] ??= []).push(pc.pin);
 }
 fs.closeSync(fd);
 fs.writeFileSync(path.join(OUT, 'parcels.index.json'), JSON.stringify({ byPin: index, byAddress }));

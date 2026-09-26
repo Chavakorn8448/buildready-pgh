@@ -26,13 +26,14 @@ export function overlapWithLayer(
 ): Overlap {
   if (!features) return { layer, status: 'unavailable', intersects: false, overlapSqft: 0, overlapFraction: 0, pin: null, matched: [], geometryErrors: 0 };
   const parcel = { type: 'Feature', properties: {}, geometry: parcelGeom } as any;
+  // fast path: no candidate feature near the parcel -> no overlap (avoids turf.area on ~all parcels x layers)
+  const candidates = features.filter((f) => bboxIntersects(f.bbox, parcelBBox) && (!opts.filter || opts.filter(f.props)));
+  if (!candidates.length) return { layer, status: 'ok', intersects: false, overlapSqft: 0, overlapFraction: 0, pin: null, matched: [], geometryErrors: 0 };
   const parcelArea = turf.area(parcel);
   let total = 0, errors = 0;
   let best: { area: number; piece: any } | null = null;
   const matched: Record<string, any>[] = [];
-  for (const f of features) {
-    if (opts.filter && !opts.filter(f.props)) continue;
-    if (!bboxIntersects(f.bbox, parcelBBox)) continue;
+  for (const f of candidates) {
     try {
       const inter = turf.intersect(turf.featureCollection([parcel, { type: 'Feature', properties: {}, geometry: f.geometry } as any]));
       if (!inter) continue;
