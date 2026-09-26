@@ -61,3 +61,541 @@ Pure, typed, deterministic (no I/O in `lib/score.ts`, `lib/rules/*`, `lib/hazard
 - **Water/sewer:** always the flag "Unknown: request PWSA availability letter", never scored.
 - **Rule sets:** `lib/rules/current.ts` (in effect; lot-min by density suffix from Bill 2025-1579, verified) and `lib/rules/reform-2025-1545.ts` (PROPOSED; status from Legistar: Held In Council, not signed). Same `Rule` interface returning `{ruleId, citation, result: passed|failed|unknown, points, flag?}`.
 - **Lookup:** 16-char PIN with/without dashes, or address matched on house no. + street with St/Street, Ave/Avenue, N/North, First/1st normalization; ambiguous matches list candidates and exit 3.
+
+## Phase 5 — CLI, golden tests, reform-impact
+- `npm run score <parcelId|address> [-- --reform] [--json]`; `npm test` (22 tests; golden tests skip if data/processed is absent); `npm run reform-impact`; `npm run check-pii`.
+- Bug found by a test and fixed: a 16-character address like "5925 WALNUT STREET" was parsed as a PIN (spaces stripped → 16 alphanumerics). PIN detection now requires the block/lot pattern.
+
+### Golden parcels (real data, chosen by scanning all city parcels; hand-check against the official zoning map)
+| # | Parcel ID | Address | Zoning (polygon = parcel layer) | Why chosen |
+|---|---|---|---|---|
+| 1 | 0174N00262000000 | 0 TIOGA ST (Homewood South) | R1A-VH | Vacant, City-owned, both zoning sources agree, inside the transit buffer; top-scoring group of city vacant lots (94; reform 100) |
+| 2 | 0013E00051000000 | 1817 SAINT PATRICK ST (South Side Slopes) | H (Hillside) | Slope 25%+ 100%, landslide-prone 100%, undermined 99% of parcel; dwellings only by administrator exception in H → G3 cap 70; score 34 |
+| 3 | 0173N00352000000 | 7032 UPLAND ST (Homewood North) | R2-L | 1,774 sq ft (polygon) / 1,860 (assessor), both below the 3,000 sq ft minimum → flag 'variance likely, or combine with adjacent lot'; score 58 |
+| 4 | 0135M00041000000 | 0 BALDWIN RD (Hays) | R2-L | Vacant, 100% inside a FEMA 2014 special flood hazard area; score 77 |
+| 5 | 0006K00358000000 | 423 EDITH ST (Duquesne Heights) | R1A-H | --reform: 61 → 67 (+6): proposed ADU/parking/bonus rules change 2 flags and add 1; also 28% slope + undermined |
+
+Notes: #2 sits in the Hillside (H) district, where the transcribed table allows single-unit detached only by Administrator Exception — worth checking on the official map. #5's +6 is the full reform bonus; almost every by-right parcel gains +6 or +4 under my scoring model, so #5 was picked for a mid-range parcel with hazards.
+
+### Reform Impact counts (`npm run reform-impact`, data/processed/reform-impact.json)
+```
+REFORM IMPACT (City of Pittsburgh parcels)
+
+A. Residential parcels that failed the OLD minimum lot size but pass the CURRENT one (Bill 2025-1579, in effect):
+     21,005 parcels  (of 105,441 residential-district parcels with a lot minimum)
+     - where assessor lot area agrees: 15,505
+     - vacant 3,612 / improved 17,393
+     - by density: VL 305, L 9,062, M 4,521, H 3,370, VH 3,747
+     (old minimums used: VL 8,000, L 5,000, M 3,200, H 1,800; VH 1,200 from the bill's struck text)
+
+B. Residential parcels gaining by-right ADU potential under PROPOSED Bill 2025-1545 (≤2 ADUs, ≤1,000 sq ft, ≤30 ft, no owner-occupancy):
+     118,800 parcels  (105,441 in R1D/R1A/R2/R3/RM, 13,359 in other districts allowing housing by right)
+     - existing dwellings 94,918 (excluding condo/mobile-home/HUD/etc.: 89,385), vacant lots 23,882
+     - upper bound: assumes no by-right ADU today. Residential parcels in unverified zoning districts (not counted): 3,199
+```
+Caveats: A excludes parcels whose two zoning sources disagree; lot area = polygon area (15,505 of the 21,005 also hold by assessor area). B is an upper bound (assumes no by-right ADU today; the ADU overlay is not in public data) and counts every parcel with a dwelling use or vacant land where the verified use table allows housing by right; 3,199 residential-use parcels in unverified districts are excluded.
+
+### Real CLI output
+
+#### `npm run score 0175G00210000000`
+```
+0 ROSEDALE ST  [0175G00210000000]  Homewood South
+Rule set: Current code (in effect) — IN_EFFECT
+
+DEVELOPMENT EASE SCORE: 87 / 100  (uncapped 86.5)
+
+GATES
+  G1 ✔ ok  Inside City of Pittsburgh: Parcel is inside City limits.
+  G2 ✔ ok  Residential potential: Residential use or potential present.
+  G3 ✔ ok  Housing permitted in base zoning: Housing is permitted by right in the base zoning district.
+
+SUB-SCORES (0-100, weight → points contributed)
+  zoning          85  █████████████████···  w40 → 34
+      · base rules 85/85
+      · ZONING-LOT-MIN: passed (40/40) — Pittsburgh Zoning Code §903.03 (minimum lot size by density subdistrict), as amended by Bill 2025-1579 (Passed Finally 5/6/2025, signed by Mayor 5/7/2025)
+      · ZONING-USE: passed (25/25) — Pittsburgh Zoning Code §911.02 Use Table (Single-/Two-/Three-/Multi-Unit Residential rows)
+      · ZONING-HISTORIC: passed (12/12) — Pittsburgh Zoning Code Ch. 906 Historic Preservation / City Planning CHD Historic Districts layer
+      · ZONING-IZ-OVERLAY: passed (8/8) — Pittsburgh Zoning Code §907.04.A IZ-O Inclusionary Housing Overlay District
+  environmental  100  ████████████████████  w20 → 20
+      · Slope 25%+: none
+      · Landslide-prone area: none
+      · Undermined area: none
+      · FEMA special flood hazard area: none
+  funding        100  ████████████████████  w15 → 15
+      · neighborhood median assessed land value $0.93/sq ft vs low-value cutoff $2.68/sq ft -> low-value area
+  access          50  ██████████··········  w15 → 7.5
+      · outside 1,500 ft major transit buffer (partial points)
+  site           100  ████████████████████  w10 → 10
+      · vacant (+50)
+      · City-owned: easier acquisition (+50)
+
+FLAGS
+  ℹ  Unknown: request PWSA availability letter. Water/sewer capacity is never scored.
+      review by: PWSA   facts: utilities.water_sewer
+  ℹ  Off-street parking minimums may apply under Ch. 914; requirement by use/district is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ℹ  ADUs: current code limits them to an ADU overlay district, 1 per lot, with owner-occupancy; overlay coverage is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ℹ  Low-value area: gap financing likely needed (note only, not a penalty).
+      review by: PHFA / lender underwriting   facts: hood.median_land_psf
+  ℹ  Vacant infill lot in a low-value area: eligible for infill/blight scoring (PHFA) — confirm against current PHFA criteria.
+      review by: PHFA application scoring criteria   facts: landuse.vacant, hood.median_land_psf
+  ℹ  City-owned parcel: acquisition through a public disposition process may be easier (not guaranteed).
+      review by: City property-disposition process   facts: owner.type
+
+FACTS (source per fact)
+  [high] Parcel ID (PIN): 0175G00210000000
+      City of Pittsburgh ParcelsPublic (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0 · retrieved 2026-09-26
+  [high] Address: 0 ROSEDALE ST
+      City of Pittsburgh ParcelsPublic (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0 · retrieved 2026-09-26
+  [high] Inside City of Pittsburgh limits: true
+      City of Pittsburgh City Limits (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/City_Limits/FeatureServer/0 · retrieved 2026-09-26
+  [high] Lot area (sq ft, map polygon): 4168.2
+      City of Pittsburgh ParcelsPublic (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0 · retrieved 2026-09-26 · review by Licensed survey
+  [medium] Lot area (sq ft, county assessor): 3300
+      WPRDC/Allegheny County property assessments · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26 · review by Licensed survey
+  [high] Base zoning district (map polygon join): RM-M
+      WPRDC zoning GeoJSON · https://data.wprdc.org/dataset/zoning · retrieved 2026-09-26 · review by Zoning Administrator
+  [medium] Zoning per city parcel layer (zon_new): RM-M
+      City of Pittsburgh ParcelsPublic (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0 · retrieved 2026-09-26
+  [medium] Housing under base zoning (§911.02): by_right
+      Pittsburgh Zoning Code §911.02 Use Table, as printed in City Council File 2024-0701, attachment "Use Table" (printed 7/18/2024) · https://pittsburgh.legistar1.com/pittsburgh/attachments/1b80ecc1-c98f-4d48-8066-41fbea64c8b0.pdf · retrieved 2026-09-26 · review by Zoning Administrator
+  [medium] Assessor use description: VACANT LAND
+      WPRDC/Allegheny County property assessments · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26
+  [medium] Assessor class: RESIDENTIAL
+      WPRDC/Allegheny County property assessments · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26
+  [medium] Vacant per city parcel layer: true
+      City of Pittsburgh ParcelsPublic (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0 · retrieved 2026-09-26
+  [medium] Owner type (no owner names stored): City
+      City of Pittsburgh ParcelsPublic (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0 · retrieved 2026-09-26
+  [medium] Assessed land value ($): 700
+      WPRDC/Allegheny County property assessments · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26
+  [medium] Assessed total value ($): 700
+      WPRDC/Allegheny County property assessments · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26
+  [medium] Last sale 2012-11-28 (CITY TREASURER): 14732
+      WPRDC/Allegheny County property assessments · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26
+  [medium] Neighborhood median assessed land $/sq ft (Homewood South; low-value cutoff 2.68): 0.93
+      derived from WPRDC property-assessments (data/processed/neighborhood-values.json) · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26
+  [high] Slope 25%+ overlap: no overlap
+      City of Pittsburgh PGHWebSlope25 (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebSlope25/FeatureServer/0 · retrieved 2026-09-26
+  [high] Landslide-prone overlap: no overlap
+      City of Pittsburgh PGHWebLandslideProne (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebLandslideProne/FeatureServer/0 · retrieved 2026-09-26
+  [high] Undermined area overlap: no overlap
+      City of Pittsburgh PGHWebUndermined (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebUndermined/FeatureServer/0 · retrieved 2026-09-26
+  [high] FEMA 2014 Special Flood Hazard Area overlap: no overlap
+      City of Pittsburgh PGHWebFEMA2014 (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebFEMA2014/FeatureServer/0 · retrieved 2026-09-26
+  [high] City Historic District overlap: no overlap
+      City of Pittsburgh CHD Historic Districts (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebCHDHistoricDistricts/FeatureServer/0 · retrieved 2026-09-26
+  [high] Inclusionary Housing Overlay: no overlap
+      City of Pittsburgh Inclusionary Housing Overlay District (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/InclusionaryHousingOverlayDistrict/FeatureServer/0 · retrieved 2026-09-26
+  [high] Within 1,500 ft major transit buffer: no overlap
+      City of Pittsburgh Major Transit Buffer (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebMajorTransitBuffer/FeatureServer/0 · retrieved 2026-09-26
+  [high] Parking Reduction Overlay: no overlap
+      City of Pittsburgh Parking Reduction Overlay (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebParkingReductionOverlay/FeatureServer/0 · retrieved 2026-09-26
+  [unknown] Water/sewer availability: unknown
+      not available in public data · https://www.pgh2o.com/ · retrieved n/a · review by PWSA
+  [high] Bill 2025-1545 status: Held In Council; hearing 2026-09-23: proposed
+      Pittsburgh Legistar API · https://webapi.legistar.com/v1/pittsburgh/matters/31504 · retrieved 2026-09-26
+
+Decision support only. Not legal, financial, or zoning advice.
+```
+
+#### `npm run score "5925 Walnut St" -- --reform`
+```
+5925 WALNUT ST  [0084P00162000000]  Shadyside
+Rule set: Current code (in effect) — IN_EFFECT
+
+DEVELOPMENT EASE SCORE: 69 / 100
+
+GATES
+  G1 ✔ ok  Inside City of Pittsburgh: Parcel is inside City limits.
+  G2 ✔ ok  Residential potential: Residential use or potential present.
+  G3 ✔ ok  Housing permitted in base zoning: Housing is permitted by right in the base zoning district.
+
+SUB-SCORES (0-100, weight → points contributed)
+  zoning          85  █████████████████···  w40 → 34
+      · base rules 85/85
+      · ZONING-LOT-MIN: passed (40/40) — Pittsburgh Zoning Code §903.03 (minimum lot size by density subdistrict), as amended by Bill 2025-1579 (Passed Finally 5/6/2025, signed by Mayor 5/7/2025)
+      · ZONING-USE: passed (25/25) — Pittsburgh Zoning Code §911.02 Use Table (Single-/Two-/Three-/Multi-Unit Residential rows)
+      · ZONING-HISTORIC: passed (12/12) — Pittsburgh Zoning Code Ch. 906 Historic Preservation / City Planning CHD Historic Districts layer
+      · ZONING-IZ-OVERLAY: passed (8/8) — Pittsburgh Zoning Code §907.04.A IZ-O Inclusionary Housing Overlay District
+  environmental  100  ████████████████████  w20 → 20
+      · Slope 25%+: none
+      · Landslide-prone area: none
+      · Undermined area: none
+      · FEMA special flood hazard area: none
+  funding         50  ██████████··········  w15 → 7.5
+      · neighborhood median assessed land value $39.94/sq ft vs low-value cutoff $2.68/sq ft -> not low-value
+  access          50  ██████████··········  w15 → 7.5
+      · outside 1,500 ft major transit buffer (partial points)
+  site             0  ····················  w10 → 0
+      · occupied / improved (+0)
+
+FLAGS
+  ℹ  Unknown: request PWSA availability letter. Water/sewer capacity is never scored.
+      review by: PWSA   facts: utilities.water_sewer
+  ℹ  Off-street parking minimums may apply under Ch. 914; requirement by use/district is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ℹ  ADUs: current code limits them to an ADU overlay district, 1 per lot, with owner-occupancy; overlay coverage is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+
+FACTS (source per fact)
+  [high] Parcel ID (PIN): 0084P00162000000
+      City of Pittsburgh ParcelsPublic (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0 · retrieved 2026-09-26
+  [high] Address: 5925 WALNUT ST
+      City of Pittsburgh ParcelsPublic (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0 · retrieved 2026-09-26
+  [high] Inside City of Pittsburgh limits: true
+      City of Pittsburgh City Limits (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/City_Limits/FeatureServer/0 · retrieved 2026-09-26
+  [high] Lot area (sq ft, map polygon): 6804.3
+      City of Pittsburgh ParcelsPublic (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0 · retrieved 2026-09-26 · review by Licensed survey
+  [medium] Lot area (sq ft, county assessor): 6525
+      WPRDC/Allegheny County property assessments · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26 · review by Licensed survey
+  [high] Base zoning district (map polygon join): RM-M
+      WPRDC zoning GeoJSON · https://data.wprdc.org/dataset/zoning · retrieved 2026-09-26 · review by Zoning Administrator
+  [medium] Zoning per city parcel layer (zon_new): RM-M
+      City of Pittsburgh ParcelsPublic (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0 · retrieved 2026-09-26
+  [medium] Housing under base zoning (§911.02): by_right
+      Pittsburgh Zoning Code §911.02 Use Table, as printed in City Council File 2024-0701, attachment "Use Table" (printed 7/18/2024) · https://pittsburgh.legistar1.com/pittsburgh/attachments/1b80ecc1-c98f-4d48-8066-41fbea64c8b0.pdf · retrieved 2026-09-26 · review by Zoning Administrator
+  [medium] Assessor use description: APART: 5-19 UNITS
+      WPRDC/Allegheny County property assessments · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26
+  [medium] Assessor class: COMMERCIAL
+      WPRDC/Allegheny County property assessments · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26
+  [medium] Vacant per city parcel layer: false
+      City of Pittsburgh ParcelsPublic (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0 · retrieved 2026-09-26
+  [medium] Owner type (no owner names stored): Private
+      City of Pittsburgh ParcelsPublic (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/ParcelsPublic/FeatureServer/0 · retrieved 2026-09-26
+  [medium] Assessed land value ($): 174000
+      WPRDC/Allegheny County property assessments · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26
+  [medium] Assessed total value ($): 640500
+      WPRDC/Allegheny County property assessments · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26
+  [medium] Last sale 2019-09-26 (CORP TRANSFER): 743000
+      WPRDC/Allegheny County property assessments · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26
+  [medium] Neighborhood median assessed land $/sq ft (Shadyside; low-value cutoff 2.68): 39.94
+      derived from WPRDC property-assessments (data/processed/neighborhood-values.json) · https://data.wprdc.org/dataset/property-assessments · retrieved 2026-09-26
+  [high] Slope 25%+ overlap: no overlap
+      City of Pittsburgh PGHWebSlope25 (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebSlope25/FeatureServer/0 · retrieved 2026-09-26
+  [high] Landslide-prone overlap: no overlap
+      City of Pittsburgh PGHWebLandslideProne (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebLandslideProne/FeatureServer/0 · retrieved 2026-09-26
+  [high] Undermined area overlap: no overlap
+      City of Pittsburgh PGHWebUndermined (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebUndermined/FeatureServer/0 · retrieved 2026-09-26
+  [high] FEMA 2014 Special Flood Hazard Area overlap: no overlap
+      City of Pittsburgh PGHWebFEMA2014 (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebFEMA2014/FeatureServer/0 · retrieved 2026-09-26
+  [high] City Historic District overlap: no overlap
+      City of Pittsburgh CHD Historic Districts (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebCHDHistoricDistricts/FeatureServer/0 · retrieved 2026-09-26
+  [high] Inclusionary Housing Overlay: no overlap
+      City of Pittsburgh Inclusionary Housing Overlay District (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/InclusionaryHousingOverlayDistrict/FeatureServer/0 · retrieved 2026-09-26
+  [high] Within 1,500 ft major transit buffer: no overlap
+      City of Pittsburgh Major Transit Buffer (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebMajorTransitBuffer/FeatureServer/0 · retrieved 2026-09-26
+  [high] Parking Reduction Overlay: no overlap
+      City of Pittsburgh Parking Reduction Overlay (ArcGIS) · https://services1.arcgis.com/YZCmUqbcsUpOKfj7/arcgis/rest/services/PGHWebParkingReductionOverlay/FeatureServer/0 · retrieved 2026-09-26
+  [unknown] Water/sewer availability: unknown
+      not available in public data · https://www.pgh2o.com/ · retrieved n/a · review by PWSA
+  [high] Bill 2025-1545 status: Held In Council; hearing 2026-09-23: proposed
+      Pittsburgh Legistar API · https://webapi.legistar.com/v1/pittsburgh/matters/31504 · retrieved 2026-09-26
+
+Decision support only. Not legal, financial, or zoning advice.
+
+══════════════════════════════════════════════════════════════════════════════
+REFORM COMPARISON — PROPOSED reform (Bill 2025-1545)
+PROPOSED, not law (Bill 2025-1545: Held In Council; public hearing 2026-09-23; status checked 2026-09-26). Modeled as proposed; lot-size rules unchanged from current code.
+  Score: current 69 → reform 75   delta +6
+  zoning         85 → 100
+  Flags added under reform:
+    + PROPOSED, not law (Bill 2025-1545: Held In Council; public hearing 2026-09-23; status checked 2026-09-26): optional Affordable Housing Bonus available (outside the Inclusionary overlay).  [review by: Department of City Planning]
+  Flags removed under reform:
+    (none)
+  Flags changed:
+    ~ adu
+        current: ADUs: current code limits them to an ADU overlay district, 1 per lot, with owner-occupancy; overlay coverage is not modeled (unverified).
+        reform:  PROPOSED, not law (Bill 2025-1545: Held In Council; public hearing 2026-09-23; status checked 2026-09-26): up to 2 accessory dwelling units by right (≤1,000 sq ft, ≤30 ft, no owner-occupancy).
+    ~ parking-minimum
+        current: Off-street parking minimums may apply under Ch. 914; requirement by use/district is not modeled (unverified).
+        reform:  PROPOSED, not law (Bill 2025-1545: Held In Council; public hearing 2026-09-23; status checked 2026-09-26): no off-street parking minimums.
+```
+
+#### `npm run score 0174N00262000000` (facts section omitted here; the CLI prints it)
+```
+0 TIOGA ST  [0174N00262000000]  Homewood South
+Rule set: Current code (in effect) — IN_EFFECT
+
+DEVELOPMENT EASE SCORE: 94 / 100
+
+GATES
+  G1 ✔ ok  Inside City of Pittsburgh: Parcel is inside City limits.
+  G2 ✔ ok  Residential potential: Residential use or potential present.
+  G3 ✔ ok  Housing permitted in base zoning: Housing is permitted by right in the base zoning district.
+
+SUB-SCORES (0-100, weight → points contributed)
+  zoning          85  █████████████████···  w40 → 34
+      · base rules 85/85
+      · ZONING-LOT-MIN: passed (40/40) — Pittsburgh Zoning Code §903.03 (minimum lot size by density subdistrict), as amended by Bill 2025-1579 (Passed Finally 5/6/2025, signed by Mayor 5/7/2025)
+      · ZONING-USE: passed (25/25) — Pittsburgh Zoning Code §911.02 Use Table (Single-/Two-/Three-/Multi-Unit Residential rows)
+      · ZONING-HISTORIC: passed (12/12) — Pittsburgh Zoning Code Ch. 906 Historic Preservation / City Planning CHD Historic Districts layer
+      · ZONING-IZ-OVERLAY: passed (8/8) — Pittsburgh Zoning Code §907.04.A IZ-O Inclusionary Housing Overlay District
+  environmental  100  ████████████████████  w20 → 20
+      · Slope 25%+: none
+      · Landslide-prone area: none
+      · Undermined area: none
+      · FEMA special flood hazard area: none
+  funding        100  ████████████████████  w15 → 15
+      · neighborhood median assessed land value $0.93/sq ft vs low-value cutoff $2.68/sq ft -> low-value area
+  access         100  ████████████████████  w15 → 15
+      · inside major transit buffer (100% of parcel)
+  site           100  ████████████████████  w10 → 10
+      · vacant (+50)
+      · City-owned: easier acquisition (+50)
+
+FLAGS
+  ℹ  Unknown: request PWSA availability letter. Water/sewer capacity is never scored.
+      review by: PWSA   facts: utilities.water_sewer
+  ℹ  Off-street parking minimums may apply under Ch. 914; requirement by use/district is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ℹ  ADUs: current code limits them to an ADU overlay district, 1 per lot, with owner-occupancy; overlay coverage is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ℹ  Low-value area: gap financing likely needed (note only, not a penalty).
+      review by: PHFA / lender underwriting   facts: hood.median_land_psf
+  ℹ  Vacant infill lot in a low-value area: eligible for infill/blight scoring (PHFA) — confirm against current PHFA criteria.
+      review by: PHFA application scoring criteria   facts: landuse.vacant, hood.median_land_psf
+  ℹ  City-owned parcel: acquisition through a public disposition process may be easier (not guaranteed).
+      review by: City property-disposition process   facts: owner.type
+
+MAP PINS (centroid of overlap)
+  transit_buffer: 40.453326, -79.895833  (100% of parcel)
+
+Decision support only. Not legal, financial, or zoning advice.
+```
+
+#### `npm run score 0013E00051000000` (facts section omitted here; the CLI prints it)
+```
+1817 SAINT PATRICK ST  [0013E00051000000]  South Side Slopes
+Rule set: Current code (in effect) — IN_EFFECT
+
+DEVELOPMENT EASE SCORE: 34 / 100  (uncapped 34.4)
+
+GATES
+  G1 ✔ ok  Inside City of Pittsburgh: Parcel is inside City limits.
+  G2 ✔ ok  Residential potential: Residential use or potential present.
+  G3 ▲ CAP  Housing permitted in base zoning: Housing only by exception in H: score capped at 70.  [review by: Zoning Board of Adjustment]
+
+SUB-SCORES (0-100, weight → points contributed)
+  zoning          46  █████████···········  w40 → 18.4
+      · base rules 46/85
+      · ZONING-LOT-MIN: unknown (16/40) — Pittsburgh Zoning Code §903.03 (minimum lot size by density subdistrict), as amended by Bill 2025-1579 (Passed Finally 5/6/2025, signed by Mayor 5/7/2025)
+      · ZONING-USE: failed (10/25) — Pittsburgh Zoning Code §911.02 Use Table (Single-/Two-/Three-/Multi-Unit Residential rows)
+      · ZONING-HISTORIC: passed (12/12) — Pittsburgh Zoning Code Ch. 906 Historic Preservation / City Planning CHD Historic Districts layer
+      · ZONING-IZ-OVERLAY: passed (8/8) — Pittsburgh Zoning Code §907.04.A IZ-O Inclusionary Housing Overlay District
+  environmental    5  █···················  w20 → 1
+      · Slope 25%+: 100% of parcel (-40)
+      · Landslide-prone area: 100% of parcel (-40)
+      · Undermined area: 98.9% of parcel (-15)
+      · FEMA special flood hazard area: none
+  funding         50  ██████████··········  w15 → 7.5
+      · neighborhood median assessed land value $7.04/sq ft vs low-value cutoff $2.68/sq ft -> not low-value
+  access          50  ██████████··········  w15 → 7.5
+      · outside 1,500 ft major transit buffer (partial points)
+  site             0  ····················  w10 → 0
+      · occupied / improved (+0)
+
+FLAGS
+  ℹ  Unknown: request PWSA availability letter. Water/sewer capacity is never scored.
+      review by: PWSA   facts: utilities.water_sewer
+  ℹ  Unverified: lot-size minimum for district H is not modeled (only R1D/R1A/R2/R3/RM density subdistricts are).
+      review by: Zoning Administrator   facts: zoning.district, lot.area
+  ⚠  Housing is allowed in H only by administrator/special exception, not by right.
+      review by: Zoning Administrator / Zoning Board of Adjustment   facts: zoning.district, zoning.use_table
+  ℹ  Off-street parking minimums may apply under Ch. 914; requirement by use/district is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ℹ  ADUs: current code limits them to an ADU overlay district, 1 per lot, with owner-occupancy; overlay coverage is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ⚠  Slope 25%+ covers 100% of the parcel (pin 40.418987, -79.980455).
+      review by: geotechnical review (Code Ch. 915)   facts: hazard.slope25
+  ⚠  Landslide-prone area covers 100% of the parcel (pin 40.418987, -79.980455).
+      review by: geotechnical review (Code Ch. 915)   facts: hazard.landslide
+  ⚠  Undermined area covers 98.9% of the parcel (pin 40.418975, -79.980455).
+      review by: mine subsidence / geotechnical review   facts: hazard.undermined
+
+MAP PINS (centroid of overlap)
+  slope25: 40.418987, -79.980455  (100% of parcel)
+  landslide: 40.418987, -79.980455  (100% of parcel)
+  undermined: 40.418975, -79.980455  (98.9% of parcel)
+
+Decision support only. Not legal, financial, or zoning advice.
+```
+
+#### `npm run score 0173N00352000000` (facts section omitted here; the CLI prints it)
+```
+7032 UPLAND ST  [0173N00352000000]  Homewood North
+Rule set: Current code (in effect) — IN_EFFECT
+
+DEVELOPMENT EASE SCORE: 58 / 100  (uncapped 57.7)
+
+GATES
+  G1 ✔ ok  Inside City of Pittsburgh: Parcel is inside City limits.
+  G2 ✔ ok  Residential potential: Residential use or potential present.
+  G3 ✔ ok  Housing permitted in base zoning: Housing is permitted by right in the base zoning district.
+
+SUB-SCORES (0-100, weight → points contributed)
+  zoning          53  ███████████·········  w40 → 21.2
+      · base rules 53/85
+      · ZONING-LOT-MIN: failed (8/40) — Pittsburgh Zoning Code §903.03 (minimum lot size by density subdistrict), as amended by Bill 2025-1579 (Passed Finally 5/6/2025, signed by Mayor 5/7/2025)
+      · ZONING-USE: passed (25/25) — Pittsburgh Zoning Code §911.02 Use Table (Single-/Two-/Three-/Multi-Unit Residential rows)
+      · ZONING-HISTORIC: passed (12/12) — Pittsburgh Zoning Code Ch. 906 Historic Preservation / City Planning CHD Historic Districts layer
+      · ZONING-IZ-OVERLAY: passed (8/8) — Pittsburgh Zoning Code §907.04.A IZ-O Inclusionary Housing Overlay District
+  environmental  100  ████████████████████  w20 → 20
+      · Slope 25%+: none
+      · Landslide-prone area: none
+      · Undermined area: none
+      · FEMA special flood hazard area: none
+  funding         60  ████████████········  w15 → 9
+      · neighborhood median assessed land value $0.94/sq ft vs low-value cutoff $2.68/sq ft -> low-value area
+  access          50  ██████████··········  w15 → 7.5
+      · outside 1,500 ft major transit buffer (partial points)
+  site             0  ····················  w10 → 0
+      · occupied / improved (+0)
+
+FLAGS
+  ℹ  Unknown: request PWSA availability letter. Water/sewer capacity is never scored.
+      review by: PWSA   facts: utilities.water_sewer
+  ⚠  Lot (1,774 sq ft) is below the 3,000 sq ft minimum for R2-L: variance likely, or combine with adjacent lot.
+      review by: Zoning Board of Adjustment   facts: lot.area, zoning.district
+  ℹ  Off-street parking minimums may apply under Ch. 914; requirement by use/district is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ℹ  ADUs: current code limits them to an ADU overlay district, 1 per lot, with owner-occupancy; overlay coverage is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ℹ  Low-value area: gap financing likely needed (note only, not a penalty).
+      review by: PHFA / lender underwriting   facts: hood.median_land_psf
+
+```
+
+#### `npm run score 0135M00041000000` (facts section omitted here; the CLI prints it)
+```
+0 BALDWIN RD  [0135M00041000000]  Hays
+Rule set: Current code (in effect) — IN_EFFECT
+
+DEVELOPMENT EASE SCORE: 77 / 100  (uncapped 76.5)
+
+GATES
+  G1 ✔ ok  Inside City of Pittsburgh: Parcel is inside City limits.
+  G2 ✔ ok  Residential potential: Residential use or potential present.
+  G3 ✔ ok  Housing permitted in base zoning: Housing is permitted by right in the base zoning district.
+
+SUB-SCORES (0-100, weight → points contributed)
+  zoning          85  █████████████████···  w40 → 34
+      · base rules 85/85
+      · ZONING-LOT-MIN: passed (40/40) — Pittsburgh Zoning Code §903.03 (minimum lot size by density subdistrict), as amended by Bill 2025-1579 (Passed Finally 5/6/2025, signed by Mayor 5/7/2025)
+      · ZONING-USE: passed (25/25) — Pittsburgh Zoning Code §911.02 Use Table (Single-/Two-/Three-/Multi-Unit Residential rows)
+      · ZONING-HISTORIC: passed (12/12) — Pittsburgh Zoning Code Ch. 906 Historic Preservation / City Planning CHD Historic Districts layer
+      · ZONING-IZ-OVERLAY: passed (8/8) — Pittsburgh Zoning Code §907.04.A IZ-O Inclusionary Housing Overlay District
+  environmental   75  ███████████████·····  w20 → 15
+      · Slope 25%+: none
+      · Landslide-prone area: none
+      · Undermined area: none
+      · FEMA special flood hazard area: 100% of parcel (-25)
+  funding        100  ████████████████████  w15 → 15
+      · neighborhood median assessed land value $1.05/sq ft vs low-value cutoff $2.68/sq ft -> low-value area
+  access          50  ██████████··········  w15 → 7.5
+      · outside 1,500 ft major transit buffer (partial points)
+  site            50  ██████████··········  w10 → 5
+      · vacant (+50)
+
+FLAGS
+  ℹ  Unknown: request PWSA availability letter. Water/sewer capacity is never scored.
+      review by: PWSA   facts: utilities.water_sewer
+  ℹ  Off-street parking minimums may apply under Ch. 914; requirement by use/district is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ℹ  ADUs: current code limits them to an ADU overlay district, 1 per lot, with owner-occupancy; overlay coverage is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ⚠  FEMA special flood hazard area covers 100% of the parcel (pin 40.379456, -79.935726).
+      review by: Floodplain administrator / FEMA flood determination   facts: hazard.flood
+  ℹ  Low-value area: gap financing likely needed (note only, not a penalty).
+      review by: PHFA / lender underwriting   facts: hood.median_land_psf
+  ℹ  Vacant infill lot in a low-value area: eligible for infill/blight scoring (PHFA) — confirm against current PHFA criteria.
+      review by: PHFA application scoring criteria   facts: landuse.vacant, hood.median_land_psf
+
+MAP PINS (centroid of overlap)
+  fema2014: 40.379456, -79.935726  (100% of parcel)
+
+Decision support only. Not legal, financial, or zoning advice.
+```
+
+#### `npm run score 0006K00358000000 -- --reform` (facts section omitted)
+```
+423 EDITH ST  [0006K00358000000]  Duquesne Heights
+Rule set: Current code (in effect) — IN_EFFECT
+
+DEVELOPMENT EASE SCORE: 61 / 100
+
+GATES
+  G1 ✔ ok  Inside City of Pittsburgh: Parcel is inside City limits.
+  G2 ✔ ok  Residential potential: Residential use or potential present.
+  G3 ✔ ok  Housing permitted in base zoning: Housing is permitted by right in the base zoning district.
+
+SUB-SCORES (0-100, weight → points contributed)
+  zoning          85  █████████████████···  w40 → 34
+      · base rules 85/85
+      · ZONING-LOT-MIN: passed (40/40) — Pittsburgh Zoning Code §903.03 (minimum lot size by density subdistrict), as amended by Bill 2025-1579 (Passed Finally 5/6/2025, signed by Mayor 5/7/2025)
+      · ZONING-USE: passed (25/25) — Pittsburgh Zoning Code §911.02 Use Table (Single-/Two-/Three-/Multi-Unit Residential rows)
+      · ZONING-HISTORIC: passed (12/12) — Pittsburgh Zoning Code Ch. 906 Historic Preservation / City Planning CHD Historic Districts layer
+      · ZONING-IZ-OVERLAY: passed (8/8) — Pittsburgh Zoning Code §907.04.A IZ-O Inclusionary Housing Overlay District
+  environmental   60  ████████████········  w20 → 12
+      · Slope 25%+: 27.9% of parcel (-25)
+      · Landslide-prone area: none
+      · Undermined area: 100% of parcel (-15)
+      · FEMA special flood hazard area: none
+  funding         50  ██████████··········  w15 → 7.5
+      · neighborhood median assessed land value $4.97/sq ft vs low-value cutoff $2.68/sq ft -> not low-value
+  access          50  ██████████··········  w15 → 7.5
+      · outside 1,500 ft major transit buffer (partial points)
+  site             0  ····················  w10 → 0
+      · occupied / improved (+0)
+
+FLAGS
+  ℹ  Unknown: request PWSA availability letter. Water/sewer capacity is never scored.
+      review by: PWSA   facts: utilities.water_sewer
+  ℹ  Off-street parking minimums may apply under Ch. 914; requirement by use/district is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ℹ  ADUs: current code limits them to an ADU overlay district, 1 per lot, with owner-occupancy; overlay coverage is not modeled (unverified).
+      review by: Zoning Administrator   facts: zoning.district
+  ⚠  Slope 25%+ covers 27.9% of the parcel (pin 40.435773, -80.024762).
+      review by: geotechnical review (Code Ch. 915)   facts: hazard.slope25
+  ⚠  Undermined area covers 100% of the parcel (pin 40.435733, -80.024643).
+      review by: mine subsidence / geotechnical review   facts: hazard.undermined
+
+MAP PINS (centroid of overlap)
+  slope25: 40.435773, -80.024762  (27.9% of parcel)
+  undermined: 40.435733, -80.024643  (100% of parcel)
+
+Decision support only. Not legal, financial, or zoning advice.
+
+══════════════════════════════════════════════════════════════════════════════
+REFORM COMPARISON — PROPOSED reform (Bill 2025-1545)
+PROPOSED, not law (Bill 2025-1545: Held In Council; public hearing 2026-09-23; status checked 2026-09-26). Modeled as proposed; lot-size rules unchanged from current code.
+  Score: current 61 → reform 67   delta +6
+  zoning         85 → 100
+  Flags added under reform:
+    + PROPOSED, not law (Bill 2025-1545: Held In Council; public hearing 2026-09-23; status checked 2026-09-26): optional Affordable Housing Bonus available (outside the Inclusionary overlay).  [review by: Department of City Planning]
+  Flags removed under reform:
+    (none)
+  Flags changed:
+    ~ adu
+        current: ADUs: current code limits them to an ADU overlay district, 1 per lot, with owner-occupancy; overlay coverage is not modeled (unverified).
+        reform:  PROPOSED, not law (Bill 2025-1545: Held In Council; public hearing 2026-09-23; status checked 2026-09-26): up to 2 accessory dwelling units by right (≤1,000 sq ft, ≤30 ft, no owner-occupancy).
+    ~ parking-minimum
+        current: Off-street parking minimums may apply under Ch. 914; requirement by use/district is not modeled (unverified).
+        reform:  PROPOSED, not law (Bill 2025-1545: Held In Council; public hearing 2026-09-23; status checked 2026-09-26): no off-street parking minimums.
+```
+
+## Known issues / things to verify
+1. **Use table not verified against live code.** ecode360/AmLegal were blocked (403). The table comes from the Council File 2024-0701 print (7/18/2024) cross-checked against a 2020 print; amendments after July 2024 aren't reflected. Transcribed by eye from a rendered page — please spot-check the residential rows.
+2. **Unverified districts** (no use-table column): RP, CP, AP, UPR-A/B, GPRA/B/C, OPR-B, SP-1/4/5/7/8/9/10/11, MTOBOR. Housing there is `unknown`, so G3 caps the score at 40. 3,199 residential-use parcels sit in such districts.
+3. **ParcelsPGH is not "all parcels"** (12,696). ParcelsPublic is the base. 270 duplicate PINs were dropped (first record kept; probably multi-part parcels).
+4. **Zoning sources disagree on 1,006 parcels** (mostly polygon `UC-MU` vs parcel-layer `RM-VH`, Oakland). Those are scored on the polygon district with low confidence + a flag; G3 uses the stricter of the two.
+5. **Lot area:** polygon area vs assessor area differ by >5% on ~51% of parcels (median 5%). Lot-min result becomes `unknown` when they straddle the minimum.
+6. **Lot minimums are modeled only for R1D/R1A/R2/R3/RM density subdistricts** (§903.03). Other districts' minimums are `unknown` (40% credit, flagged).
+7. **Not modeled:** setbacks, height, building code, water/sewer (always flagged), parking minimums by use, the current ADU overlay, PHFA scoring criteria (the "eligible for infill/blight scoring" text is from your brief, flagged "confirm").
+8. **Scoring parameters are my choices** (penalty tiers, 40% unknown credit, 85/15 split of zoning points, cap 70 for exception-only, low-value = bottom third of neighborhood median land $/sq ft, reviewBy names for undermined/flood). All in `lib/config.ts`; nothing here is calibrated — the backtest against permits is a later phase.
+9. **Reform scoring:** nearly every by-right parcel gains +4…+6 (ADU +6, parking +4, bonus +5, capped by the zoning sub-score). ADU rule text was read from both the v2 text and the Planning Commission substitute of Bill 2025-1545; the bill is still moving.
+10. **Address lookup** uses the parcel layer (house no. + street). Lots with house number 0 (many vacant lots) are only reachable by PIN; the downloaded Addresses layer is not used yet.
+11. **Speed:** ~30 ms/parcel for full scoring (turf intersections); scanning the whole city takes ~25 min (see `scripts/pick-golden.ts`). Fine for lookups; batch/opportunity map will need precomputed overlaps.
+12. Licenses: WPRDC lists the zoning dataset as "License not specified"; city ArcGIS services state none. Confirm reuse terms before redistributing raw data (raw files are gitignored, not committed).
+13. Rule-source documents (Legistar PDFs, RTF) were read by hand into `data/raw/code/` (gitignored); the fetch script doesn't re-download them — URLs are in `data/SOURCES.md`.

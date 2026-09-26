@@ -18,7 +18,8 @@ export function normalizeAddress(house: string, street: string): string {
 /** 16-char PIN, with or without dashes/spaces (e.g. 0175-G-00210-0000-00). Returns null if the text is not a PIN. */
 export function parsePin(input: string): string | null {
   const s = input.toUpperCase().replace(/[\s-]/g, '');
-  return /^[0-9A-Z]{16}$/.test(s) && /\d/.test(s) && /^\d{4}[A-Z]/.test(s) ? s : null;
+  // block(4 digits) + map letter + lot(5 digits) + 6 more chars (digits, occasionally a letter, e.g. 0024B00340000A00)
+  return /^\d{4}[A-Z]\d{5}[0-9A-Z]{6}$/.test(s) ? s : null;
 }
 
 export function splitAddress(input: string): { house: string; street: string } | null {

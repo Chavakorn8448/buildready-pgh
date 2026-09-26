@@ -1,0 +1,70 @@
+{
+  "generatedAt": "2026-09-26",
+  "note": "Bill 2025-1545 is PROPOSED (Held In Council; public hearing 2026-09-23). Bill 2025-1579 is in effect. Pre-2025-1579 minimums are used only for count A.",
+  "preMinimums": {
+    "VL": 8000,
+    "L": 5000,
+    "M": 3200,
+    "H": 1800,
+    "VH": 1200
+  },
+  "currentMinimums": {
+    "VL": 6000,
+    "L": 3000,
+    "M": 2400,
+    "H": 1200,
+    "VH": null
+  },
+  "A_noLongerNeedsLotSizeVariance": {
+    "total": 21005,
+    "bothAgree": 15505,
+    "vacant": 3612,
+    "improved": 17393,
+    "byDensity": {
+      "H": 3370,
+      "VH": 3747,
+      "L": 9062,
+      "M": 4521,
+      "VL": 305
+    },
+    "byDistrict": {
+      "R1A": 4944,
+      "R1D": 9076,
+      "R2": 5222,
+      "RM": 1660,
+      "R3": 103
+    },
+    "resParcelsWithMin": 105441
+  },
+  "B_gainByRightAduPotential": {
+    "total": 118800,
+    "residentialDistricts": 105441,
+    "otherDistricts": 13359,
+    "vacantLots": 23882,
+    "existingDwellings": 94918,
+    "excludingCondoMobile": 89385,
+    "byDistrict": {
+      "R1D": 55004,
+      "R1A": 19071,
+      "NDI": 472,
+      "R2": 20457,
+      "RIV-NS": 150,
+      "RM": 9963,
+      "P": 4102,
+      "LNC": 4192,
+      "R3": 946,
+      "EMI": 220,
+      "GT": 1054,
+      "RIV-IMU": 567,
+      "UC-MU": 864,
+      "RIV-MU": 470,
+      "UNC": 236,
+      "RIV-RM": 454,
+      "R-MU": 501,
+      "NDO": 77
+    },
+    "residentialParcels": 0,
+    "unknownZoningResidential": 3199,
+    "caveat": "Assumes no by-right ADU today (current §912.08 limits ADUs to an ADU overlay with owner-occupancy; that overlay is not in the public data), so this is an upper bound of parcels gaining."
+  }
+}
