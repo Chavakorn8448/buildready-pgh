@@ -7,6 +7,10 @@ import { fromPacket, type Packet } from '@/lib/packets';
 import { comparePacket, runPacket, withWeights, type Meta, type RuleSetId } from '@/lib/web/run';
 import { metaFor, TONE_CLASS, type Tone } from '@/lib/web/flagMeta';
 import { Term } from './Term';
+import { FeasibilityCalculator, ValuationStrip } from './FinancialSnapshot';
+import { byRightTypes, valuationOf } from '@/lib/finance';
+import { PRESETS } from '@/lib/finance-config';
+import { parseZoning } from '@/lib/zoning';
 import { bandColor, ScoreDial, useTween } from './ScoreDial';
 import type { MapPin } from './ParcelMap';
 import { LAYER_DEFS } from './ParcelMap';
@@ -25,7 +29,7 @@ const SUB_LABEL: Record<string, { label: string; tip: string }> = {
 
 export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet; meta: Meta; hood: string; ai: Partial<Record<RuleSetId, AiEntry>> }) {
   const [rs, setRs] = useState<RuleSetId>('current');
-  const [weights, setWeights] = useState({ ...CONFIG.weights });
+  const [weights, setWeights] = useState<Record<keyof typeof CONFIG.weights, number>>({ ...CONFIG.weights });
   const [hot, setHot] = useState<string | null>(null);
   const [layersOpen, setLayersOpen] = useState(false);
   useEffect(() => { if (window.innerWidth >= 1024) setLayersOpen(true); }, []);
@@ -35,6 +39,10 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
   const res = rs === 'reform-2025-1545' ? cmp.reform : cmp.current;
   const { parcel } = useMemo(() => fromPacket(packet), [packet]);
   const factById = useMemo(() => new Map(res.facts.map((f) => [f.id, f])), [res]);
+  const valuation = useMemo(() => valuationOf(parcel, meta.hoodValues.byHood), [parcel, meta]);
+  const zInfo = useMemo(() => parseZoning(parcel.zoningDistrict, meta.permittedUses), [parcel, meta]);
+  const allowed = useMemo(() => byRightTypes(zInfo.column ? meta.permittedUses.districts[zInfo.column]?.uses : null), [zInfo, meta]);
+  const assessSource = meta.layerMeta.assessments?.url ?? 'https://data.wprdc.org/dataset/property-assessments';
   const capGate = res.gates.find((g) => g.id === 'G3' && g.triggered);
   const noScoreGate = res.gates.find((g) => g.effect === 'no_score' && g.triggered);
   const isDefaultWeights = Object.entries(CONFIG.weights).every(([k, v]) => (weights as any)[k] === v);
@@ -107,6 +115,8 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
             </div>
           </div>
 
+          <ValuationStrip v={valuation} sourceUrl={assessSource} />
+
           {/* reform toggle */}
           <div className="no-print mt-4 flex w-full rounded-full border border-line bg-surface2 p-1 text-xs sm:inline-flex sm:w-auto sm:text-sm" role="tablist" aria-label="Rule set">
             {(['current', 'reform-2025-1545'] as RuleSetId[]).map((id) => (
@@ -153,6 +163,8 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
           </section>
         )}
 
+        <FeasibilityCalculator v={valuation} allowed={allowed} zoningCode={parcel.zoningDistrict} />
+
         {/* flags */}
         <section>
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted">Flags to review ({flags.length})</h2>
@@ -191,7 +203,8 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
         {/* weights */}
         <details className="no-print card p-4 sm:p-5">
           <summary className="cursor-pointer text-sm font-semibold uppercase tracking-wider text-muted">Adjust weights</summary>
-          <p className="mt-2 text-xs text-muted">Weights are a judgment call; change them to match your priorities. Scores update instantly and nothing is saved.</p>
+          <p className="mt-2 text-xs text-muted">Weights are a judgment call; pick a view or set your own. Scores update instantly and nothing is saved. Note: Funding fit is currently a neighborhood-value proxy, not a full pro forma.</p>
+          <div className="mt-3 flex flex-wrap gap-2">{PRESETS.map((pr) => <button key={pr.id} title={pr.blurb} className={`btn ${Object.entries(pr.weights).every(([k, v]) => (weights as any)[k] === v) ? 'border-accent text-accent' : ''}`} onClick={() => setWeights({ ...pr.weights })}>{pr.label}</button>)}</div>
           <div className="mt-3 space-y-3">
             {(Object.keys(CONFIG.weights) as (keyof typeof CONFIG.weights)[]).map((k) => (
               <label key={k} className="grid grid-cols-[92px_1fr_30px] items-center gap-2 text-sm sm:grid-cols-[110px_1fr_36px] sm:gap-3">

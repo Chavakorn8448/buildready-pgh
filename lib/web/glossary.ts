@@ -20,5 +20,9 @@ export const GLOSSARY: Record<string, string> = {
   URA: 'Urban Redevelopment Authority of Pittsburgh.',
   GIS: 'Geographic information system: digital map data.',
   'transit buffer': 'The area within about 1,500 feet of a major transit stop or line.',
+  'assessed value': 'The county assessor\'s estimate of a property\'s value for tax purposes. It is not a sale price or an appraisal, and it can lag the market.',
+  'capitalization rate': 'Yearly net income divided by value. Lenders and appraisers use it to turn expected income into a supportable value.',
+  'debt service coverage': 'Yearly net income divided by yearly loan payments. Above 1.0 means the building earns more than its loan costs; lenders usually want a cushion.',
+  'funding gap': 'The shortfall when the cost to build is more than the finished homes are worth or can support. Subsidy or gap financing fills it.',
   'lot minimum': 'The smallest lot size the zoning district allows for building a home.',
 };

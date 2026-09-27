@@ -12,7 +12,7 @@ One rule-based scoring engine (`lib/`, pure TypeScript, no LLM) with four surfac
 
 | Surface | For | What you get |
 |---|---|---|
-| **Lot Report + Site X-ray** (`/parcel/[id]`) | Small developers, CDCs | Development Ease Score (0-100), five sub-scores, flag cards with a source link and "Confirm with: <office>", numbered map pins where hazards overlap the lot, a **Reform toggle** (current code vs. proposed Bill 2025-1545), editable weights, one-page site memo (print to PDF) |
+| **Lot Report + Site X-ray** (`/parcel/[id]`) | Small developers, CDCs | Development Ease Score (0-100), five sub-scores, flag cards with a source link and "Confirm with: <office>", numbered map pins where hazards overlap the lot, a **Reform toggle** (current code vs. proposed Bill 2025-1545), editable weights with "Zoning & financial first" and "Public land / nonprofit" presets, a **financial snapshot** (county assessed land/building/total value, land $/sq ft vs. the neighborhood median, last sale) and a **feasibility calculator that only uses numbers you type** (no pre-filled costs or rents), one-page site memo (print to PDF) |
 | **Reform Impact** (`/impact`) | City Planning, Council | How many lots no longer need a lot-size variance (Bill 2025-1579, in effect) and how many could gain by-right ADUs (Bill 2025-1545, **proposed**), by neighborhood, plus a validation backtest |
 | **Opportunity Map** (`/map`) | Nonprofits, Land Bank, URA | 13,211 vacant publicly owned lots colored by score, with filters (owner, neighborhood, score, starter-home ready, ADU ready under reform) and a "combine with adjacent lot" badge for undersized lots |
 | **Ask panel** (`/map`) | Everyone | A tool-using agent over the engine: it can search, score and explain lots but never sets a score or states a fact that is not in a tool result |
@@ -76,6 +76,7 @@ Gates first, then five weighted sub-scores (weights editable in the app and in `
 * **Funding fit (15):** vacant infill in a low-value neighborhood is positive ("eligible for infill/blight scoring (PHFA)"); low values add "gap financing likely" as a note, not a penalty.
 * **Access (15):** inside the 1,500 ft major transit buffer = full points.
 * **Site & title (10):** vacancy; City/URA/HACP ownership eases acquisition.
+* **Financial snapshot** (not part of the score): county assessed values are shown for context and labeled as not market price or development cost. The calculator computes total cost, supportable value and a funding gap from the user's own inputs; optional debt coverage shows a ratio with no pass/fail until a threshold is confirmed (`lib/finance-config.ts`).
 * **Water/sewer** is never scored: always the flag "unknown: request PWSA availability letter".
 * **Reform rule set** (`lib/rules/reform-2025-1545.ts`, labeled **PROPOSED**; Legistar status "Held In Council", public hearing 9/23/2026, not signed): up to 2 ADUs by right (≤1,000 sq ft, ≤30 ft, no owner-occupancy), no off-street parking minimums, optional Affordable Housing Bonus outside the IZ overlay.
 

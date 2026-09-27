@@ -3,6 +3,7 @@ import { PrintButton } from '@/components/PrintButton';
 import { getAiCache, getMeta, getPacket } from '@/lib/web/server-data';
 import { comparePacket, type RuleSetId } from '@/lib/web/run';
 import { metaFor } from '@/lib/web/flagMeta';
+import { valuationOf } from '@/lib/finance';
 
 export default async function Memo({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ rs?: string }> }) {
   const { id } = await params;
@@ -15,6 +16,8 @@ export default async function Memo({ params, searchParams }: { params: Promise<{
   const r = rs === 'reform-2025-1545' ? cmp.reform : cmp.current;
   const ai = getAiCache(id.toUpperCase(), rs);
   const p = found.packet.p;
+  const val = valuationOf(p as any, meta.hoodValues.byHood);
+  const usd = (n: number | null) => (n == null ? 'unknown' : n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }));
   return (
     <main className="mx-auto max-w-3xl break-words px-4 py-6 text-[13px] leading-relaxed sm:px-8 sm:py-8 print:max-w-none print:p-0" style={{ background: '#fff', color: '#111' }}>
       <div className="no-print mb-4 flex justify-end"><PrintButton /></div>
@@ -27,6 +30,7 @@ export default async function Memo({ params, searchParams }: { params: Promise<{
         <div className="text-right"><div className="text-4xl font-semibold">{r.score ?? '—'}</div><div className="text-[11px] text-neutral-500">Development Ease Score / 100</div></div>
       </header>
       <p className="mt-2 text-neutral-600"><b>Rule set:</b> {r.ruleSet.label}{r.ruleSet.status === 'proposed' ? ` — ${r.ruleSet.statusNote}` : ''} · data snapshot {meta.generatedAt}</p>
+      {val.available && <p className="mt-2"><b>County assessed value</b> (tax year {val.taxYear ?? '?'}; not a market price): land {usd(val.land)}, building {usd(val.building)}, total {usd(val.total)}{val.landPerSqft != null ? `; land $${val.landPerSqft.toFixed(2)}/sq ft` : ''}{val.hoodMedianLandPerSqft != null ? ` vs neighborhood median $${val.hoodMedianLandPerSqft.toFixed(2)}` : ''}.{val.sale ? ` Last sale ${usd(val.sale.price)} on ${val.sale.date} (${val.sale.type ?? 'type unknown'}). ${val.sale.note}` : ''}</p>}
       {r.gates.filter((g) => g.triggered).map((g) => <p key={g.id} className="mt-2 rounded border border-red-300 bg-red-50 p-2"><b>{g.id} {g.name}:</b> {g.message} {g.reviewBy && `Confirm with: ${g.reviewBy}.`}</p>)}
       {r.subScores && (
         <div className="mt-4 overflow-x-auto"><table className="w-full border-collapse text-left"><thead><tr className="border-b border-neutral-300"><th className="py-1">Sub-score</th><th>Score</th><th>Weight</th><th>Notes</th></tr></thead><tbody>

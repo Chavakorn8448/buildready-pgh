@@ -18,6 +18,6 @@ export function comparePacket(packet: Packet, meta: Meta, config: Config = CONFI
   return compareRuleSets(parcel, engineData(meta), currentRules, reformRules, config, overlaps);
 }
 
-export function withWeights(w: Config['weights']): Config {
-  return { ...CONFIG, weights: w } as Config;
+export function withWeights(w: Record<keyof Config['weights'], number>): Config {
+  return { ...CONFIG, weights: w } as unknown as Config;
 }
