@@ -147,7 +147,7 @@ export default function MapExplorer() {
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-[11px] leading-relaxed text-muted"><b className="font-medium text-fg">Click any parcel</b> (zoom in to lot level) to open its report, not just the dots. Streets and water say \"no parcel here\". Click a lot on the map to open its report. Lots smaller than their district minimum are flagged &quot;combine with adjacent lot?&quot;.</p>
+        <p className="mt-4 text-[11px] leading-relaxed text-muted"><b className="font-medium text-fg">Click any parcel</b> (zoom in to lot level) to open its report, not just the dots. Streets and water say &ldquo;no parcel here&rdquo;. Click a lot on the map to open its report. Lots smaller than their district minimum are flagged &quot;combine with adjacent lot?&quot;.</p>
       </aside>
       <div className={`${tab === 'map' ? 'block' : 'hidden'} relative min-h-0 flex-1 lg:block`}><div ref={el} className="h-full w-full" />
         <button onClick={() => setShowAsk(!showAsk)} className="btn absolute bottom-6 right-3 hidden lg:block">{showAsk ? 'Hide' : 'Ask'} panel</button>

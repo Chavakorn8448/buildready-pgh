@@ -30,7 +30,7 @@ export default function ParcelMap({ geometry, centroid, pins, pieces, hot, onHov
 }) {
   const router = useRouter();
   const currentPin = useRef<string | null>(pin);
-  currentPin.current = pin;
+  useEffect(() => { currentPin.current = pin; }, [pin]);
   const el = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const mlRef = useRef<any>(null);
