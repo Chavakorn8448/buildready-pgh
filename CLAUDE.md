@@ -36,6 +36,7 @@ python ml/fetch_data.py && python ml/build_cohort.py && npx tsx scripts/backtest
 - Data flow: `data/raw` (gitignored) -> `data/processed` -> `precompute` -> `data/scores` + `data/opportunity.json` + `data/reform-impact.json` -> web app reads precomputed JSON only (no live API). Packets store engine *inputs*, so the browser runs the same engine (reform toggle, weights).
 - Web: Next.js App Router in `app/` and `components/`; MapLibre map (worker copied to `public/maplibre`, run `npm run sync-maplibre`); routes `/`, `/parcel/[id]`, `/parcel/[id]/memo`, `/compare`, `/map`, `/impact`, APIs `/api/search`, `/api/locate`, `/api/opportunity`, `/api/ask`.
 - Deploy: Vercel (`vercel --prod`), `.vercelignore` keeps raw data out. Live: https://buildready-pgh.vercel.app. Repo: https://github.com/Chavakorn8448/buildready-pgh.
+- Claude Sonnet 5 API gotchas hit in `lib/ai/explain.ts` and `lib/agent/run.ts`: the model runs adaptive thinking by default (consumes the shared `max_tokens` budget) unless `thinking` is set; use `output_config: { effort }` instead of `budget_tokens` (removed on this model, 400s); structured outputs (`output_config.format: { type: 'json_schema', schema }`) reject dynamic-key/map objects in the schema — use fixed-shape arrays. Both call sites check `stop_reason === 'max_tokens'` and throw so the caller falls back to the non-AI path instead of returning truncated JSON.
 
 ## Conventions
 - Match surrounding style. Engine functions stay pure (no I/O); file access lives in `lib/data/load.ts` and `lib/web/server-data.ts`.
@@ -45,4 +46,4 @@ python ml/fetch_data.py && python ml/build_cohort.py && npx tsx scripts/backtest
 - Commit after each meaningful change, append what was built / decisions / unverified items to `STATUS.md`, and keep the README limitations accurate.
 
 ## Known open items (see STATUS.md)
-Use table transcribed from a July 2024 print and not verified against the live code; Claude API features never run against a real key; waiting on expert input about "financial feasibility"; the validation backtest is modest (rank AUC 0.655) and reflects market demand as well as feasibility.
+Use table transcribed from a July 2024 print and not verified against the live code; the validation backtest is modest (rank AUC 0.655) and reflects market demand as well as feasibility; the Ask agent has no assemblage/adjacency tool yet. AI features (`ai/explain.ts`, `agent/run.ts`) have been verified end-to-end against a real `ANTHROPIC_API_KEY` — see STATUS.md for the 6 real bugs this surfaced and fixed (adaptive-thinking truncation, JSON parse failures, address resolution, grounding false-positives, a duplicated cap-message string, and an Ask-panel mode mislabel).
