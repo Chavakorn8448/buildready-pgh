@@ -1,6 +1,6 @@
 # BuildReady PGH
 
-**Live demo:** https://buildready-pgh.vercel.app · AI for Housing Hackathon (AI Horizons Pittsburgh), Track 1: Development Feasibility & Pro Forma Navigator
+**Live demo:** https://buildready-pgh.vercel.app · **Repo:** https://github.com/Chavakorn8448/buildready-pgh · AI for Housing Hackathon (AI Horizons Pittsburgh), Track 1: Development Feasibility & Pro Forma Navigator
 
 > BuildReady PGH shows developers what's blocking a site, shows nonprofits which vacant lots to build on first, and shows the city how many homes its zoning reforms unlock, with every number sourced.
 

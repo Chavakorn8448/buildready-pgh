@@ -2,7 +2,7 @@
 
 > **NEEDS FROM YOU (nothing blocks the demo, but these improve it):**
 > 1. **`ANTHROPIC_API_KEY`** was not available in this environment. Phases 8 and 12 are fully implemented and unit-tested, but **no Claude call has ever been made**: `data/ai-cache/` is empty (flag cards show the engine's own text) and the cached Ask answers in `data/ask-cache.json` were produced by the **engine-only router (not an LLM)** and are labeled that way in the UI. To enable: copy `env.example` to `.env.local`, add the key, then `npm run ai-explain -- --limit=50 && npm run ask-cache`, commit `data/ai-cache` and `data/ask-cache.json`, and set the key in Vercel.
-> 2. **Deploy: DONE** at https://buildready-pgh.vercel.app (Vercel CLI, project `traffys-projects-a8367e49/buildready-pgh`; `.vercelignore` keeps raw data out). All routes and APIs verified 200 on the live URL. Still to do: publish the public GitHub repo and paste its URL + the video URL into `SUBMISSION.md`; add `ANTHROPIC_API_KEY` in Vercel project settings if you enable the AI features.
+> 2. **Deploy: DONE** at https://buildready-pgh.vercel.app (Vercel CLI, project `traffys-projects-a8367e49/buildready-pgh`; `.vercelignore` keeps raw data out). All routes and APIs verified 200 on the live URL. GitHub repo published (public): https://github.com/Chavakorn8448/buildready-pgh. Still to do: paste the video URL into `SUBMISSION.md`; add `ANTHROPIC_API_KEY` in Vercel project settings if you enable the AI features.
 > 3. **Verify the zoning use table against the live code** (see Known issues, item 1).
 
 Running build log. Phases 0-5 were built earlier (below); Phases 6-13 follow.
