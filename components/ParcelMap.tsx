@@ -1,6 +1,8 @@
 'use client';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { locateAt, popupHtml } from '@/lib/web/locate-client';
 import type { Geom } from '@/lib/types';
 import type { Tone } from '@/lib/web/flagMeta';
 
@@ -22,10 +24,13 @@ export const LAYER_DEFS = [
 ] as const;
 const PIECE_COLOR: Record<string, string> = { slope25: '#ff8a4c', landslide: '#f5b342', undermined: '#c084fc', fema2014: '#4aa8ff', historic: '#f472b6', iz_overlay: '#22d3ee', transit_buffer: '#4ade80' };
 
-export default function ParcelMap({ geometry, centroid, pins, pieces, hot, onHover, visible, neighbors = [], hotNeighbor = null }: {
+export default function ParcelMap({ geometry, centroid, pins, pieces, hot, onHover, visible, neighbors = [], hotNeighbor = null, pin = null }: {
   geometry: Geom; centroid: [number, number]; pins: MapPin[]; pieces: Pieces; hot: string | null; onHover: (flagId: string | null) => void; visible: Record<string, boolean>;
-  neighbors?: { pin: string; geometry: Geom }[]; hotNeighbor?: string | null;
+  neighbors?: { pin: string; geometry: Geom }[]; hotNeighbor?: string | null; pin?: string | null;
 }) {
+  const router = useRouter();
+  const currentPin = useRef<string | null>(pin);
+  currentPin.current = pin;
   const el = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const mlRef = useRef<any>(null);
@@ -48,6 +53,15 @@ export default function ParcelMap({ geometry, centroid, pins, pieces, hot, onHov
         if (!fell && !map.isStyleLoaded() && /style\.json|Failed to fetch|NetworkError/i.test(String(e?.error?.message ?? '') + String(e?.error?.url ?? ''))) { fell = true; setBasemapOk(false); try { map.setStyle(FALLBACK); } catch { /* noop */ } }
       });
       map.on('style.load', () => setReady((v: number) => v + 1));
+      // click a neighboring lot (dashed) to open its report; click anywhere else to identify the parcel there
+      map.on('click', async (e: any) => {
+        const hit = map.getLayer('nbrs-fill') ? map.queryRenderedFeatures(e.point, { layers: ['nbrs-fill'] })[0] : null;
+        if (hit?.properties?.pin) { router.push(`/parcel/${hit.properties.pin}`); return; }
+        const r = await locateAt(e.lngLat.lng, e.lngLat.lat);
+        if (!r.found) { new ml.Popup({ maxWidth: '240px' }).setLngLat(e.lngLat).setHTML(`<div style="font:13px system-ui;color:#111">No parcel here.</div>`).addTo(map); return; }
+        new ml.Popup({ maxWidth: '280px' }).setLngLat(e.lngLat).setHTML(popupHtml(r.parcel, { current: r.parcel.pin === currentPin.current })).addTo(map);
+      });
+      map.on('mousemove', (e: any) => { map.getCanvas().style.cursor = map.getLayer('nbrs-fill') && map.queryRenderedFeatures(e.point, { layers: ['nbrs-fill'] }).length ? 'pointer' : ''; });
     })();
     return () => { cancelled = true; markers.current.forEach(({ m }) => m.remove()); markers.current.clear(); mapRef.current?.remove(); mapRef.current = null; setReady(0); };
   // eslint-disable-next-line react-hooks/exhaustive-deps

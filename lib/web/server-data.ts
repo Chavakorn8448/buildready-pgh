@@ -4,6 +4,7 @@ import zlib from 'node:zlib';
 import path from 'node:path';
 import { INDEX_COLS, OWNER_CODES, type IndexRow, type Packet } from '../packets';
 import { normalizeAddress, normalizeStreet, parsePin, splitAddress } from '../lookup';
+import { pointInGeom, bboxOf } from '../geo';
 
 const ROOT = process.cwd();
 const D = (...p: string[]) => path.join(ROOT, 'data', ...p);
@@ -41,7 +42,10 @@ export function getPacket(pin: string): { packet: Packet; row: IndexRow; hood: s
   if (!row) return null;
   const hood = idx.hoods[row.hood];
   let shard = _shards.get(hood.slug);
-  if (!shard) { shard = readJson(D('scores', 'packets', `${hood.slug}.json`)); _shards.set(hood.slug, shard!); }
+  if (!shard) {
+    shard = readJson(D('scores', 'packets', `${hood.slug}.json`)); _shards.set(hood.slug, shard!);
+    while (_shards.size > 10) _shards.delete(_shards.keys().next().value as string); // keep memory bounded (serverless)
+  } else { _shards.delete(hood.slug); _shards.set(hood.slug, shard); }
   const packet = shard![pin];
   return packet ? { packet, row, hood: hood.name } : null;
 }
@@ -88,4 +92,41 @@ export function getNeighbors(pin: string): { pin: string; address: string; owner
     out.push({ pin: q, address: row.address, owner: row.owner, vacant: row.vacant, lot: row.lot, zone: row.zone, geometry: pk?.packet.p.geometry ?? null });
   }
   return out;
+}
+
+/* ---------- click-to-select: which parcel contains this point? ---------- */
+const CELL = 0.002;
+let _grid: Map<string, number[]> | null = null;
+function grid() {
+  if (_grid) return _grid;
+  const rows = getIndex().rows;
+  _grid = new Map();
+  rows.forEach((r, i) => { const k = `${Math.floor(r.lon / CELL)}:${Math.floor(r.lat / CELL)}`; (_grid!.get(k) ?? _grid!.set(k, []).get(k)!).push(i); });
+  return _grid;
+}
+
+export type Located = { found: true; row: IndexRow; hood: string; geometry: any } | { found: false; reason: string };
+
+/** Finds the parcel polygon that contains the point (WGS84). Streets, water and points outside the City return found:false. */
+export function locate(lon: number, lat: number): Located {
+  if (!(lon > -80.2 && lon < -79.7 && lat > 40.3 && lat < 40.6)) return { found: false, reason: 'outside the City of Pittsburgh' };
+  const idx = getIndex();
+  const g = grid();
+  for (const radius of [1, 3]) { // second pass widens the search for very large lots whose centroid is far from the click
+    const cx = Math.floor(lon / CELL), cy = Math.floor(lat / CELL);
+    const cand: { i: number; d: number }[] = [];
+    for (let x = cx - radius; x <= cx + radius; x++) for (let y = cy - radius; y <= cy + radius; y++) for (const i of g.get(`${x}:${y}`) ?? []) {
+      const r = idx.rows[i]; cand.push({ i, d: Math.hypot((r.lon - lon) * 0.76, r.lat - lat) });
+    }
+    cand.sort((a, b) => a.d - b.d);
+    for (const c of cand.slice(0, radius === 1 ? 60 : 200)) {
+      const row = idx.rows[c.i];
+      const pk = getPacket(row.pin); if (!pk) continue;
+      const geom = pk.packet.p.geometry;
+      const b = bboxOf(geom);
+      if (lon < b[0] || lon > b[2] || lat < b[1] || lat > b[3]) continue;
+      if (pointInGeom([lon, lat], geom)) return { found: true, row, hood: pk.hood, geometry: geom };
+    }
+  }
+  return { found: false, reason: 'no parcel here (street, water, or outside the parcel map)' };
 }

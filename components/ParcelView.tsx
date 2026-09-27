@@ -82,7 +82,7 @@ export default function ParcelView({ packet, meta, hood, ai, neighbors = [] }: {
       {/* LEFT: map */}
       <div className="no-print lg:sticky lg:top-[76px] lg:h-[calc(100vh-96px)]">
         <div className="relative h-[46dvh] min-h-[300px] lg:h-full">
-          <ParcelMap geometry={parcel.geometry} centroid={parcel.centroid} pins={pins} pieces={pieces} hot={hot} onHover={setHot} visible={vis} neighbors={nbrGeo} hotNeighbor={hotNbr} />
+          <ParcelMap geometry={parcel.geometry} centroid={parcel.centroid} pins={pins} pieces={pieces} hot={hot} onHover={setHot} visible={vis} neighbors={nbrGeo} hotNeighbor={hotNbr} pin={parcel.pin} />
           <div className="absolute left-2 top-2 max-w-[calc(100%-64px)] rounded-xl border border-line bg-bg/90 p-2 text-xs backdrop-blur sm:left-3 sm:top-3 sm:p-2.5">
             <button onClick={() => setLayersOpen(!layersOpen)} aria-expanded={layersOpen} className="flex w-full items-center justify-between gap-3 font-medium text-muted">
               <span>Map layers</span><span aria-hidden>{layersOpen ? '−' : '+'}</span>

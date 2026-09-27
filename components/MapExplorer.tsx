@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { bandColor } from './ScoreDial';
 import { AskPanel } from './AskPanel';
+import { locateAt, popupHtml } from '@/lib/web/locate-client';
 
 type Props = { pin: string; address: string; hood: string; owner: string; lot: number; zone: string | null; score: number | null; reform: number | null; gates: string; aduReady: boolean; combine: boolean; starter: boolean; adj?: number; assemble?: boolean; env: number | null; flags: string[] };
 type Feat = { type: 'Feature'; geometry: any; properties: Props; c: [number, number] };
@@ -95,6 +96,20 @@ export default function MapExplorer() {
           `<br/><a href="/parcel/${p.pin}" style="color:#2563eb;font-weight:600">Open lot report →</a></div>`).addTo(map);
         void flags;
       };
+      // click ANY parcel (not only opportunity lots): ask the server which real parcel contains the click
+      map.addSource('sel', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+      map.addLayer({ id: 'sel-fill', type: 'fill', source: 'sel', paint: { 'fill-color': '#8ab4ff', 'fill-opacity': 0.25 } });
+      map.addLayer({ id: 'sel-line', type: 'line', source: 'sel', paint: { 'line-color': '#ffffff', 'line-width': 2.5 } });
+      map.on('click', async (e: any) => {
+        if (map.queryRenderedFeatures(e.point, { layers: ['opp-fill', 'opp-circle'].filter((l) => map.getLayer(l)) }).length) return; // opportunity popup handles it
+        if (map.getZoom() < 15) { new ml.Popup({ maxWidth: '240px' }).setLngLat(e.lngLat).setHTML('<div style="font:13px system-ui;color:#111">Zoom in to lot level to select a parcel.</div>').addTo(map); return; }
+        const r = await locateAt(e.lngLat.lng, e.lngLat.lat);
+        const sel = map.getSource('sel');
+        if (!r.found) { sel?.setData({ type: 'FeatureCollection', features: [] }); new ml.Popup({ maxWidth: '240px' }).setLngLat(e.lngLat).setHTML(`<div style="font:13px system-ui;color:#111">No parcel here: ${r.reason.replace(/</g, '')}.</div>`).addTo(map); return; }
+        sel?.setData({ type: 'Feature', properties: {}, geometry: r.geometry });
+        new ml.Popup({ maxWidth: '280px' }).setLngLat(e.lngLat).setHTML(popupHtml(r.parcel)).addTo(map);
+      });
+      map.on('mousemove', (e: any) => { if (map.getZoom() >= 15 && !map.queryRenderedFeatures(e.point, { layers: ['opp-fill', 'opp-circle'].filter((l) => map.getLayer(l)) }).length) map.getCanvas().style.cursor = 'crosshair'; });
       for (const id of ['opp-fill', 'opp-circle']) { map.on('click', id, click); map.on('mouseenter', id, () => (map.getCanvas().style.cursor = 'pointer')); map.on('mouseleave', id, () => (map.getCanvas().style.cursor = '')); }
     }
   }, [filtered, ready, highlight]);
@@ -132,7 +147,7 @@ export default function MapExplorer() {
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-[11px] leading-relaxed text-muted">Click a lot on the map to open its report. Lots smaller than their district minimum are flagged &quot;combine with adjacent lot?&quot;.</p>
+        <p className="mt-4 text-[11px] leading-relaxed text-muted"><b className="font-medium text-fg">Click any parcel</b> (zoom in to lot level) to open its report, not just the dots. Streets and water say \"no parcel here\". Click a lot on the map to open its report. Lots smaller than their district minimum are flagged &quot;combine with adjacent lot?&quot;.</p>
       </aside>
       <div className={`${tab === 'map' ? 'block' : 'hidden'} relative min-h-0 flex-1 lg:block`}><div ref={el} className="h-full w-full" />
         <button onClick={() => setShowAsk(!showAsk)} className="btn absolute bottom-6 right-3 hidden lg:block">{showAsk ? 'Hide' : 'Ask'} panel</button>
