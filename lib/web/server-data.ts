@@ -156,3 +156,11 @@ export function getPermitReference(neighborhood: string | null): PermitReference
   if (_permitRef.citywide) return { ...(_permitRef.citywide as any), scope: 'citywide', meta: _permitRef._meta };
   return null;
 }
+
+/* ---------- AMI affordability reference (financial snapshot; informational, never scored) ---------- */
+let _ami: { _meta: Record<string, unknown>; byHouseholdSize: Record<string, { '50': number; '60': number }> } | null | undefined;
+export function getAmiReference(): import('../finance').AmiReference {
+  if (_ami === undefined) { try { _ami = JSON.parse(fs.readFileSync(DR('ami-pittsburgh.json'), 'utf8')); } catch { _ami = null; } }
+  if (!_ami) return null;
+  return { areaMedianIncome: _ami._meta.areaMedianIncome2026 as number, areaName: _ami._meta.areaName as string, byHouseholdSize: _ami.byHouseholdSize, meta: _ami._meta };
+}

@@ -50,3 +50,15 @@ export const SQFT_TO_BEDROOMS: { maxSqft: number; label: string; key: '0BR' | '1
   { maxSqft: 1500, label: '3BR', key: '3BR' },
   { maxSqft: Infinity, label: '4BR+', key: '4BR' },
 ];
+
+/**
+ * Standard HUD/LIHTC convention for the household size assumed to occupy a unit of a given bedroom count
+ * ("bedrooms + 1", a studio counts as 1) — used only to pick which income-limit column applies for the
+ * affordability check, not to change the score.
+ */
+export const BEDROOMS_TO_HOUSEHOLD_SIZE: Record<'0BR' | '1BR' | '2BR' | '3BR' | '4BR', number> = {
+  '0BR': 1, '1BR': 2, '2BR': 3, '3BR': 4, '4BR': 5,
+};
+
+/** The 30%-of-income affordability standard (HUD's definition of "cost burdened" is paying more than this share of income on housing). */
+export const AFFORDABILITY_RENT_SHARE = 0.3;

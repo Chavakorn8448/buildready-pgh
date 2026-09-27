@@ -1,5 +1,5 @@
 /** Pure financial-snapshot helpers. No invented numbers: valuation comes from the county assessment; the calculator uses only user inputs. */
-import { MARKET_LIKE_SALE_TYPES, THRESHOLDS } from './finance-config';
+import { AFFORDABILITY_RENT_SHARE, BEDROOMS_TO_HOUSEHOLD_SIZE, MARKET_LIKE_SALE_TYPES, THRESHOLDS } from './finance-config';
 import type { ProcessedParcel } from './types';
 
 export type Valuation = {
@@ -87,4 +87,40 @@ export function byRightTypes(uses: Record<string, { code: string }> | null | und
   if (!uses) return [];
   const label: Record<string, string> = { single_unit_detached: 'single-unit detached', single_unit_attached: 'single-unit attached', two_unit: 'two-unit', three_unit: 'three-unit', multi_unit: 'multi-unit (4+)' };
   return Object.entries(uses).filter(([, u]) => u.code === 'P' || u.code === 'P/S').map(([k]) => label[k] ?? k);
+}
+
+export type AmiReference = { areaMedianIncome: number; areaName: string; byHouseholdSize: Record<string, { '50': number; '60': number }>; meta: Record<string, unknown> } | null;
+
+export type AffordabilityRow = {
+  bedrooms: '0BR' | '1BR' | '2BR' | '3BR' | '4BR';
+  householdSize: number;
+  monthlyRent: number;
+  /** Annual gross household income needed so this rent is exactly 30% of income (HUD's cost-burden standard). */
+  incomeNeeded: number;
+  /** incomeNeeded as a percent of the area median income for a household of this size (100 = exactly the median). */
+  percentOfAmi: number;
+  /** Whether that income is at or below the standard 60% AMI ceiling commonly used to restrict LIHTC units. */
+  atOrBelow60Ami: boolean;
+  atOrBelow50Ami: boolean;
+};
+
+/**
+ * What income a rent implies, and how that compares to the area's LIHTC-style income limits (50%/60% AMI).
+ * This never changes the Development Ease Score; it answers a different question ("affordable to whom?"),
+ * per HUD's standard 30%-of-income definition of affordable housing.
+ */
+export function affordabilityOf(monthlyRent: number, bedrooms: '0BR' | '1BR' | '2BR' | '3BR' | '4BR', ami: AmiReference): AffordabilityRow | null {
+  if (!ami || !(monthlyRent > 0)) return null;
+  const householdSize = BEDROOMS_TO_HOUSEHOLD_SIZE[bedrooms];
+  const limits = ami.byHouseholdSize[String(householdSize)];
+  if (!limits) return null;
+  const incomeNeeded = Math.round((monthlyRent * 12) / AFFORDABILITY_RENT_SHARE);
+  // AMI 100% for this household size scales from the 60% limit (60% limit / 0.6), consistent with how MTSP derives its columns
+  const ami100 = limits['60'] / 0.6;
+  return {
+    bedrooms, householdSize, monthlyRent, incomeNeeded,
+    percentOfAmi: Math.round((incomeNeeded / ami100) * 100),
+    atOrBelow60Ami: incomeNeeded <= limits['60'],
+    atOrBelow50Ami: incomeNeeded <= limits['50'],
+  };
 }

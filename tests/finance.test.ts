@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { byRightTypes, EMPTY_ASSUMPTIONS, feasibility, valuationOf } from '../lib/finance';
+import { affordabilityOf, byRightTypes, EMPTY_ASSUMPTIONS, feasibility, valuationOf } from '../lib/finance';
 import { PRESETS, THRESHOLDS } from '../lib/finance-config';
 import { CONFIG } from '../lib/config';
 import { getPermitReference, getRentReference } from '../lib/web/server-data';
@@ -72,5 +72,28 @@ describe('financial reference data (real, sourced; only used as suggestions)', (
   it.skipIf(!have)('the DSCR threshold is a labeled rule of thumb, not silently applied', () => {
     expect(THRESHOLDS.dscrMin).toBe(1.2);
     expect(THRESHOLDS.dscrLabel.toLowerCase()).toMatch(/rule of thumb/);
+  });
+});
+
+describe('affordability check (AMI, informational only — never touches the score)', () => {
+  const ami = {
+    areaMedianIncome: 110400, areaName: 'Pittsburgh, PA HUD Metro FMR Area', meta: { sourceUrl: 'https://www.huduser.gov/portal/datasets/mtsp/mtsp26/MTSP-Data-FY26.xlsx' },
+    byHouseholdSize: { '1': { '50': 38650, '60': 46380 }, '2': { '50': 44200, '60': 53040 }, '3': { '50': 49700, '60': 59640 } },
+  };
+  it('converts a monthly rent into the required income and its share of AMI', () => {
+    const r = affordabilityOf(1200, '1BR', ami);
+    expect(r).not.toBeNull();
+    expect(r!.householdSize).toBe(2); // HUD "bedrooms + 1" convention
+    expect(r!.incomeNeeded).toBe(Math.round((1200 * 12) / 0.3));
+    expect(r!.atOrBelow60Ami).toBe(r!.incomeNeeded <= 53040);
+    expect(r!.atOrBelow50Ami).toBe(r!.incomeNeeded <= 44200);
+  });
+  it('a high rent exceeds both AMI tiers; a low rent qualifies for both', () => {
+    expect(affordabilityOf(3000, '2BR', ami)).toMatchObject({ atOrBelow50Ami: false, atOrBelow60Ami: false });
+    expect(affordabilityOf(900, '2BR', ami)).toMatchObject({ atOrBelow50Ami: true, atOrBelow60Ami: true });
+  });
+  it('returns null without data, never invents a number', () => {
+    expect(affordabilityOf(1200, '1BR', null)).toBeNull();
+    expect(affordabilityOf(0, '1BR', ami)).toBeNull();
   });
 });

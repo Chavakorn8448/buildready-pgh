@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
-import { EMPTY_ASSUMPTIONS, feasibility, type Assumptions, type Valuation } from '@/lib/finance';
+import { affordabilityOf, EMPTY_ASSUMPTIONS, feasibility, type AmiReference, type Assumptions, type Valuation } from '@/lib/finance';
 import { FIELDS, SQFT_TO_BEDROOMS, THRESHOLDS } from '@/lib/finance-config';
 import type { PermitReference, RentReference } from '@/lib/web/server-data';
 import { Term } from './Term';
@@ -37,7 +37,7 @@ const GROUPS: { id: 'site' | 'cost' | 'income' | 'debt'; label: string }[] = [
 ];
 
 /** Calculator that only ever uses numbers the user types. Nothing is pre-filled with our own estimates. */
-export function FeasibilityCalculator({ v, allowed, zoningCode, rentRef, permitRef }: { v: Valuation; allowed: string[]; zoningCode: string | null; rentRef: RentReference; permitRef: PermitReference }) {
+export function FeasibilityCalculator({ v, allowed, zoningCode, rentRef, permitRef, amiRef }: { v: Valuation; allowed: string[]; zoningCode: string | null; rentRef: RentReference; permitRef: PermitReference; amiRef: AmiReference }) {
   const [a, setA] = useState<Assumptions>(EMPTY_ASSUMPTIONS);
   useEffect(() => { try { const raw = localStorage.getItem(KEY); if (raw) { const s = JSON.parse(raw); setA({ ...EMPTY_ASSUMPTIONS, ...s, landCost: null, units: null }); } } catch { /* storage unavailable */ } }, []);
   useEffect(() => { try { const { landCost: _l, units: _u, ...rest } = a; localStorage.setItem(KEY, JSON.stringify(rest)); } catch { /* storage unavailable */ } }, [a]);
@@ -119,6 +119,25 @@ export function FeasibilityCalculator({ v, allowed, zoningCode, rentRef, permitR
                 {r.debt.dscrMin != null ? (r.debt.meetsMin ? ` (meets the ${r.debt.dscrMin} minimum)` : ` (below the ${r.debt.dscrMin} minimum)`) : ' (no threshold applied; confirm the minimum with your lender or PHFA)'}.</p>
             )}
             {THRESHOLDS.dscrMin == null && !r.debt && a.mode === 'rent' && <p className="text-xs text-muted">Add the optional loan boxes to see a coverage ratio.</p>}
+            {a.mode === 'rent' && a.rentPerUnitMonth != null && a.rentPerUnitMonth > 0 && (() => {
+              const nearest = SQFT_TO_BEDROOMS.find((b) => (a.unitSqft ?? 0) <= b.maxSqft) ?? SQFT_TO_BEDROOMS[2];
+              const aff = affordabilityOf(a.rentPerUnitMonth!, nearest.key, amiRef);
+              if (!aff) return null;
+              const tier = aff.atOrBelow50Ami ? '50% AMI (Very Low Income)' : aff.atOrBelow60Ami ? '60% AMI (the common LIHTC ceiling)' : null;
+              return (
+                <div className="mt-3 border-t border-line pt-3">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-muted">Affordable to whom?</div>
+                  <p className="mt-1 text-sm leading-relaxed">
+                    At {$(a.rentPerUnitMonth)}/month for a {nearest.label} home (assumed {aff.householdSize}-person household), a renter would need about <b>{$(aff.incomeNeeded)}/year</b> to pay this at no more than 30% of income — HUD&apos;s standard for &quot;affordable&quot; (paying more is &quot;cost burdened&quot;).
+                    That is about <b>{aff.percentOfAmi}% of {amiRef?.areaName ?? 'the area'} median income</b>{tier ? <>, at or below <Term k="AMI">{tier}</Term></> : ', above the standard 50%/60% AMI income-restriction tiers used for subsidized housing'}.
+                  </p>
+                  <p className="mt-1 text-[11px] leading-relaxed text-muted">
+                    Assumes bedroom count from home size (studio–4BR+) and the standard HUD/<Term k="LIHTC">LIHTC</Term> household-size convention (bedrooms + 1). Informational only — it does not change the score or the calculator above, and is not a determination of program eligibility.
+                    {' '}<a href={String(amiRef?.meta.sourceUrl ?? '')} target="_blank" rel="noreferrer" className="text-accent hover:underline">Source: HUD USER MTSP Income Limits</a>.
+                  </p>
+                </div>
+              );
+            })()}
           </div>
         )}
       </div>

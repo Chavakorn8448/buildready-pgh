@@ -1,0 +1,46 @@
+{
+ "_meta": {
+  "description": "HUD/IRS Multifamily Tax Subsidy Project (MTSP) income limits, FY2026, for Allegheny County / the Pittsburgh, PA HUD area. These are the standard thresholds used to qualify tenants and restrict rents under the Low-Income Housing Tax Credit (LIHTC) program (see 'Building Affordable Housing', a Pro-Housing Pittsburgh talk by James Eash of Action Housing, on the common use of a 60% AMI ceiling). Used only to show what income a given rent implies relative to these limits; never used to set or adjust the Development Ease Score.",
+  "source": "HUD USER, FY2026 Multifamily Tax Subsidy Project (MTSP) Income Limits",
+  "sourceUrl": "https://www.huduser.gov/portal/datasets/mtsp/mtsp26/MTSP-Data-FY26.xlsx",
+  "retrievedAt": "2026-09-27",
+  "areaMedianIncome2026": 110400,
+  "areaName": "Pittsburgh, PA HUD Metro FMR Area",
+  "unit": "dollars per year, gross household income, by household size (persons)",
+  "columns": "50 = Very Low Income (50% AMI); 60 = the common LIHTC rent-restriction ceiling (60% AMI)"
+ },
+ "byHouseholdSize": {
+  "1": {
+   "50": 38650,
+   "60": 46380
+  },
+  "2": {
+   "50": 44200,
+   "60": 53040
+  },
+  "3": {
+   "50": 49700,
+   "60": 59640
+  },
+  "4": {
+   "50": 55200,
+   "60": 66240
+  },
+  "5": {
+   "50": 59650,
+   "60": 71580
+  },
+  "6": {
+   "50": 64050,
+   "60": 76860
+  },
+  "7": {
+   "50": 68450,
+   "60": 82140
+  },
+  "8": {
+   "50": 72900,
+   "60": 87480
+  }
+ }
+}

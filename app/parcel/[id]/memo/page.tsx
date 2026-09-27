@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { PrintButton } from '@/components/PrintButton';
-import { getAiCache, getMeta, getPacket, getPermitReference, getRentReference } from '@/lib/web/server-data';
+import { getAiCache, getAmiReference, getMeta, getPacket, getPermitReference, getRentReference } from '@/lib/web/server-data';
 import { comparePacket, type RuleSetId } from '@/lib/web/run';
 import { metaFor } from '@/lib/web/flagMeta';
 import { valuationOf } from '@/lib/finance';
@@ -19,6 +19,7 @@ export default async function Memo({ params, searchParams }: { params: Promise<{
   const p = found.packet.p;
   const rentRef = getRentReference(p.pin);
   const permitRef = getPermitReference(p.neighborhood);
+  const amiRef = getAmiReference();
   const sum = summarize(r, { transit: (r.overlaps?.transit_buffer.overlapFraction ?? 0) >= 0.5 });
   const val = valuationOf(p as any, meta.hoodValues.byHood);
   const usd = (n: number | null) => (n == null ? 'unknown' : n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }));
@@ -54,6 +55,7 @@ export default async function Memo({ params, searchParams }: { params: Promise<{
         <div className="mt-3 rounded border border-neutral-300 p-3 text-[11px] text-neutral-600">
           {rentRef && <p>HUD Fair Market Rent, ZIP {rentRef.zip}: studio {usd(rentRef.byBedroom['0BR'])}, 1BR {usd(rentRef.byBedroom['1BR'])}, 2BR {usd(rentRef.byBedroom['2BR'])}, 3BR {usd(rentRef.byBedroom['3BR'])} per month (not neighborhood-specific).</p>}
           {permitRef && <p>Recent new-construction residential permits ({permitRef.scope}): {permitRef.count}, median declared project value {usd(permitRef.median)} (range {usd(permitRef.min)}–{usd(permitRef.max)}); not a $/sq ft figure.</p>}
+          {amiRef && <p>Area median income ({amiRef.areaName}, FY2026): {usd(amiRef.areaMedianIncome)}. 60% AMI limit (common LIHTC ceiling), 2-person household: {usd(amiRef.byHouseholdSize['2']?.['60'] ?? null)}/year.</p>}
         </div>
       )}
       <h2 className="mt-5 font-semibold">Sources</h2>

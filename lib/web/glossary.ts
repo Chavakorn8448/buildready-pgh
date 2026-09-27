@@ -20,6 +20,8 @@ export const GLOSSARY: Record<string, string> = {
   URA: 'Urban Redevelopment Authority of Pittsburgh.',
   GIS: 'Geographic information system: digital map data.',
   'transit buffer': 'The area within about 1,500 feet of a major transit stop or line.',
+  'AMI': 'Area Median Income: the midpoint household income for the metro area, published yearly by HUD. Subsidized-housing programs often restrict rents to what a household earning 50% or 60% of AMI could afford.',
+  'LIHTC': 'Low-Income Housing Tax Credit: the main federal program funding affordable rental housing. A developer receives tax credits, sells them to investors for equity, and uses that equity to reduce the debt the building carries, so it can charge below-market rents while still covering costs. Units are typically restricted to households at or below 60% of the area median income.',
   'assessed value': 'The county assessor\'s estimate of a property\'s value for tax purposes. It is not a sale price or an appraisal, and it can lag the market.',
   'capitalization rate': 'Yearly net income divided by value. Lenders and appraisers use it to turn expected income into a supportable value.',
   'debt service coverage': 'Yearly net income divided by yearly loan payments. Above 1.0 means the building earns more than its loan costs; lenders usually want a cushion.',

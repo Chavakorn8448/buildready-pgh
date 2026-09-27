@@ -34,7 +34,7 @@ const parking: Rule = {
     if (!housingByRight(ctx)) return { ...base, result: ctx.zoning.housing === 'unknown' ? 'unknown' : 'failed', points: 0 };
     return { ...base, result: 'passed', points: max, flag: {
       id: 'parking-minimum', severity: 'info', proposed: true, reviewBy: 'Zoning Administrator', factIds: ['reform.status'],
-      text: `${PROPOSED}: no off-street parking minimums.` } };
+      text: `${PROPOSED}: no off-street parking minimums, freeing land and construction budget that would otherwise go to required parking for more homes.` } };
   },
 };
 

@@ -7,7 +7,7 @@ const parkingCurrent: Rule = {
   evaluate: () => ({
     ruleId: 'PARKING-MINIMUM', citation: 'Pittsburgh Zoning Code Ch. 914 Parking, Loading and Access', result: 'unknown', points: 0, maxPoints: 0,
     flag: { id: 'parking-minimum', severity: 'info', reviewBy: 'Zoning Administrator', factIds: ['zoning.district'],
-      text: 'Off-street parking minimums may apply under Ch. 914; requirement by use/district is not modeled (unverified).' },
+      text: 'Off-street parking minimums may apply under Ch. 914 (unverified: requirement by use/district is not modeled). Required parking uses land and adds construction cost, which can reduce how many homes a site can fit.' },
   }),
 };
 const aduCurrent: Rule = {
