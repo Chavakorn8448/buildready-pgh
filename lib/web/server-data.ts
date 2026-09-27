@@ -76,3 +76,16 @@ export function search(q: string, limit = 8): { rows: IndexRow[]; note?: string 
   const rows = [...exact, ...starts, ...contains].slice(0, limit);
   return { rows, note: rows.length ? undefined : 'No match in the City of Pittsburgh snapshot. Try the house number and street, e.g. 5815 5th Ave.' };
 }
+
+let _adj: Record<string, string[]> | null = null;
+/** Adjacent parcels (shared boundary) for vacant and undersized parcels, with the fields the assemblage finder needs. */
+export function getNeighbors(pin: string): { pin: string; address: string; owner: string | null; vacant: boolean | null; lot: number | null; zone: string | null; geometry: any }[] {
+  if (!_adj) { const f = D('scores', 'adjacency.json'); try { _adj = readJson(f); } catch { _adj = {}; } }
+  const out: any[] = [];
+  for (const q of _adj![pin] ?? []) {
+    const row = getRow(q); if (!row) continue;
+    const pk = getPacket(q);
+    out.push({ pin: q, address: row.address, owner: row.owner, vacant: row.vacant, lot: row.lot, zone: row.zone, geometry: pk?.packet.p.geometry ?? null });
+  }
+  return out;
+}

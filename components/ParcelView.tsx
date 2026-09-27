@@ -8,6 +8,9 @@ import { comparePacket, runPacket, withWeights, type Meta, type RuleSetId } from
 import { metaFor, TONE_CLASS, type Tone } from '@/lib/web/flagMeta';
 import { Term } from './Term';
 import { FeasibilityCalculator, ValuationStrip } from './FinancialSnapshot';
+import { BottomLine } from './BottomLine';
+import { AssemblageCard } from './AssemblageCard';
+import { summarize } from '@/lib/summary';
 import { byRightTypes, valuationOf } from '@/lib/finance';
 import { PRESETS } from '@/lib/finance-config';
 import { parseZoning } from '@/lib/zoning';
@@ -27,13 +30,14 @@ const SUB_LABEL: Record<string, { label: string; tip: string }> = {
   site: { label: 'Site & title', tip: 'Vacancy and public ownership (City, URA, HACP) make acquisition easier.' },
 };
 
-export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet; meta: Meta; hood: string; ai: Partial<Record<RuleSetId, AiEntry>> }) {
+export default function ParcelView({ packet, meta, hood, ai, neighbors = [] }: { packet: Packet; meta: Meta; hood: string; ai: Partial<Record<RuleSetId, AiEntry>>; neighbors?: { pin: string; address: string; owner: string | null; vacant: boolean | null; lot: number | null; zone: string | null; geometry: any }[] }) {
   const [rs, setRs] = useState<RuleSetId>('current');
   const [weights, setWeights] = useState<Record<keyof typeof CONFIG.weights, number>>({ ...CONFIG.weights });
   const [hot, setHot] = useState<string | null>(null);
   const [layersOpen, setLayersOpen] = useState(false);
+  const [hotNbr, setHotNbr] = useState<string | null>(null);
   useEffect(() => { if (window.innerWidth >= 1024) setLayersOpen(true); }, []);
-  const [vis, setVis] = useState<Record<string, boolean>>({ pieces: true, zoning: false, transit_buffer: true, fema2014: false, landslide: false, undermined: false, historic: false, iz_overlay: false });
+  const [vis, setVis] = useState<Record<string, boolean>>({ pieces: true, zoning: false, transit_buffer: true, fema2014: false, landslide: false, undermined: false, historic: false, iz_overlay: false, adjacent: true });
   const config = useMemo(() => withWeights(weights), [weights]);
   const cmp = useMemo(() => comparePacket(packet, meta, config), [packet, meta, config]);
   const res = rs === 'reform-2025-1545' ? cmp.reform : cmp.current;
@@ -43,6 +47,8 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
   const zInfo = useMemo(() => parseZoning(parcel.zoningDistrict, meta.permittedUses), [parcel, meta]);
   const allowed = useMemo(() => byRightTypes(zInfo.column ? meta.permittedUses.districts[zInfo.column]?.uses : null), [zInfo, meta]);
   const assessSource = meta.layerMeta.assessments?.url ?? 'https://data.wprdc.org/dataset/property-assessments';
+  const summary = useMemo(() => summarize(res, { transit: (res.overlaps?.transit_buffer.overlapFraction ?? 0) >= 0.5, byRight: zInfo.housing === 'by_right' }), [res, zInfo]);
+  const nbrGeo = useMemo(() => neighbors.filter((n) => n.geometry).map((n) => ({ pin: n.pin, geometry: n.geometry })), [neighbors]);
   const capGate = res.gates.find((g) => g.id === 'G3' && g.triggered);
   const noScoreGate = res.gates.find((g) => g.effect === 'no_score' && g.triggered);
   const isDefaultWeights = Object.entries(CONFIG.weights).every(([k, v]) => (weights as any)[k] === v);
@@ -76,7 +82,7 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
       {/* LEFT: map */}
       <div className="no-print lg:sticky lg:top-[76px] lg:h-[calc(100vh-96px)]">
         <div className="relative h-[46dvh] min-h-[300px] lg:h-full">
-          <ParcelMap geometry={parcel.geometry} centroid={parcel.centroid} pins={pins} pieces={pieces} hot={hot} onHover={setHot} visible={vis} />
+          <ParcelMap geometry={parcel.geometry} centroid={parcel.centroid} pins={pins} pieces={pieces} hot={hot} onHover={setHot} visible={vis} neighbors={nbrGeo} hotNeighbor={hotNbr} />
           <div className="absolute left-2 top-2 max-w-[calc(100%-64px)] rounded-xl border border-line bg-bg/90 p-2 text-xs backdrop-blur sm:left-3 sm:top-3 sm:p-2.5">
             <button onClick={() => setLayersOpen(!layersOpen)} aria-expanded={layersOpen} className="flex w-full items-center justify-between gap-3 font-medium text-muted">
               <span>Map layers</span><span aria-hidden>{layersOpen ? '−' : '+'}</span>
@@ -84,6 +90,7 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
             {layersOpen && (
               <>
                 <div className="mt-1.5 grid grid-cols-1 gap-x-3 gap-y-1.5 sm:grid-cols-2 sm:gap-y-1">
+                  {nbrGeo.length > 0 && <Check label="Adjacent lots" on={vis.adjacent !== false} set={(v) => setVis({ ...vis, adjacent: v })} color="#8ab4ff" />}
                   <Check label="Overlap on this lot" on={vis.pieces} set={(v) => setVis({ ...vis, pieces: v })} color="#ff8a4c" />
                   {LAYER_DEFS.map((d) => <Check key={d.key} label={d.label} on={!!vis[d.key]} set={(v) => setVis({ ...vis, [d.key]: v })} color={d.color} />)}
                 </div>
@@ -152,6 +159,8 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
           </div>
         </section>
 
+        <BottomLine s={summary} proposed={rs === 'reform-2025-1545'} />
+
         {/* sub-scores */}
         {res.subScores && (
           <section className="card p-4 sm:p-5">
@@ -162,6 +171,8 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
             <p className="mt-3 text-xs text-muted">Water and sewer capacity is never scored: it is always an open question until PWSA issues an availability letter.</p>
           </section>
         )}
+
+        <AssemblageCard self={{ lot: parcel.lotAreaSqft, zone: parcel.zoningDistrict, vacant: parcel.vacant }} neighbors={neighbors} hot={hotNbr} onHot={setHotNbr} />
 
         <FeasibilityCalculator v={valuation} allowed={allowed} zoningCode={parcel.zoningDistrict} />
 

@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { bandColor } from './ScoreDial';
 import { AskPanel } from './AskPanel';
 
-type Props = { pin: string; address: string; hood: string; owner: string; lot: number; zone: string | null; score: number | null; reform: number | null; gates: string; aduReady: boolean; combine: boolean; starter: boolean; env: number | null; flags: string[] };
+type Props = { pin: string; address: string; hood: string; owner: string; lot: number; zone: string | null; score: number | null; reform: number | null; gates: string; aduReady: boolean; combine: boolean; starter: boolean; adj?: number; assemble?: boolean; env: number | null; flags: string[] };
 type Feat = { type: 'Feature'; geometry: any; properties: Props; c: [number, number] };
 
 const BASE = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
@@ -32,6 +32,7 @@ export default function MapExplorer() {
   const [max, setMax] = useState(100);
   const [starter, setStarter] = useState(false);
   const [adu, setAdu] = useState(false);
+  const [assemble, setAssemble] = useState(false);
   const [showAsk, setShowAsk] = useState(true);
   const [tab, setTab] = useState<'map' | 'filters' | 'ask'>('map'); // phones: one panel at a time
   const [highlight, setHighlight] = useState<string[]>([]);
@@ -49,8 +50,9 @@ export default function MapExplorer() {
     if (s > max) return false;
     if (starter && !p.starter) return false;
     if (adu && !p.aduReady) return false;
+    if (assemble && !p.assemble) return false;
     return true;
-  }), [feats, owners, hood, min, max, starter, adu]);
+  }), [feats, owners, hood, min, max, starter, adu, assemble]);
 
   // map init
   useEffect(() => {
@@ -89,7 +91,7 @@ export default function MapExplorer() {
         new ml.Popup({ closeButton: true, maxWidth: '280px' }).setLngLat(e.lngLat).setHTML(
           `<div style="font:13px system-ui;color:#111"><b>${p.address || '(no address)'}</b><br/>${p.hood} · ${p.owner}-owned · ${Number(p.lot).toLocaleString()} sq ft · ${p.zone ?? '?'}<br/>` +
           `Score <b>${p.score === 'null' || p.score === null ? 'none' : p.score}</b> · if Bill 2025-1545 passes <b>${p.reform === 'null' || p.reform === null ? 'none' : p.reform}</b>` +
-          `${p.combine === true || p.combine === 'true' ? '<br/><i>Smaller than its district minimum: combine with adjacent lot?</i>' : ''}` +
+          `${p.combine === true || p.combine === 'true' ? '<br/><i>Smaller than its district minimum' + (p.assemble === true || p.assemble === 'true' ? ': a vacant or public neighbor would get it over the minimum.' : ': combine with adjacent lot?') + '</i>' : ''}` +
           `<br/><a href="/parcel/${p.pin}" style="color:#2563eb;font-weight:600">Open lot report →</a></div>`).addTo(map);
         void flags;
       };
@@ -116,6 +118,7 @@ export default function MapExplorer() {
             <input type="range" min={0} max={100} value={max} onChange={(e) => setMax(Math.max(Number(e.target.value), min))} className="w-full" aria-label="Maximum score" /></div>
           <label className="flex items-start gap-2"><input type="checkbox" checked={starter} onChange={(e) => setStarter(e.target.checked)} className="mt-1" /><span>Starter-home ready<br /><span className="text-xs text-muted">no gates and score 70+</span></span></label>
           <label className="flex items-start gap-2"><input type="checkbox" checked={adu} onChange={(e) => setAdu(e.target.checked)} className="mt-1" /><span>ADU ready under reform<br /><span className="text-xs text-muted">by-right ADUs if Bill 2025-1545 passes (proposed)</span></span></label>
+          <label className="flex items-start gap-2"><input type="checkbox" checked={assemble} onChange={(e) => setAssemble(e.target.checked)} className="mt-1" /><span>Can be assembled to size<br /><span className="text-xs text-muted">below its district minimum, but combining with an adjacent vacant or public lot reaches it</span></span></label>
         </div>
         <div className="mt-5 flex items-center gap-3 text-[11px] text-muted"><span><i className="mr-1 inline-block h-2 w-2 rounded-full bg-[var(--green)]" />70+</span><span><i className="mr-1 inline-block h-2 w-2 rounded-full bg-[var(--amber)]" />40–69</span><span><i className="mr-1 inline-block h-2 w-2 rounded-full bg-[var(--red)]" />&lt;40</span><span><i className="mr-1 inline-block h-2 w-2 rounded-full bg-[var(--muted)]" />no score</span></div>
         <h2 className="mb-2 mt-6 text-xs uppercase tracking-wider text-muted">Top lots in view</h2>

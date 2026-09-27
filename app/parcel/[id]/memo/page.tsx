@@ -4,6 +4,7 @@ import { getAiCache, getMeta, getPacket } from '@/lib/web/server-data';
 import { comparePacket, type RuleSetId } from '@/lib/web/run';
 import { metaFor } from '@/lib/web/flagMeta';
 import { valuationOf } from '@/lib/finance';
+import { summarize } from '@/lib/summary';
 
 export default async function Memo({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ rs?: string }> }) {
   const { id } = await params;
@@ -16,6 +17,7 @@ export default async function Memo({ params, searchParams }: { params: Promise<{
   const r = rs === 'reform-2025-1545' ? cmp.reform : cmp.current;
   const ai = getAiCache(id.toUpperCase(), rs);
   const p = found.packet.p;
+  const sum = summarize(r, { transit: (r.overlaps?.transit_buffer.overlapFraction ?? 0) >= 0.5 });
   const val = valuationOf(p as any, meta.hoodValues.byHood);
   const usd = (n: number | null) => (n == null ? 'unknown' : n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }));
   return (
@@ -30,6 +32,7 @@ export default async function Memo({ params, searchParams }: { params: Promise<{
         <div className="text-right"><div className="text-4xl font-semibold">{r.score ?? '—'}</div><div className="text-[11px] text-neutral-500">Development Ease Score / 100</div></div>
       </header>
       <p className="mt-2 text-neutral-600"><b>Rule set:</b> {r.ruleSet.label}{r.ruleSet.status === 'proposed' ? ` — ${r.ruleSet.statusNote}` : ''} · data snapshot {meta.generatedAt}</p>
+      <div className="mt-3 rounded border border-neutral-300 p-3"><b>Bottom line.</b> {sum.headline}{sum.barriers.length > 0 && <ul className="mt-1 list-disc pl-5">{sum.barriers.map((b) => <li key={b.id}>{b.text}</li>)}</ul>}<div className="mt-1"><b>Next steps:</b> {sum.nextSteps.map((n, i) => `${i + 1}. ${n.step} (${n.who})`).join(' ')}</div></div>
       {val.available && <p className="mt-2"><b>County assessed value</b> (tax year {val.taxYear ?? '?'}; not a market price): land {usd(val.land)}, building {usd(val.building)}, total {usd(val.total)}{val.landPerSqft != null ? `; land $${val.landPerSqft.toFixed(2)}/sq ft` : ''}{val.hoodMedianLandPerSqft != null ? ` vs neighborhood median $${val.hoodMedianLandPerSqft.toFixed(2)}` : ''}.{val.sale ? ` Last sale ${usd(val.sale.price)} on ${val.sale.date} (${val.sale.type ?? 'type unknown'}). ${val.sale.note}` : ''}</p>}
       {r.gates.filter((g) => g.triggered).map((g) => <p key={g.id} className="mt-2 rounded border border-red-300 bg-red-50 p-2"><b>{g.id} {g.name}:</b> {g.message} {g.reviewBy && `Confirm with: ${g.reviewBy}.`}</p>)}
       {r.subScores && (

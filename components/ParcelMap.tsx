@@ -22,8 +22,9 @@ export const LAYER_DEFS = [
 ] as const;
 const PIECE_COLOR: Record<string, string> = { slope25: '#ff8a4c', landslide: '#f5b342', undermined: '#c084fc', fema2014: '#4aa8ff', historic: '#f472b6', iz_overlay: '#22d3ee', transit_buffer: '#4ade80' };
 
-export default function ParcelMap({ geometry, centroid, pins, pieces, hot, onHover, visible }: {
+export default function ParcelMap({ geometry, centroid, pins, pieces, hot, onHover, visible, neighbors = [], hotNeighbor = null }: {
   geometry: Geom; centroid: [number, number]; pins: MapPin[]; pieces: Pieces; hot: string | null; onHover: (flagId: string | null) => void; visible: Record<string, boolean>;
+  neighbors?: { pin: string; geometry: Geom }[]; hotNeighbor?: string | null;
 }) {
   const el = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
@@ -75,6 +76,11 @@ export default function ParcelMap({ geometry, centroid, pins, pieces, hot, onHov
         map.addLayer({ id: `piece-${k}-line`, type: 'line', source: `piece-${k}`, paint: { 'line-color': PIECE_COLOR[k] ?? '#fff', 'line-width': 1.5 } });
       }
     }
+    add('nbrs', { type: 'FeatureCollection', features: neighbors.map((n) => ({ type: 'Feature', properties: { pin: n.pin }, geometry: n.geometry })) });
+    if (!map.getLayer('nbrs-fill')) {
+      map.addLayer({ id: 'nbrs-fill', type: 'fill', source: 'nbrs', paint: { 'fill-color': ['case', ['==', ['get', 'pin'], hotNeighbor ?? ''], '#8ab4ff', '#8ab4ff'], 'fill-opacity': ['case', ['==', ['get', 'pin'], hotNeighbor ?? ''], 0.45, 0.12] } });
+      map.addLayer({ id: 'nbrs-line', type: 'line', source: 'nbrs', paint: { 'line-color': '#8ab4ff', 'line-width': 1.2, 'line-dasharray': [2, 2] } });
+    }
     add('parcel', fc([geometry]));
     if (!map.getLayer('parcel-fill')) {
       map.addLayer({ id: 'parcel-fill', type: 'fill', source: 'parcel', paint: { 'fill-color': '#ffffff', 'fill-opacity': 0.06 } });
@@ -85,14 +91,16 @@ export default function ParcelMap({ geometry, centroid, pins, pieces, hot, onHov
     for (const poly of geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates) for (const [x, y] of poly[0]) { xs.push(x); ys.push(y); }
     map.fitBounds([[Math.min(...xs), Math.min(...ys)], [Math.max(...xs), Math.max(...ys)]], { padding: 90, maxZoom: 19, duration: 0 });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, geometry, pieces]);
+  }, [ready, geometry, pieces, neighbors]);
 
   // layer toggles
   useEffect(() => {
     const map = mapRef.current; if (!map || !ready) return;
+    for (const suf of ['fill', 'line']) if (map.getLayer(`nbrs-${suf}`)) map.setLayoutProperty(`nbrs-${suf}`, 'visibility', visible.adjacent === false ? 'none' : 'visible');
+    if (map.getLayer('nbrs-fill')) map.setPaintProperty('nbrs-fill', 'fill-opacity', ['case', ['==', ['get', 'pin'], hotNeighbor ?? ''], 0.5, 0.12]);
     for (const d of LAYER_DEFS) for (const suf of ['fill', 'line']) if (map.getLayer(`ctx-${d.key}-${suf}`)) map.setLayoutProperty(`ctx-${d.key}-${suf}`, 'visibility', visible[d.key] ? 'visible' : 'none');
     for (const k of Object.keys(pieces)) for (const suf of ['fill', 'line']) if (map.getLayer(`piece-${k}-${suf}`)) map.setLayoutProperty(`piece-${k}-${suf}`, 'visibility', visible.pieces === false ? 'none' : 'visible');
-  }, [visible, ready, pieces]);
+  }, [visible, ready, pieces, hotNeighbor]);
 
   // numbered pins
   useEffect(() => {
