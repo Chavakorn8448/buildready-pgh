@@ -60,6 +60,7 @@ export default function Impact() {
             <table className="mt-4 w-full text-left text-sm"><thead><tr className="border-b border-line text-xs uppercase tracking-wider text-muted"><th className="py-2">Score band (2019 snapshot)</th><th>Lots</th><th>Later built new homes</th><th>Build rate</th></tr></thead><tbody>
               {v.bands.map((b: any) => <tr key={b.band} className="border-b border-line last:border-0"><td className="py-2">{b.band}</td><td>{n(b.n)}</td><td>{n(b.built)}</td><td className="tabular-nums">{(b.rate * 100).toFixed(2)}%</td></tr>)}
             </tbody></table>
+            {v.notes?.length ? <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-muted">{v.notes.map((x: string, i: number) => <li key={i}>{x}</li>)}</ul> : null}
             <p className="mt-4 text-sm">Past building reflects market demand as well as feasibility, so we use it to test our score, not replace it.</p>
             <p className="mt-2 text-xs text-muted">{v.caveat}</p>
           </div>

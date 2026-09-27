@@ -1,0 +1,183 @@
+{
+ "generatedAt": "2026-09-26",
+ "summary": "Of 21,408 City of Pittsburgh parcels that were vacant in August 2019 and can be scored, 189 later received a residential new-construction building permit (issued Sep 2019 or later). The build rate rises with the score: 40-69 0.51% (66/13023); 70+ 1.48% (123/8325). Ranking lots by score alone gives an AUC of 0.65 (0.5 = chance).",
+ "bands": [
+  {
+   "band": "40-69",
+   "n": 13023,
+   "built": 66,
+   "rate": 0.00506795669200645,
+   "ci95": [
+    0.003985797984770923,
+    0.006442025133919642
+   ]
+  },
+  {
+   "band": "70+",
+   "n": 8325,
+   "built": 123,
+   "rate": 0.014774774774774775,
+   "ci95": [
+    0.012397786426341501,
+    0.017599374283258258
+   ]
+  },
+  {
+   "band": "no score (gate)",
+   "n": 60,
+   "built": 0,
+   "rate": 0.0,
+   "ci95": [
+    0,
+    0.06017393047793289
+   ]
+  },
+  {
+   "band": "not scorable (PIN retired)",
+   "n": 629,
+   "built": 0,
+   "rate": 0.0,
+   "ci95": [
+    0,
+    0.006070397394861525
+   ]
+  }
+ ],
+ "overallRate": 0.00885328836424958,
+ "rankAUCofScore": 0.65481573003195,
+ "lift70plusVs0to39": 2.9153316953316954,
+ "monotone": true,
+ "subScoreSplits": {
+  "zoning": {
+   "rate_above_median": 0.014191928943811546,
+   "rate_at_or_below_median": 0.003821656050955414,
+   "n_above": 10358,
+   "n_below": 10990,
+   "note": ""
+  },
+  "environmental": {
+   "rate_above_median": 0.01421911421911422,
+   "rate_at_or_below_median": 0.005247493734335839,
+   "n_above": 8580,
+   "n_below": 12768,
+   "note": ""
+  },
+  "funding": {
+   "rate_above_median": 0.005215690535694882,
+   "rate_at_or_below_median": 0.011609715932482502,
+   "n_above": 9203,
+   "n_below": 12145,
+   "note": ""
+  },
+  "access": {
+   "rate_above_median": 0.005752636625119847,
+   "rate_at_or_below_median": 0.009189076939050982,
+   "n_above": 2086,
+   "n_below": 19262,
+   "note": ""
+  },
+  "site": {
+   "rate_above_median": 0.00885328836424958,
+   "rate_at_or_below_median": null,
+   "n_above": 21348,
+   "n_below": 0,
+   "note": "no variation (constant sub-score in this cohort)"
+  }
+ },
+ "quintiles": [
+  {
+   "quintile": "Q1 (lowest)",
+   "scoreRange": [
+    40.0,
+    55.0
+   ],
+   "n": 4270,
+   "built": 9,
+   "rate": 0.002107728337236534,
+   "ci95": [
+    0.0011092861594554095,
+    0.004001244843846162
+   ]
+  },
+  {
+   "quintile": "Q2",
+   "scoreRange": [
+    55.0,
+    64.0
+   ],
+   "n": 4269,
+   "built": 26,
+   "rate": 0.006090419301944249,
+   "ci95": [
+    0.004159701049340186,
+    0.008909259896930324
+   ]
+  },
+  {
+   "quintile": "Q3",
+   "scoreRange": [
+    64.0,
+    69.0
+   ],
+   "n": 4270,
+   "built": 31,
+   "rate": 0.007259953161592506,
+   "ci95": [
+    0.005119354591967738,
+    0.010286363766897035
+   ]
+  },
+  {
+   "quintile": "Q4",
+   "scoreRange": [
+    69.0,
+    77.0
+   ],
+   "n": 4269,
+   "built": 72,
+   "rate": 0.016865776528460996,
+   "ci95": [
+    0.013414726750633845,
+    0.02118557296560183
+   ]
+  },
+  {
+   "quintile": "Q5 (highest)",
+   "scoreRange": [
+    77.0,
+    89.0
+   ],
+   "n": 4270,
+   "built": 51,
+   "rate": 0.011943793911007026,
+   "ci95": [
+    0.009096144225312262,
+    0.015668835365882695
+   ]
+  }
+ ],
+ "lowBandUsed": "40-69",
+ "cohort": {
+  "vacant2019": 22037,
+  "scored": 21408,
+  "positives": 189,
+  "permitsPerYear": {
+   "2019": 13,
+   "2020": 78,
+   "2021": 95,
+   "2022": 98,
+   "2023": 82,
+   "2024": 74,
+   "2025": 57,
+   "2026": 58
+  }
+ },
+ "permitRule": "permit_type in {BUILDING, Building & Development Application}; work_type in {NEW CONSTRUCTION, New Construction}; Residential; status not Revoked/Expired/Stop Work; issue_date >= 2019-09-01",
+ "step2": "only 189 positive examples (the brief requires hundreds), so a trained model would overfit",
+ "caveat": "Past building reflects market demand as well as feasibility, so this tests the score rather than proving it. Features come from the Aug-2019 assessment snapshot; zoning, hazard, historic and transit-buffer geometry are today's (static geography; the transit buffer and inclusionary overlay were published after 2019); owner type is unknown for 2019, so Site & title credits vacancy only; the score applies today's rules to 2019 conditions.",
+ "notes": [
+  "No 2019 parcel scored below 40 (owner type is unknown for 2019, so nothing hits a low cap), so the 0-39 band is empty; 70+ lots were built at 2.9x the rate of 40-69 lots.",
+  "By quintile the build rate rises from 0.21% (lowest fifth) to 1.69% and 1.19% (top two fifths), but it is not strictly monotone at the top.",
+  "Zoning fit and Environmental separate built from unbuilt lots in the expected direction. Funding fit and Transit access point the other way (lots in higher-value or less transit-served areas were built more often), consistent with the market-demand effect the caveat describes; we report it rather than tune the weights to the backtest."
+ ]
+}

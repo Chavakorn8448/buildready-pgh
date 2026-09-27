@@ -52,15 +52,25 @@ ranks = pd.Series(np.concatenate([pos, neg])).rank().values
 auc = (ranks[: len(pos)].sum() - len(pos) * (len(pos) + 1) / 2) / (len(pos) * len(neg))
 overall = float(scored.built_after.mean())
 by_band = {b["band"]: b for b in bands}
-lift = (by_band["70+"]["rate"] / by_band["0-39"]["rate"]) if "70+" in by_band and "0-39" in by_band and by_band["0-39"]["rate"] > 0 else None
+low = "0-39" if "0-39" in by_band else "40-69"  # no 2019 parcel scored below 40 (owner type unknown, so nothing hits a low cap)
+lift = (by_band["70+"]["rate"] / by_band[low]["rate"]) if "70+" in by_band and low in by_band and by_band[low]["rate"] > 0 else None
+# score quintiles (data-driven view; ties broken by rank)
+scored = df[has_score].copy()
+scored["q"] = pd.qcut(scored.score.rank(method="first"), 5, labels=["Q1 (lowest)", "Q2", "Q3", "Q4", "Q5 (highest)"])
+quint = []
+for qn, g in scored.groupby("q", observed=True):
+    k, n = int(g.built_after.sum()), len(g); lo, hi = wilson(k, n)
+    quint.append({"quintile": str(qn), "scoreRange": [float(g.score.min()), float(g.score.max())], "n": n, "built": k, "rate": k / n, "ci95": [lo, hi]})
 monotone = all(by_band[a]["rate"] <= by_band[b]["rate"] for a, b in [("0-39", "40-69"), ("40-69", "70+")] if a in by_band and b in by_band)
 
 # sub-score view
 subs = {}
-for s in ["zoning", "environmental", "funding", "access", "site"]:
-    x = scored[[s, "built_after"]].dropna()
-    hi = x[x[s] >= x[s].median()]; lo_ = x[x[s] < x[s].median()]
-    subs[s] = {"rate_above_median": float(hi.built_after.mean()), "rate_below_median": float(lo_.built_after.mean()), "n_above": int(len(hi)), "n_below": int(len(lo_))}
+for s_ in ["zoning", "environmental", "funding", "access", "site"]:
+    x = scored[[s_, "built_after"]].dropna()
+    med = x[s_].median()
+    hi = x[x[s_] > med] if x[s_].nunique() > 2 and (x[s_] > med).any() else x[x[s_] >= med]
+    lo_ = x[x[s_] <= med] if len(hi) and (x[s_] <= med).any() and x[s_].nunique() > 2 else x[x[s_] < med]
+    subs[s_] = {"rate_above_median": float(hi.built_after.mean()) if len(hi) else None, "rate_at_or_below_median": float(lo_.built_after.mean()) if len(lo_) else None, "n_above": int(len(hi)), "n_below": int(len(lo_)), "note": "no variation (constant sub-score in this cohort)" if len(hi) == 0 or len(lo_) == 0 else ""}
 
 caveat = ("Past building reflects market demand as well as feasibility, so this tests the score rather than proving it. Features come from the Aug-2019 assessment snapshot; zoning, hazard, historic and transit-buffer geometry are today's "
           "(static geography; the transit buffer and inclusionary overlay were published after 2019); owner type is unknown for 2019, so Site & title credits vacancy only; the score applies today's rules to 2019 conditions.")
@@ -68,12 +78,17 @@ verdict = "rises with the score" if monotone else "does not rise cleanly with th
 out = {
     "generatedAt": pd.Timestamp.today().strftime("%Y-%m-%d"),
     "summary": (f"Of {n_scored_rows:,} City of Pittsburgh parcels that were vacant in August 2019 and can be scored, {int(scored.built_after.sum())} later received a residential new-construction "
-                f"building permit (issued Sep 2019 or later). The build rate {verdict}: " + "; ".join(f"{b['band']} {b['rate']*100:.2f}% ({b['built']}/{b['n']})" for b in bands[:3]) + "."),
+                f"building permit (issued Sep 2019 or later). The build rate {verdict}: " + "; ".join(f"{b['band']} {b['rate']*100:.2f}% ({b['built']}/{b['n']})" for b in bands if b['band'] in ('0-39','40-69','70+')) + f". Ranking lots by score alone gives an AUC of {auc:.2f} (0.5 = chance)."),
     "bands": bands, "overallRate": overall, "rankAUCofScore": float(auc), "lift70plusVs0to39": lift, "monotone": bool(monotone),
-    "subScoreSplits": subs, "cohort": {"vacant2019": n_cohort, "scored": n_scored_rows, "positives": int(df.built_after.sum()), "permitsPerYear": summary["permitsPerYear"]},
+    "subScoreSplits": subs, "quintiles": quint, "lowBandUsed": low, "cohort": {"vacant2019": n_cohort, "scored": n_scored_rows, "positives": int(df.built_after.sum()), "permitsPerYear": summary["permitsPerYear"]},
     "permitRule": "permit_type in {BUILDING, Building & Development Application}; work_type in {NEW CONSTRUCTION, New Construction}; Residential; status not Revoked/Expired/Stop Work; issue_date >= 2019-09-01",
-    "step2": "not run: only %d positive examples (brief requires hundreds); a trained model would overfit" % int(df.built_after.sum()),
+    "step2": "only %d positive examples (the brief requires hundreds), so a trained model would overfit" % int(df.built_after.sum()),
     "caveat": caveat,
+    "notes": [
+        "No 2019 parcel scored below 40 (owner type is unknown for 2019, so nothing hits a low cap), so the 0-39 band is empty; 70+ lots were built at %.1fx the rate of 40-69 lots." % (lift or 0),
+        "By quintile the build rate rises from %.2f%% (lowest fifth) to %.2f%% and %.2f%% (top two fifths), but it is not strictly monotone at the top." % (quint[0]["rate"]*100, quint[3]["rate"]*100, quint[4]["rate"]*100),
+        "Zoning fit and Environmental separate built from unbuilt lots in the expected direction. Funding fit and Transit access point the other way (lots in higher-value or less transit-served areas were built more often), consistent with the market-demand effect the caveat describes; we report it rather than tune the weights to the backtest.",
+    ],
 }
 (ROOT / "data").mkdir(exist_ok=True)
 json.dump(out, open(ROOT / "data" / "validation.json", "w"), indent=1)
@@ -89,8 +104,12 @@ md = ["# Validation backtest: does the score track later building?", "",
       "| Score band | Parcels | Later built | Build rate | 95% CI |", "|---|---|---|---|---|"]
 for b in bands: md.append(f"| {b['band']} | {b['n']:,} | {b['built']} | {b['rate']*100:.2f}% | {b['ci95'][0]*100:.2f}%-{b['ci95'][1]*100:.2f}% |")
 md += ["", f"- Rank AUC of the raw score (probability a built lot outscores an unbuilt lot; no model trained): **{auc:.3f}** (0.5 = no signal).",
-       f"- Lift, 70+ vs 0-39: {('%.2fx' % lift) if lift else 'n/a'}; monotone across bands: {monotone}.", "", "### Sub-score splits (build rate above vs below the median sub-score)"]
-for s, v in subs.items(): md.append(f"- {s}: {v['rate_above_median']*100:.2f}% vs {v['rate_below_median']*100:.2f}%")
+       f"- Lift, 70+ vs {low} (no 2019 parcel scored below 40, so the 0-39 band is empty): {('%.2fx' % lift) if lift else 'n/a'}; monotone across bands: {monotone}.", "",
+       "### By score quintile (equal-size groups)", "", "| Quintile | Score range | Parcels | Later built | Build rate | 95% CI |", "|---|---|---|---|---|---|"]
+for q in quint: md.append(f"| {q['quintile']} | {q['scoreRange'][0]:.0f}-{q['scoreRange'][1]:.0f} | {q['n']:,} | {q['built']} | {q['rate']*100:.2f}% | {q['ci95'][0]*100:.2f}%-{q['ci95'][1]*100:.2f}% |")
+md += ["", "### Sub-score splits (build rate above vs at/below the median sub-score)"]
+for s_, v in subs.items(): md.append(f"- {s_}: " + (v['note'] if v['note'] else f"{v['rate_above_median']*100:.2f}% above vs {v['rate_at_or_below_median']*100:.2f}% at/below"))
+md += ["", "## Reading the result"] + [f"- {n}" for n in out["notes"]]
 md += ["", "## Step 2 (trained model)", f"Not run: {out['step2']}.", "", "## Caveats", caveat, "",
        "Other limits: parcels renumbered or merged after 2019 cannot be matched (shown as 'not scorable'); permits filed under new PINs are missed; a permit is not a finished building; the score is rule-based, so this is a check on the rules, not a fitted predictor."]
 (ROOT / "ml" / "results.md").write_text("\n".join(md) + "\n")
