@@ -28,7 +28,7 @@ npm install
 # Data (public sources, no API keys). Raw files are gitignored (~550 MB):
 npm run fetch          # ~3 min: city ArcGIS layers, WPRDC zoning + assessments
 npm run preprocess     # ~40 s: reproject to WGS84, drop owner names, join, zoning spatial join
-npm run precompute     # ~17 min on 8 cores: scores for vacant + publicly owned lots (committed output in data/scores)
+npm run precompute     # ~100 min on 8 cores: scores every parcel under both rule sets (committed output in data/scores, gzipped, 26 MB)
 npm run build-layers   # simplified map layers -> public/layers
 
 npm run dev            # http://localhost:3000   (the web app reads the precomputed JSON only)
