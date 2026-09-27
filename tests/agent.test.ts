@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { REFUSAL, ungroundedNumbers } from '../lib/agent/run';
+import { ask, REFUSAL, ungroundedNumbers } from '../lib/agent/run';
 
 describe('ungroundedNumbers (agent grounding guardrail)', () => {
   it('does not flag a number the user supplied in their own question (e.g. "score 70 or higher")', () => {
@@ -22,5 +22,18 @@ describe('REFUSAL pattern (legal/financial/determination questions)', () => {
   });
   it('leaves ordinary questions alone', () => {
     for (const q of ['What is blocking this lot?', 'Top 3 vacant lots in Homewood', 'How many lots gain ADU potential?']) expect(REFUSAL.test(q)).toBe(false);
+  });
+});
+
+describe('ask() mode labeling (regression: a declined question must never claim the key is missing)', () => {
+  it('a refused question is labeled "refused", not "engine-only" — even when a real key is configured', async () => {
+    const withKey = process.env.ANTHROPIC_API_KEY;
+    process.env.ANTHROPIC_API_KEY = 'sk-ant-fake-key-present-for-this-test';
+    try {
+      const r = await ask('Is it legal to build a triplex on 0 Tioga St?');
+      expect(r.mode).toBe('refused');
+    } finally {
+      if (withKey === undefined) delete process.env.ANTHROPIC_API_KEY; else process.env.ANTHROPIC_API_KEY = withKey;
+    }
   });
 });

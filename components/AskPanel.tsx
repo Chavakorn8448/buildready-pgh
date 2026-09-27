@@ -40,7 +40,7 @@ export function AskPanel({ onPins, onViewMap }: { onPins?: (pins: string[]) => v
         )}
         {msgs.map((m, i) => (
           <div key={i} className={m.role === 'user' ? 'ml-6 rounded-2xl bg-surface2 px-3 py-2' : ''}>
-            {m.role === 'assistant' && m.mode && <div className="mb-1 text-[10px] uppercase tracking-wider text-muted">{m.mode === 'claude' ? 'Claude + engine tools' : m.mode === 'cached' ? 'Cached showcase answer' : 'Engine-only answer (no LLM key configured)'}</div>}
+            {m.role === 'assistant' && m.mode && <div className="mb-1 text-[10px] uppercase tracking-wider text-muted">{m.mode === 'claude' ? 'Claude + engine tools' : m.mode === 'cached' ? 'Cached showcase answer' : m.mode === 'refused' ? 'Declined by guardrail (not a zoning/legal/financial question the tool answers)' : 'Engine-only answer (no LLM key configured, or the live call failed)'}</div>}
             <Rendered text={m.text} />
             {m.pins && m.pins.length > 0 && onViewMap && <button className="btn mt-2 lg:hidden" onClick={() => { onPins?.(m.pins!); onViewMap(); }}>Show {m.pins.length} lot{m.pins.length === 1 ? '' : 's'} on the map</button>}
             {m.pins && m.pins.length > 0 && <div className="mt-2 flex flex-wrap gap-1.5">{m.pins.slice(0, 8).map((p) => <Link key={p} href={`/parcel/${p}`} className="btn font-mono text-[11px]">{p}</Link>)}</div>}

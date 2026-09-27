@@ -9,7 +9,7 @@ import { getIndex } from '../web/server-data';
 import { runTool, TOOL_DEFS, type ToolName } from './tools';
 
 export type Trace = { tool: string; args: any; summary: string };
-export type AskResult = { answer: string; pins: string[]; trace: Trace[]; mode: 'claude' | 'engine-only' | 'cached'; confirmWith: string[]; sourceMode?: string };
+export type AskResult = { answer: string; pins: string[]; trace: Trace[]; mode: 'claude' | 'engine-only' | 'cached' | 'refused'; confirmWith: string[]; sourceMode?: string };
 const MAX_TOOL_CALLS = 8;
 const DEFAULT_OFFICES = ['City Zoning Administrator', 'Zoning Board of Adjustment'];
 
@@ -163,7 +163,9 @@ export function loadShowcase(): Record<string, AskResult> {
 export async function ask(question: string, opts: { useCache?: boolean } = {}): Promise<AskResult> {
   const q = question.trim().slice(0, 600);
   if (!q) throw new Error('empty question');
-  if (REFUSAL.test(q)) return { answer: `I can't make zoning determinations or give legal, financial, or tax advice. I can show what the data says about a lot (score, flags, sources) and who to confirm with.\nConfirm with: ${DEFAULT_OFFICES.join('; ')}.`, pins: [], trace: [], mode: 'engine-only', confirmWith: DEFAULT_OFFICES };
+  // Declined on purpose by the guardrail, checked before the API key even matters — this is not a fallback,
+  // so it must never be labeled as if the key were missing (mode: 'engine-only' means "no key / live call failed").
+  if (REFUSAL.test(q)) return { answer: `I can't make zoning determinations or give legal, financial, or tax advice. I can show what the data says about a lot (score, flags, sources) and who to confirm with.\nConfirm with: ${DEFAULT_OFFICES.join('; ')}.`, pins: [], trace: [], mode: 'refused', confirmWith: DEFAULT_OFFICES };
   if (opts.useCache !== false) { const hit = loadShowcase()[norm(q)]; if (hit) return { ...hit, sourceMode: hit.mode, mode: 'cached' }; }
   const key = process.env.ANTHROPIC_API_KEY;
   if (key) { try { return await claudeAnswer(q, key); } catch (e) { console.error('claude agent failed, falling back to engine-only:', (e as Error).message); } }
