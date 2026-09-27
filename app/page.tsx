@@ -20,7 +20,7 @@ export default function Home() {
         <h1 className="text-balance text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">See what&apos;s blocking a Pittsburgh lot, and where to build first.</h1>
         <p className="mx-auto mt-4 max-w-2xl text-balance text-base text-muted sm:mt-5 sm:text-lg">A source-grounded Development Ease Score for City of Pittsburgh parcels, with the zoning, environmental, and policy flags that need a human review. Every number links to its data.</p>
         <div className="mx-auto mt-9 max-w-2xl"><SearchBox autoFocus /></div>
-        <p className="mt-3 text-xs text-muted">Try an address or a 16-character parcel ID (dashes optional). The snapshot covers every vacant and publicly owned lot ({n(meta.counts.inScope)} parcels) plus demo parcels.</p>
+        <p className="mt-3 text-xs text-muted">Try any City of Pittsburgh address or a 16-character parcel ID (dashes optional). Covers all {n(meta.counts.inScope)} City of Pittsburgh parcels in the data snapshot.</p>
       </section>
 
       <section className="mx-auto grid max-w-5xl gap-3 px-4 pb-10 sm:grid-cols-2 sm:gap-4 sm:px-5 sm:pb-12">

@@ -18,7 +18,7 @@ export default async function ParcelPage({ params }: { params: Promise<{ id: str
     return (
       <main className="mx-auto max-w-xl px-5 py-24 text-center">
         <h1 className="text-2xl font-semibold">Parcel not in the snapshot</h1>
-        <p className="mt-3 text-muted">{pin} is not in the precomputed data. The web snapshot covers every vacant and publicly owned City of Pittsburgh lot plus demo parcels. Other parcels can be scored locally with <code className="font-mono">npm run score {pin}</code>.</p>
+        <p className="mt-3 text-muted">{pin} is not in the City of Pittsburgh parcel snapshot. Check the parcel ID or search by address. Parcels outside the City (or created after the 2026-09-26 snapshot) are not covered.</p>
         <Link href="/" className="btn mt-6 inline-block">Back to search</Link>
       </main>
     );

@@ -14,7 +14,7 @@ const rsOf = (x: unknown): RuleSetId => (x === 'reform' || x === 'reform-2025-15
 const HOUSING_TYPES = ['single_unit_detached', 'single_unit_attached', 'two_unit', 'three_unit', 'multi_unit'] as const;
 
 export const TOOL_DEFS = [
-  { name: 'search_parcels', description: 'Search the snapshot of vacant and publicly owned City of Pittsburgh lots. All filters optional. Returns up to `limit` (max 20) rows sorted by score under the chosen rule set, plus the total match count.',
+  { name: 'search_parcels', description: 'Search the snapshot of all City of Pittsburgh parcels. All filters optional. Returns up to `limit` (max 20) rows sorted by score under the chosen rule set, plus the total match count.',
     input_schema: { type: 'object', properties: {
       neighborhood: { type: 'string' }, owner: { type: 'string', enum: ['City', 'URA', 'HACP', 'County', 'Private', 'Other'] }, vacant: { type: 'boolean' },
       zoning: { type: 'string', description: 'zoning map code prefix, e.g. R1A or RM-M' }, min_lot_sqft: { type: 'number' }, max_lot_sqft: { type: 'number' },
@@ -41,7 +41,7 @@ const hoodMatch = (name: string): { id: number; name: string }[] => {
 };
 
 function compactResult(pin: string, rs: RuleSetId, full = false) {
-  const f = getPacket(pin); if (!f) return { error: `parcel ${pin} not in the snapshot (covers vacant and publicly owned lots plus demo parcels)` };
+  const f = getPacket(pin); if (!f) return { error: `parcel ${pin} not in the City of Pittsburgh snapshot` };
   const r = runPacket(f.packet, getMeta(), rs);
   const cmp = comparePacket(f.packet, getMeta());
   const out: any = {

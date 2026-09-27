@@ -658,3 +658,9 @@ PROPOSED, not law (Bill 2025-1545: Held In Council; public hearing 2026-09-23; s
 ## Phase 13 — Docs and submission prep
 - `README.md` (what/who, quickstart, mermaid architecture, sources+licenses, scoring method, AI/library disclosure, validation, limitations, pilot path, next steps), `LICENSE` (MIT), `SUBMISSION.md` (paste-ready answers), `DEMO_SCRIPT.md` (4:30 with real-vs-placeholder notes and exact parcels).
 - **Not done here:** Vercel deploy (needs your login/key) and the repo/video URLs in README/SUBMISSION (placeholders marked `<...>`). Local production build verified (`npm run build`, `next start`, every route + API returned 200; headless-Chromium screenshots of lot report, reform toggle, compare, map, ask panel, impact).
+
+## Update — coverage expanded to every parcel (2026-09-26 night)
+- **Why:** a tester's own address (5815 5th Ave) was missing from the web app because the snapshot only held vacant/public lots (a size decision). Now `precompute` scores **all 142,365 parcels** under both rule sets (137,913 get a score; the rest hit G1/G2). Run took ~100 min on 8 cores.
+- **Size:** raw packets are 196 MB, so `data/scores` is committed **gzipped** (`index.json.gz`, `packets/*.json.gz`, 26 MB total); `lib/web/server-data.ts` reads either form. `scripts/compress-shards.ts` gzips an existing raw output. Packet format also slimmed (derived fields rebuilt in `fromPacket`).
+- Verified locally: search "5815 5th avenue" / "5815 FIFTH AVE" → 0085B00078000000 (score 67); lot report, memo and compare return 200. Reform Impact and opportunity data are unchanged. **Known issues item "web snapshot covers only vacant/public lots" is resolved.**
+- Known issue 11 update: full-city precompute takes ~100 min (not ~17).

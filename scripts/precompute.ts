@@ -5,10 +5,10 @@
  *  - data/scores/meta.json           layer sources, permitted uses, neighborhood values, hoods list
  *  - data/opportunity.json           vacant PUBLIC lots (City/URA/HACP/County), with scores
  *  - data/reform-impact.json         citywide + by-neighborhood counts (lot-size + ADU rules for ALL residential parcels)
- * Scope for full scoring: every vacant parcel + every publicly owned parcel + demo parcels. All other residential parcels are
- * counted for Reform Impact only. The web app reads these files only (no live API).
+ * Scope: every parcel is scored under both rule sets. The web app reads these files only (no live API).
  */
 import { spawn } from 'node:child_process';
+import zlib from 'node:zlib';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -57,14 +57,14 @@ async function main() {
   }
   rows.sort((a, b) => String(a[0]).localeCompare(String(b[0])));
   let bytes = 0;
-  for (const [h, obj] of packets) { const s = JSON.stringify(obj); bytes += s.length; fs.writeFileSync(path.join(OUT, 'packets', `${slug(h)}.json`), s); }
+  for (const [h, obj] of packets) { const s = JSON.stringify(obj); bytes += s.length; fs.writeFileSync(path.join(OUT, 'packets', `${slug(h)}.json.gz`), zlib.gzipSync(s, { level: 9 })); }
   log(`packets: ${packets.size} shards, ${(bytes / 1e6).toFixed(1)} MB raw`);
 
   const data = loadEngineData();
-  fs.writeFileSync(path.join(OUT, 'index.json'), JSON.stringify({ cols: INDEX_COLS, owners: OWNER_CODES, hoods, rows }));
+  fs.writeFileSync(path.join(OUT, 'index.json.gz'), zlib.gzipSync(JSON.stringify({ cols: INDEX_COLS, owners: OWNER_CODES, hoods, rows }), { level: 9 }));
   fs.writeFileSync(path.join(OUT, 'meta.json'), JSON.stringify({
     generatedAt: new Date().toISOString().slice(0, 10), config: CONFIG, layerMeta: data.layerMeta, permittedUses: data.permittedUses, hoodValues: data.hoodValues,
-    scope: 'every vacant parcel + every publicly owned parcel (City/URA/HACP/County) + demo parcels; other parcels are counted for Reform Impact only',
+    scope: 'every City of Pittsburgh parcel in the snapshot (142k); scored under both rule sets',
     counts: { parcelsInSnapshot: visited, inScope: scoped, scored },
   }));
   opp.sort((a, b) => (b.properties.score ?? -1) - (a.properties.score ?? -1));
@@ -85,7 +85,7 @@ async function main() {
   }, null, 1));
   fs.rmSync(path.join(OUT, '.tmp'), { recursive: true, force: true });
   const sz = (f: string) => (fs.statSync(f).size / 1e6).toFixed(1) + ' MB';
-  log(`index ${sz(path.join(OUT, 'index.json'))}, opportunity ${sz(path.join(ROOT, 'data/opportunity.json'))} (${opp.length} lots), reform-impact ${sz(path.join(ROOT, 'data/reform-impact.json'))}`);
+  log(`index ${sz(path.join(OUT, 'index.json.gz'))} (gz), opportunity ${sz(path.join(ROOT, 'data/opportunity.json'))} (${opp.length} lots), reform-impact ${sz(path.join(ROOT, 'data/reform-impact.json'))}`);
   console.log(JSON.stringify({ scoped, scored, totals, hoods: hoods.length }));
   void OWNER_CODES;
 }

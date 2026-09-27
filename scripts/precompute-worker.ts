@@ -5,7 +5,7 @@
  *  - data/scores/meta.json           layer sources, permitted uses, neighborhood values, hoods list
  *  - data/opportunity.json           vacant PUBLIC lots (City/URA/HACP/County), simplified, with scores
  *  - data/reform-impact.json         citywide + by-neighborhood counts (lot-size + ADU rules for ALL residential parcels)
- * Scope for full scoring: every vacant parcel + every publicly owned parcel + demo parcels (~40k of 142k).
+ * Scope: every parcel.
  * All other residential parcels get only the lot-size/ADU classification (Reform Impact).
  */
 import fs from 'node:fs';
@@ -55,7 +55,7 @@ for (let i = SHARD; i < pins.length; i += NSHARDS) {
     }
   }
   // ---- full scoring for in-scope parcels ----
-  const inScope = p.vacant === true || (p.ownerType !== null && PUBLIC.has(p.ownerType)) || DEMO_PINS.includes(p.pin);
+  const inScope = true; // every parcel in the snapshot is fully scored (was: vacant + public + demo only)
   if (!inScope) continue;
   scoped++;
   const overlaps = computeOverlaps(p.geometry, data.layers, CONFIG.minOverlapFraction, true);

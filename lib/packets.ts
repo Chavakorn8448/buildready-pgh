@@ -9,7 +9,7 @@ import type { Geom, ProcessedParcel } from './types';
 
 export type PacketOverlap = 0 | 'u' | { f: number; q: number; pin: [number, number] | null; m: Record<string, any>[]; e?: number; g?: Geom[] };
 export type Packet = {
-  p: Omit<ProcessedParcel, 'bbox' | 'geometry'> & { geometry: Geom };
+  p: Omit<ProcessedParcel, 'bbox' | 'geometry' | 'house' | 'street' | 'lotAreaSource' | 'zoningAgrees'> & { geometry: Geom };
   o: Record<string, PacketOverlap>;
 };
 
@@ -58,9 +58,18 @@ export function unpackOverlaps(o: Record<string, PacketOverlap>): ParcelOverlaps
   return out as ParcelOverlaps;
 }
 
+/** Slim record: only what the engine and the UI read (derived/duplicate fields are rebuilt in fromPacket). */
 export function toPacket(p: ProcessedParcel, o: ParcelOverlaps): Packet {
-  const { bbox: _b, geometry, ...rest } = p;
-  return { p: { ...rest, geometry: roundGeom(geometry) }, o: packOverlaps(o) };
+  const a = p.assessment;
+  return {
+    p: {
+      pin: p.pin, address: p.address, neighborhood: p.neighborhood, classDesc: p.classDesc, useDesc: p.useDesc, ownerType: p.ownerType, vacant: p.vacant,
+      lotAreaSqft: p.lotAreaSqft, lotAreaAssessorSqft: p.lotAreaAssessorSqft, zoningDistrict: p.zoningDistrict, zoningShare: p.zoningShare, zoningOther: p.zoningOther,
+      zoningParcelsPublic: p.zoningParcelsPublic, inCityLimits: p.inCityLimits, centroid: p.centroid, geometry: roundGeom(p.geometry),
+      assessment: a ? { landValue: a.landValue, buildingValue: a.buildingValue, totalValue: a.totalValue, saleDate: a.saleDate, salePrice: a.salePrice, saleDesc: a.saleDesc, taxYear: a.taxYear, asOf: a.asOf } : null,
+    } as Packet['p'],
+    o: packOverlaps(o),
+  };
 }
 
 export function fromPacket(k: Packet): { parcel: ProcessedParcel; overlaps: ParcelOverlaps } {
@@ -68,7 +77,15 @@ export function fromPacket(k: Packet): { parcel: ProcessedParcel; overlaps: Parc
   const xs: number[] = [], ys: number[] = [];
   for (const poly of g.type === 'Polygon' ? [g.coordinates] : g.coordinates) for (const [x, y] of poly[0]) { xs.push(x); ys.push(y); }
   const bbox: [number, number, number, number] = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
-  return { parcel: { ...k.p, bbox } as ProcessedParcel, overlaps: unpackOverlaps(k.o) };
+  const sp = /^(\S+)\s+(.*)$/.exec(k.p.address ?? '');
+  return {
+    parcel: {
+      house: sp?.[1] ?? '', street: sp?.[2] ?? '', lotAreaSource: 'polygon area (WGS84 geodesic) of ParcelsPublic geometry',
+      zoningAgrees: k.p.zoningDistrict && k.p.zoningParcelsPublic ? k.p.zoningDistrict === k.p.zoningParcelsPublic : null,
+      ...k.p, bbox,
+    } as unknown as ProcessedParcel,
+    overlaps: unpackOverlaps(k.o),
+  };
 }
 
 /** Compact index row layout (data/scores/index.json). */

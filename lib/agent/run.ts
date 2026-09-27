@@ -98,7 +98,7 @@ export function offlineAnswer(question: string): AskResult {
       note = ' A lot counts if a two-unit building is allowed by right in its zoning, or if it would be ADU-ready (house + ADU) under the proposed bill.';
     }
     const rows = s.rows.slice(0, topN);
-    if (!rows.length) answer = `No lots in the snapshot match${hood ? ` in ${hood.name}` : ''}. The snapshot covers vacant and publicly owned lots only.`;
+    if (!rows.length) answer = `No lots in the snapshot match${hood ? ` in ${hood.name}` : ''}. Try different filters.`;
     else {
       const detail = rows.map((r: any) => call('get_parcel', { pin: r.pin, ruleset: reform ? 'reform' : 'current' }));
       const lines = detail.map((d: any, i: number) => {

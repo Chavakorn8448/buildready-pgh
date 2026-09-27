@@ -111,7 +111,7 @@ Full list with URLs, retrieval dates and licenses: [`data/SOURCES.md`](data/SOUR
 * The reform scenario models Bill 2025-1545 **as proposed**, not final text; the reform counts are upper bounds.
 * Public data is provided as-is and may be stale; the tool works from a dated snapshot (2026-09-26).
 * The zoning use table was transcribed from a July 2024 print of §911.02 (the live code site blocked automated access) and is **not verified against the live code**; planned-development, special-purpose and public-realm districts have no verified use rules and are treated as unknown.
-* The web snapshot covers vacant and publicly owned lots (33,507 parcels) plus demo parcels; any other city parcel can be scored with the CLI.
+* The web snapshot covers all 142,365 City of Pittsburgh parcels as of 2026-09-26; parcels created later, or outside the City, are not in it.
 * The validation backtest reflects market demand, not only feasibility.
 * Liens and tax delinquency are not included.
 * Decision support only.

@@ -1,11 +1,17 @@
 /** Server-side loaders for precomputed data (reads data/ only; no network). Never import from client components. */
 import fs from 'node:fs';
+import zlib from 'node:zlib';
 import path from 'node:path';
 import { INDEX_COLS, OWNER_CODES, type IndexRow, type Packet } from '../packets';
 import { normalizeAddress, normalizeStreet, parsePin, splitAddress } from '../lookup';
 
 const ROOT = process.cwd();
 const D = (...p: string[]) => path.join(ROOT, 'data', ...p);
+/** Reads a JSON file that may be stored gzipped (data/scores is committed as .json.gz to keep the deploy small). */
+function readJson(file: string): any {
+  if (fs.existsSync(file + '.gz')) return JSON.parse(zlib.gunzipSync(fs.readFileSync(file + '.gz')).toString('utf8'));
+  return JSON.parse(fs.readFileSync(file, 'utf8'));
+}
 
 let _meta: any, _index: { rows: IndexRow[]; hoods: { id: number; name: string; slug: string; scoped: number }[]; norm: string[] } | null = null;
 const _shards = new Map<string, Record<string, Packet>>();
@@ -17,7 +23,7 @@ export function getMeta() {
 
 export function getIndex() {
   if (_index) return _index;
-  const raw = JSON.parse(fs.readFileSync(D('scores', 'index.json'), 'utf8'));
+  const raw = readJson(D('scores', 'index.json'));
   const rows: IndexRow[] = raw.rows.map((r: any[]) => ({
     pin: r[0], address: r[1], hood: r[2], owner: r[3] >= 0 ? OWNER_CODES[r[3]] : null, vacant: r[4] < 0 ? null : r[4] === 1, lot: r[5], zone: r[6],
     score: r[7], reform: r[8], gates: r[9], lon: r[10], lat: r[11], aduReady: r[12] === 1, combine: r[13] === 1, starter: r[14] === 1,
@@ -35,7 +41,7 @@ export function getPacket(pin: string): { packet: Packet; row: IndexRow; hood: s
   if (!row) return null;
   const hood = idx.hoods[row.hood];
   let shard = _shards.get(hood.slug);
-  if (!shard) { shard = JSON.parse(fs.readFileSync(D('scores', 'packets', `${hood.slug}.json`), 'utf8')); _shards.set(hood.slug, shard!); }
+  if (!shard) { shard = readJson(D('scores', 'packets', `${hood.slug}.json`)); _shards.set(hood.slug, shard!); }
   const packet = shard![pin];
   return packet ? { packet, row, hood: hood.name } : null;
 }
@@ -55,7 +61,7 @@ export function getAiCache(pin: string, ruleSet: string): Record<string, any> | 
 export function search(q: string, limit = 8): { rows: IndexRow[]; note?: string } {
   const idx = getIndex();
   const pin = parsePin(q);
-  if (pin) { const r = _byPin.get(pin); return { rows: r ? [r] : [], note: r ? undefined : `Parcel ${pin} is not in the precomputed snapshot (it covers vacant and publicly owned lots plus demo parcels).` }; }
+  if (pin) { const r = _byPin.get(pin); return { rows: r ? [r] : [], note: r ? undefined : `Parcel ${pin} is not in the City of Pittsburgh snapshot.` }; }
   const sp = splitAddress(q);
   const needle = sp ? normalizeAddress(sp.house, sp.street) : normalizeStreet(q);
   if (needle.length < 2) return { rows: [] };
@@ -68,5 +74,5 @@ export function search(q: string, limit = 8): { rows: IndexRow[]; note?: string 
     if (exact.length + starts.length > 200) break;
   }
   const rows = [...exact, ...starts, ...contains].slice(0, limit);
-  return { rows, note: rows.length ? undefined : 'No match in the precomputed snapshot (vacant and publicly owned lots plus demo parcels).' };
+  return { rows, note: rows.length ? undefined : 'No match in the City of Pittsburgh snapshot. Try the house number and street, e.g. 5815 5th Ave.' };
 }
