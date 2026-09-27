@@ -1,6 +1,6 @@
 # Submission answers (ready to paste)
 
-**Repository:** `<PUBLIC GITHUB REPO URL>` (public, full commit history) · **Live demo:** `<VERCEL URL>` · **Demo video:** `<VIDEO URL>`
+**Repository:** `<PUBLIC GITHUB REPO URL>` (public, full commit history) · **Live demo:** https://buildready-pgh.vercel.app · **Demo video:** `<VIDEO URL>`
 
 ## Project title
 BuildReady PGH: source-grounded development feasibility for Pittsburgh housing

@@ -1,0 +1,7 @@
+# Not needed at runtime (the web app reads data/scores, data/opportunity.json, data/reform-impact.json, data/validation.json, data/ask-cache.json)
+data/raw
+data/processed
+ml/data
+node_modules
+.next
+.git
