@@ -1,7 +1,8 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 import { EMPTY_ASSUMPTIONS, feasibility, type Assumptions, type Valuation } from '@/lib/finance';
-import { FIELDS, THRESHOLDS } from '@/lib/finance-config';
+import { FIELDS, SQFT_TO_BEDROOMS, THRESHOLDS } from '@/lib/finance-config';
+import type { PermitReference, RentReference } from '@/lib/web/server-data';
 import { Term } from './Term';
 
 const $ = (n: number | null | undefined, d = 0) => (n == null ? '—' : n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: d }));
@@ -36,7 +37,7 @@ const GROUPS: { id: 'site' | 'cost' | 'income' | 'debt'; label: string }[] = [
 ];
 
 /** Calculator that only ever uses numbers the user types. Nothing is pre-filled with our own estimates. */
-export function FeasibilityCalculator({ v, allowed, zoningCode }: { v: Valuation; allowed: string[]; zoningCode: string | null }) {
+export function FeasibilityCalculator({ v, allowed, zoningCode, rentRef, permitRef }: { v: Valuation; allowed: string[]; zoningCode: string | null; rentRef: RentReference; permitRef: PermitReference }) {
   const [a, setA] = useState<Assumptions>(EMPTY_ASSUMPTIONS);
   useEffect(() => { try { const raw = localStorage.getItem(KEY); if (raw) { const s = JSON.parse(raw); setA({ ...EMPTY_ASSUMPTIONS, ...s, landCost: null, units: null }); } } catch { /* storage unavailable */ } }, []);
   useEffect(() => { try { const { landCost: _l, units: _u, ...rest } = a; localStorage.setItem(KEY, JSON.stringify(rest)); } catch { /* storage unavailable */ } }, [a]);
@@ -68,6 +69,32 @@ export function FeasibilityCalculator({ v, allowed, zoningCode }: { v: Valuation
                       <span className="mt-1 flex flex-wrap gap-1.5">
                         {v.land != null && <button type="button" className="btn text-[11px]" onClick={() => setA({ ...a, landCost: v.land })}>Use assessed land value ({$(v.land)})</button>}
                         {v.sale?.price != null && v.sale.price > 1000 && <button type="button" className="btn text-[11px]" onClick={() => setA({ ...a, landCost: v.sale!.price })}>Use last sale ({$(v.sale.price)})</button>}
+                      </span>
+                    )}
+                    {f.id === 'rentPerUnitMonth' && rentRef && (() => {
+                      const nearest = SQFT_TO_BEDROOMS.find((b) => (a.unitSqft ?? 0) <= b.maxSqft) ?? SQFT_TO_BEDROOMS[2];
+                      return (
+                        <span className="mt-1 block">
+                          <span className="flex flex-wrap gap-1.5">
+                            {SQFT_TO_BEDROOMS.map((b) => rentRef.byBedroom[b.key] != null && (
+                              <button key={b.key} type="button" onClick={() => setA({ ...a, rentPerUnitMonth: rentRef.byBedroom[b.key] })}
+                                className={`btn text-[11px] ${b.key === nearest.key ? 'border-accent text-accent' : ''}`}>
+                                HUD {b.label} rent: {$(rentRef.byBedroom[b.key])}
+                              </button>
+                            ))}
+                          </span>
+                          <span className="mt-1 block text-[11px] text-muted">
+                            HUD Fair Market Rent for ZIP {rentRef.zip} (gross rent, not neighborhood-specific — actual rents vary a lot within Pittsburgh; pick the bedroom count closest to your plan).
+                            {' '}<a href={String(rentRef.meta.sourceUrl)} target="_blank" rel="noreferrer" className="text-accent hover:underline">Source: HUD USER SAFMR</a>.
+                          </span>
+                        </span>
+                      );
+                    })()}
+                    {f.id === 'costPerSqft' && permitRef && (
+                      <span className="mt-1 block rounded-lg bg-surface2 p-2 text-[11px] leading-relaxed text-muted">
+                        For context: {permitRef.count} recent new-construction residential permit{permitRef.count === 1 ? '' : 's'}{permitRef.scope === 'neighborhood' ? ' in this neighborhood' : ' citywide (no neighborhood data)'} had a median declared project value of <b className="text-fg">{$(permitRef.median)}</b> (range {$(permitRef.min)}–{$(permitRef.max)}).
+                        This is a total project cost, not $/sq ft — permits don&apos;t record square footage — and may include additions or multi-unit buildings, so it is not filled in automatically.
+                        {' '}<a href={String((permitRef.meta as any).sourceUrl)} target="_blank" rel="noreferrer" className="text-accent hover:underline">Source: {String((permitRef.meta as any).source)}</a>.
                       </span>
                     )}
                   </label>

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { PrintButton } from '@/components/PrintButton';
-import { getAiCache, getMeta, getPacket } from '@/lib/web/server-data';
+import { getAiCache, getMeta, getPacket, getPermitReference, getRentReference } from '@/lib/web/server-data';
 import { comparePacket, type RuleSetId } from '@/lib/web/run';
 import { metaFor } from '@/lib/web/flagMeta';
 import { valuationOf } from '@/lib/finance';
@@ -17,6 +17,8 @@ export default async function Memo({ params, searchParams }: { params: Promise<{
   const r = rs === 'reform-2025-1545' ? cmp.reform : cmp.current;
   const ai = getAiCache(id.toUpperCase(), rs);
   const p = found.packet.p;
+  const rentRef = getRentReference(p.pin);
+  const permitRef = getPermitReference(p.neighborhood);
   const sum = summarize(r, { transit: (r.overlaps?.transit_buffer.overlapFraction ?? 0) >= 0.5 });
   const val = valuationOf(p as any, meta.hoodValues.byHood);
   const usd = (n: number | null) => (n == null ? 'unknown' : n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }));
@@ -48,6 +50,12 @@ export default async function Memo({ params, searchParams }: { params: Promise<{
         })}
       </ul>
       {ai?.nextSteps?.length ? <><h2 className="mt-5 font-semibold">Next steps</h2><ol className="list-decimal pl-5">{ai.nextSteps.map((s: string, i: number) => <li key={i}>{s}</li>)}</ol></> : null}
+      {(rentRef || permitRef) && (
+        <div className="mt-3 rounded border border-neutral-300 p-3 text-[11px] text-neutral-600">
+          {rentRef && <p>HUD Fair Market Rent, ZIP {rentRef.zip}: studio {usd(rentRef.byBedroom['0BR'])}, 1BR {usd(rentRef.byBedroom['1BR'])}, 2BR {usd(rentRef.byBedroom['2BR'])}, 3BR {usd(rentRef.byBedroom['3BR'])} per month (not neighborhood-specific).</p>}
+          {permitRef && <p>Recent new-construction residential permits ({permitRef.scope}): {permitRef.count}, median declared project value {usd(permitRef.median)} (range {usd(permitRef.min)}–{usd(permitRef.max)}); not a $/sq ft figure.</p>}
+        </div>
+      )}
       <h2 className="mt-5 font-semibold">Sources</h2>
       <ul className="break-all text-[11px] text-neutral-600">{[...new Map(r.facts.map((f) => [f.sourceUrl, f])).values()].map((f) => <li key={f.sourceUrl}>{f.source} — {f.sourceUrl} (retrieved {f.retrievedAt})</li>)}</ul>
       <p className="mt-5 border-t border-neutral-300 pt-2 text-[11px] text-neutral-600">Decision support only, not legal, financial, or zoning advice. Zoning determinations come from the City Zoning Administrator or Zoning Board of Adjustment. Public data as provided, may be stale; no setback, height, building-code, or water/sewer capacity checks (request a PWSA availability letter).</p>

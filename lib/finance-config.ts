@@ -21,12 +21,15 @@ export const FIELDS: FieldDef[] = [
 ];
 
 /**
- * Optional coverage threshold. null = show the ratio only, no pass/fail.
- * Set after confirming with a lender or PHFA (older PHFA guidelines cite 1.15; not verified for the current year).
+ * Coverage threshold, shown as a clear pass/fail line under the ratio (a housing-finance expert we consulted said the
+ * threshold choice is ours to make, as long as it is presented clearly). 1.20 is a commonly cited lender rule of thumb
+ * for small residential income properties (some agency programs use other minimums, e.g. PHFA's multifamily
+ * guidelines have cited 1.15 in some years) — treat it as a rule of thumb, not a specific lender's or program's
+ * requirement, and confirm the real minimum with your lender or PHFA. Set to null to show the ratio only, no pass/fail.
  */
-export const THRESHOLDS: { dscrMin: number | null; dscrSource: string } = {
-  dscrMin: null,
-  dscrSource: 'Set dscrMin in lib/finance-config.ts once confirmed with PHFA or a lender.',
+export const THRESHOLDS: { dscrMin: number | null; dscrLabel: string } = {
+  dscrMin: 1.2,
+  dscrLabel: 'common lender rule of thumb, not a specific loan\'s requirement — confirm with your lender or PHFA',
 };
 
 /** Weight presets. "Default" is the scoring model's own weights (lib/config.ts). Funding fit is currently a neighborhood-value proxy, not a full pro forma. */
@@ -38,3 +41,12 @@ export const PRESETS: { id: string; label: string; blurb: string; weights: { zon
 
 /** Assessor sale types that usually reflect an arm's-length price. Others are shown with their type and a caution. */
 export const MARKET_LIKE_SALE_TYPES = ['VALID SALE'];
+
+/** How many bedrooms each "homes planned" size roughly corresponds to, for suggesting a HUD rent figure (rough mapping by sq ft; the user should still pick the closest fit). */
+export const SQFT_TO_BEDROOMS: { maxSqft: number; label: string; key: '0BR' | '1BR' | '2BR' | '3BR' | '4BR' }[] = [
+  { maxSqft: 550, label: 'studio', key: '0BR' },
+  { maxSqft: 800, label: '1BR', key: '1BR' },
+  { maxSqft: 1100, label: '2BR', key: '2BR' },
+  { maxSqft: 1500, label: '3BR', key: '3BR' },
+  { maxSqft: Infinity, label: '4BR+', key: '4BR' },
+];

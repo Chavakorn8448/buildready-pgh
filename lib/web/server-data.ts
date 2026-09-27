@@ -8,6 +8,7 @@ import { pointInGeom, bboxOf } from '../geo';
 
 const ROOT = process.cwd();
 const D = (...p: string[]) => path.join(ROOT, 'data', ...p);
+const DR = (...p: string[]) => path.join(ROOT, 'data/rules', ...p);
 /** Reads a JSON file that may be stored gzipped (data/scores is committed as .json.gz to keep the deploy small). */
 function readJson(file: string): any {
   if (fs.existsSync(file + '.gz')) return JSON.parse(zlib.gunzipSync(fs.readFileSync(file + '.gz')).toString('utf8'));
@@ -129,4 +130,29 @@ export function locate(lon: number, lat: number): Located {
     }
   }
   return { found: false, reason: 'no parcel here (street, water, or outside the parcel map)' };
+}
+
+/* ---------- rent and construction-cost reference (financial snapshot; never auto-applied) ---------- */
+let _parcelZip: Record<string, string> | null = null;
+let _safmr: { _meta: Record<string, unknown>; byZip: Record<string, Record<string, number>> } | null = null;
+let _permitRef: { _meta: Record<string, unknown>; citywide: { count: number; median: number; min: number; max: number } | null; byNeighborhood: Record<string, { count: number; median: number; min: number; max: number }> } | null = null;
+
+export type RentReference = { zip: string; byBedroom: Record<string, number>; meta: Record<string, unknown> } | null;
+export function getRentReference(pin: string): RentReference {
+  if (!_parcelZip) { try { _parcelZip = readJson(DR('parcel-zip.json')); } catch { _parcelZip = {}; } }
+  if (!_safmr) { try { _safmr = JSON.parse(fs.readFileSync(DR('safmr-pittsburgh.json'), 'utf8')); } catch { _safmr = null; } }
+  const zip = _parcelZip![pin];
+  if (!zip || !_safmr) return null;
+  const row = _safmr.byZip[zip];
+  return row ? { zip, byBedroom: row, meta: _safmr._meta } : null;
+}
+
+export type PermitReference = { count: number; median: number; min: number; max: number; scope: 'neighborhood' | 'citywide'; meta: Record<string, unknown> } | null;
+export function getPermitReference(neighborhood: string | null): PermitReference {
+  if (!_permitRef) { try { _permitRef = JSON.parse(fs.readFileSync(DR('permit-reference.json'), 'utf8')); } catch { _permitRef = null; } }
+  if (!_permitRef) return null;
+  const h = neighborhood ? _permitRef.byNeighborhood[neighborhood] : undefined;
+  if (h) return { ...h, scope: 'neighborhood', meta: _permitRef._meta };
+  if (_permitRef.citywide) return { ...(_permitRef.citywide as any), scope: 'citywide', meta: _permitRef._meta };
+  return null;
 }

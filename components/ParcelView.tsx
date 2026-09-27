@@ -30,7 +30,7 @@ const SUB_LABEL: Record<string, { label: string; tip: string }> = {
   site: { label: 'Site & title', tip: 'Vacancy and public ownership (City, URA, HACP) make acquisition easier.' },
 };
 
-export default function ParcelView({ packet, meta, hood, ai, neighbors = [] }: { packet: Packet; meta: Meta; hood: string; ai: Partial<Record<RuleSetId, AiEntry>>; neighbors?: { pin: string; address: string; owner: string | null; vacant: boolean | null; lot: number | null; zone: string | null; geometry: any }[] }) {
+export default function ParcelView({ packet, meta, hood, ai, neighbors = [], rentRef = null, permitRef = null }: { packet: Packet; meta: Meta; hood: string; ai: Partial<Record<RuleSetId, AiEntry>>; neighbors?: { pin: string; address: string; owner: string | null; vacant: boolean | null; lot: number | null; zone: string | null; geometry: any }[]; rentRef?: import('@/lib/web/server-data').RentReference; permitRef?: import('@/lib/web/server-data').PermitReference }) {
   const [rs, setRs] = useState<RuleSetId>('current');
   const [weights, setWeights] = useState<Record<keyof typeof CONFIG.weights, number>>({ ...CONFIG.weights });
   const [hot, setHot] = useState<string | null>(null);
@@ -174,7 +174,7 @@ export default function ParcelView({ packet, meta, hood, ai, neighbors = [] }: {
 
         <AssemblageCard self={{ lot: parcel.lotAreaSqft, zone: parcel.zoningDistrict, vacant: parcel.vacant }} neighbors={neighbors} hot={hotNbr} onHot={setHotNbr} />
 
-        <FeasibilityCalculator v={valuation} allowed={allowed} zoningCode={parcel.zoningDistrict} />
+        <FeasibilityCalculator v={valuation} allowed={allowed} zoningCode={parcel.zoningDistrict} rentRef={rentRef} permitRef={permitRef} />
 
         {/* flags */}
         <section>

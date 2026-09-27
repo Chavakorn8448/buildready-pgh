@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { byRightTypes, EMPTY_ASSUMPTIONS, feasibility, valuationOf } from '../lib/finance';
-import { PRESETS } from '../lib/finance-config';
+import { PRESETS, THRESHOLDS } from '../lib/finance-config';
 import { CONFIG } from '../lib/config';
+import { getPermitReference, getRentReference } from '../lib/web/server-data';
+import fs from 'node:fs';
 
 describe('valuation', () => {
   it('reads assessed values and compares land $/sq ft with the neighborhood median', () => {
@@ -36,7 +38,7 @@ describe('feasibility calculator (user inputs only)', () => {
     expect(r.gap).toBeCloseTo(540000 - 360000, 5);
     expect(r.debt!.loan).toBeCloseTo(378000, 5);
     expect(r.debt!.dscr!).toBeGreaterThan(0.4);
-    expect(r.debt!.meetsMin).toBeNull(); // no threshold configured by default
+    expect(r.debt!.meetsMin).toBe(false); // dscr ~0.44 is below the configured 1.2 rule-of-thumb threshold
   });
   it('sale mode: negative gap means a cushion', () => {
     const r = feasibility({ ...EMPTY_ASSUMPTIONS, mode: 'sale', landCost: 50000, units: 1, unitSqft: 1200, costPerSqft: 150, softPct: 0, salePricePerUnit: 300000 });
@@ -52,5 +54,23 @@ describe('presets and hints', () => {
   });
   it('lists housing types allowed by right', () => {
     expect(byRightTypes({ single_unit_detached: { code: 'P' }, two_unit: { code: '' }, multi_unit: { code: 'A' }, single_unit_attached: { code: 'P/S' } })).toEqual(['single-unit detached', 'single-unit attached']);
+  });
+});
+
+describe('financial reference data (real, sourced; only used as suggestions)', () => {
+  const have = fs.existsSync('data/rules/safmr-pittsburgh.json') && fs.existsSync('data/rules/permit-reference.json') && fs.existsSync('data/rules/parcel-zip.json.gz');
+  it.skipIf(!have)('resolves HUD rent and permit context for a known parcel', () => {
+    const rent = getRentReference('0084P00162000000'); // 5925 Walnut St, Shadyside
+    expect(rent).not.toBeNull();
+    expect(rent!.zip).toBe('15232');
+    expect(rent!.byBedroom['2BR']).toBeGreaterThan(0);
+    const permit = getPermitReference('Shadyside');
+    expect(permit).not.toBeNull();
+    expect(permit!.count).toBeGreaterThan(0);
+    expect(permit!.median).toBeGreaterThan(5000); // the $5,000 floor excludes implausible low values
+  });
+  it.skipIf(!have)('the DSCR threshold is a labeled rule of thumb, not silently applied', () => {
+    expect(THRESHOLDS.dscrMin).toBe(1.2);
+    expect(THRESHOLDS.dscrLabel.toLowerCase()).toMatch(/rule of thumb/);
   });
 });

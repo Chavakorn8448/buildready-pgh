@@ -20,7 +20,9 @@
     "ask-cache": "tsx scripts/ask-cache.ts",
     "sync-maplibre": "mkdir -p public/maplibre && cp node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs public/maplibre/",
     "prebuild": "npm run -s sync-maplibre",
-    "build-adjacency": "node --max-old-space-size=8192 --import tsx scripts/build-adjacency.ts"
+    "build-adjacency": "node --max-old-space-size=8192 --import tsx scripts/build-adjacency.ts",
+    "build-parcel-zip": "tsx scripts/build-parcel-zip.ts",
+    "build-permit-reference": "tsx scripts/build-permit-reference.ts"
   },
   "dependencies": {
     "@turf/turf": "^7.4.0",

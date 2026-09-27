@@ -1,0 +1,223 @@
+{
+ "_meta": {
+  "description": "Recent residential new-construction building permits by neighborhood, for context on the calculator's construction-cost field. total_project_value is the permit applicant's declared project cost (often construction cost only; may exclude land, soft costs, or be understated) and permits do not record square footage, so this is NOT converted to a $/sq ft figure — that would require guessing a size.",
+  "source": "WPRDC PLI Building Permits (City of Pittsburgh Dept. of Permits, Licenses and Inspections)",
+  "sourceUrl": "https://data.wprdc.org/dataset/building-permits",
+  "license": "CC BY",
+  "filter": "permit_type in {BUILDING, Building & Development Application} (same rule as the ml/ validation backtest); work_type NEW CONSTRUCTION; Residential; status not Revoked/Expired/Stop Work; issued in the last 6 years; declared project value >= $5,000 (excludes implausible low values for new-home construction; not individually verified, WPRDC's SQL endpoint returned 403 here)",
+  "retrievedAt": "2026-09-27",
+  "qualifyingPermits": 469
+ },
+ "citywide": {
+  "count": 469,
+  "median": 200000,
+  "min": 5000,
+  "max": 3318708
+ },
+ "byNeighborhood": {
+  "Homewood North": {
+   "count": 4,
+   "median": 200000,
+   "min": 200000,
+   "max": 200000
+  },
+  "Garfield": {
+   "count": 35,
+   "median": 175000,
+   "min": 75000,
+   "max": 500000
+  },
+  "Mount Washington": {
+   "count": 34,
+   "median": 150000,
+   "min": 20000,
+   "max": 645000
+  },
+  "Manchester": {
+   "count": 5,
+   "median": 150000,
+   "min": 100000,
+   "max": 450000
+  },
+  "Upper Lawrenceville": {
+   "count": 14,
+   "median": 200000,
+   "min": 10000,
+   "max": 750000
+  },
+  "Homewood South": {
+   "count": 8,
+   "median": 210000,
+   "min": 150000,
+   "max": 500000
+  },
+  "Squirrel Hill North": {
+   "count": 5,
+   "median": 500000,
+   "min": 225000,
+   "max": 750000
+  },
+  "Squirrel Hill South": {
+   "count": 4,
+   "median": 190780,
+   "min": 15000,
+   "max": 960000
+  },
+  "Central Lawrenceville": {
+   "count": 14,
+   "median": 250000,
+   "min": 31785,
+   "max": 700000
+  },
+  "Shadyside": {
+   "count": 22,
+   "median": 276559,
+   "min": 5680,
+   "max": 3318708
+  },
+  "South Side Slopes": {
+   "count": 9,
+   "median": 150000,
+   "min": 8000,
+   "max": 225000
+  },
+  "Bloomfield": {
+   "count": 4,
+   "median": 325000,
+   "min": 36000,
+   "max": 350000
+  },
+  "East Liberty": {
+   "count": 23,
+   "median": 180000,
+   "min": 5000,
+   "max": 400000
+  },
+  "Stanton Heights": {
+   "count": 3,
+   "median": 150000,
+   "min": 14000,
+   "max": 200000
+  },
+  "Morningside": {
+   "count": 3,
+   "median": 125000,
+   "min": 6000,
+   "max": 250000
+  },
+  "Larimer": {
+   "count": 18,
+   "median": 210000,
+   "min": 89218,
+   "max": 500000
+  },
+  "East Allegheny": {
+   "count": 17,
+   "median": 300000,
+   "min": 50000,
+   "max": 350000
+  },
+  "New Homestead": {
+   "count": 4,
+   "median": 352000,
+   "min": 281485,
+   "max": 500000
+  },
+  "West Oakland": {
+   "count": 5,
+   "median": 150000,
+   "min": 150000,
+   "max": 250000
+  },
+  "Highland Park": {
+   "count": 5,
+   "median": 192000,
+   "min": 24000,
+   "max": 260000
+  },
+  "Duquesne Heights": {
+   "count": 11,
+   "median": 150000,
+   "min": 40000,
+   "max": 450000
+  },
+  "Bedford Dwellings": {
+   "count": 17,
+   "median": 257839,
+   "min": 257838,
+   "max": 800000
+  },
+  "Lower Lawrenceville": {
+   "count": 7,
+   "median": 200000,
+   "min": 5000,
+   "max": 500000
+  },
+  "Central Northside": {
+   "count": 27,
+   "median": 200000,
+   "min": 50000,
+   "max": 400000
+  },
+  "Polish Hill": {
+   "count": 6,
+   "median": 200000,
+   "min": 200000,
+   "max": 200000
+  },
+  "Allentown": {
+   "count": 33,
+   "median": 175000,
+   "min": 175000,
+   "max": 220000
+  },
+  "Hazelwood": {
+   "count": 7,
+   "median": 175000,
+   "min": 75000,
+   "max": 407196
+  },
+  "California-Kirkbride": {
+   "count": 7,
+   "median": 158000,
+   "min": 158000,
+   "max": 350000
+  },
+  "Crawford-Roberts": {
+   "count": 24,
+   "median": 223373,
+   "min": 200000,
+   "max": 300000
+  },
+  "South Side Flats": {
+   "count": 12,
+   "median": 175500,
+   "min": 175500,
+   "max": 550000
+  },
+  "Middle Hill": {
+   "count": 6,
+   "median": 150000,
+   "min": 150000,
+   "max": 150000
+  },
+  "Elliott": {
+   "count": 3,
+   "median": 100000,
+   "min": 100000,
+   "max": 100000
+  },
+  "Fairywood": {
+   "count": 45,
+   "median": 182759,
+   "min": 182758,
+   "max": 182759
+  },
+  "Allegheny West": {
+   "count": 3,
+   "median": 325000,
+   "min": 125000,
+   "max": 975000
+  }
+ }
+}
