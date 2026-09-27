@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "It's not known whether this parcel has confirmed water and sewer service, since that information isn't publicly available [utilities.water_sewer]. You would need to ask the water authority (PWSA) directly to confirm before planning further [utilities.water_sewer].",
+  "parking-minimum": "This site is zoned R2-L, and off-street parking rules may apply, but the tool hasn't checked exactly what's required for this district or use [zoning.district]. Parking requirements can take up land and add cost, potentially reducing the number of homes that fit [zoning.district].",
+  "adu": "Accessory dwelling units (small secondary homes on the same lot) are currently only allowed in certain overlay areas in this R2-L district, with limits like one per lot and owner-occupancy required [zoning.district]. Whether this specific parcel is in that overlay area has not been checked [zoning.district].",
+  "hazard-flood": "According to FEMA flood maps, the entire parcel sits within a designated flood hazard area [hazard.flood]. This could affect what can be built and may require special review [hazard.flood].",
+  "gap-financing": "This parcel is in a neighborhood (Hays) where assessed land values per square foot are low, which often means projects here need extra financial support (\"gap financing\") to be feasible [hood.median_land_psf]. This is just a note, not a penalty against the site [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for certain state (PHFA) infill or blight-reduction scoring incentives [landuse.vacant, hood.median_land_psf]. You would need to check current PHFA rules to confirm eligibility [landuse.vacant, hood.median_land_psf]."
+ },
+ "nextSteps": [
+  "Contact PWSA to confirm water and sewer availability for this parcel before moving forward [utilities.water_sewer].",
+  "914 [zoning.district].",
+  "Ask the Zoning Administrator whether this parcel falls within an ADU overlay district if you plan to include an accessory dwelling unit [zoning.district].",
+  "Check with the Floodplain Administrator or FEMA about what building in a Special Flood Hazard Area requires here [hazard.flood].",
+  "Confirm current PHFA infill/blight scoring criteria and discuss gap financing options with a PHFA or lender underwriting contact before finalizing plans [hood.median_land_psf].",
+  "Confirm with: PWSA; Zoning Administrator; Floodplain administrator / FEMA flood determination; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 1
+}

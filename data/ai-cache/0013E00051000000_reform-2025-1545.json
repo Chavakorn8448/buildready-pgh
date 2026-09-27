@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water/sewer service available is unknown and was not scored, so you'll need to confirm it separately [utilities.water_sewer].",
+  "lot-min-unverified": "The parcel is in zoning district H [zoning.district], but the tool does not model minimum lot-size rules for district H, so the lot area figures are unverified for this purpose [zoning.district, lot.area].",
+  "housing-exception-only": "In this zoning district (H), housing is not allowed automatically — it can only be approved through an administrator or special exception process [zoning.district, zoning.use_table].",
+  "adu": "A proposed rule (Bill 2025-1545, still Held In Council and not law) might allow accessory dwelling units by right, but it's unclear if it applies here since this parcel's district does not clearly allow housing by right [zoning.district, reform.status].",
+  "hazard-slope25": "The entire parcel sits on land with a slope of 25% or greater, which is a steep-slope hazard area [hazard.slope25].",
+  "hazard-landslide": "The entire parcel is located in a landslide-prone area [hazard.landslide].",
+  "hazard-undermined": "Almost the entire parcel (98.9%) sits over a mine-undermined area [hazard.undermined]."
+ },
+ "nextSteps": [
+  "Request a written availability letter from the water and sewer authority to confirm service capacity, since this was not verified [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm how lot-size and dimensional rules apply in district H, since this was not modeled [zoning.district, lot.area].",
+  "Because housing here requires a special exception, plan to apply through the Zoning Board of Adjustment process rather than assuming approval [zoning.use_table].",
+  "Given the site is fully within steep-slope, landslide-prone, and largely undermined areas, arrange a geotechnical and mine-subsidence review before proceeding [hazard.slope25, hazard.landslide, hazard.undermined].",
+  "Confirm all findings, including the proposed ADU rule's current status, with the Zoning Administrator, Zoning Board of Adjustment, and geotechnical/mine-subsidence reviewers before making any development decisions [reform.status, zoning.use_table, hazard.undermined].",
+  "Confirm with: Zoning Board of Adjustment; PWSA; Zoning Administrator; Zoning Administrator / Zoning Board of Adjustment; geotechnical review (Code Ch. 915)."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

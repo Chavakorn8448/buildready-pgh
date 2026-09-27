@@ -1,0 +1,23 @@
+{
+ "flags": {
+  "water-sewer": "Whether this property has water and sewer service capacity is currently unknown and hasn't been checked in scoring, so you'll need to confirm it directly with the utility [utilities.water_sewer].",
+  "adu": "There's a proposed rule (not yet law) that could allow up to 2 small accessory dwelling units by right, but it's tied to a bill still being held in council with a hearing scheduled [zoning.district, reform.status]. Since this is only proposed, it does not currently apply [reform.status].",
+  "parking-minimum": "A proposed rule would remove requirements to build off-street parking, freeing up land and money for housing, but this is not law yet and is part of the same held bill [reform.status].",
+  "affordable-housing-bonus": "A proposed optional Affordable Housing Bonus could apply since this parcel is outside the Inclusionary Housing Overlay, but again this is only proposed and not law [overlay.iz, reform.status].",
+  "hazard-undermined": "The entire parcel overlaps a mapped undermined area, meaning past underground mining activity was recorded here [hazard.undermined]. This should be reviewed by a mine subsidence or geotechnical expert before any development [hazard.undermined].",
+  "gap-financing": "This parcel is in a neighborhood with low median land value per square foot, which suggests that extra ('gap') financing may be needed to make a project work, though this is just a note and not a penalty in the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a low-value area, it may qualify for infill or blight-related scoring under PHFA funding programs, but this should be checked against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the URA (a public entity), which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a formal water/sewer availability letter to resolve the current unknown status [utilities.water_sewer].",
+  "Track Bill 2025-1545's status before relying on any proposed ADU, parking, or bonus provisions, since it is still held in council [reform.status].",
+  "Arrange a mine subsidence or geotechnical review given the full undermined-area overlap before planning construction [hazard.undermined].",
+  "Check current PHFA scoring criteria and financing options given the low-value area and vacant infill status [hood.median_land_psf, landuse.vacant].",
+  "Confirm zoning, ADU rules, and any bonus eligibility with the Zoning Administrator and Department of City Planning, and confirm acquisition steps with the URA property-disposition process [zoning.district, overlay.iz, owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; mine subsidence / geotechnical review; PHFA / lender underwriting."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this lot has water and sewer service available is unknown and hasn't been verified, so you'd need to request an availability letter from PWSA [utilities.water_sewer].",
+  "parking-minimum": "The zoning district is R1A-VH, and off-street parking minimums may apply under city rules, but the exact requirement for this site hasn't been checked [zoning.district]. Required parking can take up space and add cost, which may reduce how many homes fit on the lot [zoning.district].",
+  "adu": "Accessory dwelling units (ADUs, small secondary homes on a lot) are currently only allowed in a specific ADU overlay district with owner-occupancy and a one-per-lot limit, and it hasn't been confirmed whether this parcel is inside that overlay [zoning.district].",
+  "gap-financing": "This parcel is in a neighborhood with a low median land value per square foot, so extra 'gap' financing to cover costs may be needed, though this is just a note and not a penalty to the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related scoring under PHFA (a state housing finance agency) programs, but this should be checked against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the URA (Urban Redevelopment Authority), a public agency, which may make it easier to acquire through a public disposition process, though this isn't guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water and sewer availability letter to confirm service capacity for this lot [utilities.water_sewer].",
+  "Confirm the exact off-street parking requirement for this district and use with the Zoning Administrator [zoning.district].",
+  "Check whether this parcel falls inside the ADU overlay district before assuming an accessory dwelling unit is allowed [zoning.district].",
+  "Discuss gap financing options and infill/blight scoring eligibility with PHFA or a lender, given the neighborhood's low land values [hood.median_land_psf].",
+  "Confirm zoning permissions, parking rules, and ADU overlay status with the Zoning Administrator, and confirm acquisition process and PHFA scoring criteria with the URA property-disposition process and PHFA [zoning.district, owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; URA property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

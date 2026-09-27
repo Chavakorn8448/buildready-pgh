@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water and sewer service is unknown and hasn't been checked, so you should ask PWSA directly before relying on it [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law) would allow up to 2 accessory dwelling units by right, each no bigger than 1,000 sq ft and 30 ft tall, without needing the owner to live on site; this depends on the zoning district shown and a bill that is currently held in City Council [zoning.district, reform.status].",
+  "parking-minimum": "The same proposed, not-yet-law bill would remove any requirement to build off-street parking, which could free up land and money for more housing if it passes [reform.status].",
+  "affordable-housing-bonus": "This proposed, not-yet-law bill would also offer an optional Affordable Housing Bonus, and this parcel is not inside the separate Inclusionary Housing Overlay so that overlay doesn't apply here [overlay.iz, reform.status].",
+  "gap-financing": "This parcel sits in a neighborhood with a low median land value per square foot, which is just a note (not a penalty) suggesting that extra 'gap' financing might commonly be needed for projects here [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related scoring under PHFA programs, but you should confirm this against PHFA's current criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is listed as owned by the City, which may make it easier (though not guaranteed) to acquire through the City's public disposition process [owner.type]."
+ },
+ "nextSteps": [
+  "Contact PWSA to confirm water and sewer service availability for this parcel before planning any construction [utilities.water_sewer].",
+  "Check with the Zoning Administrator on the current status of the proposed ADU and parking rules, since these are not yet law [reform.status, zoning.district].",
+  "Ask the Department of City Planning whether the Affordable Housing Bonus applies to this parcel given it is outside the Inclusionary Housing Overlay [overlay.iz, reform.status].",
+  "Confirm current infill/blight eligibility criteria with PHFA before assuming this parcel qualifies for related scoring [landuse.vacant, hood.median_land_psf].",
+  "Confirm ownership and acquisition steps with the City property-disposition process, and verify zoning and utility questions with the Zoning Administrator and PWSA [owner.type, utilities.water_sewer].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

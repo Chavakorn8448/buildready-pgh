@@ -45,9 +45,13 @@ function collectOffices(results: any[]): string[] {
   return [...o].slice(0, 5);
 }
 
-/** Every number with 2+ digits in the answer must occur in the tool results (formatting-insensitive). */
-export function ungroundedNumbers(answer: string, results: unknown[]): string[] {
-  const hay = JSON.stringify(results).replace(/,/g, '');
+/**
+ * Every number with 2+ digits in the answer must occur in the tool results, the tool-call args (e.g. a min_score
+ * filter the model set), or the user's own question (echoing back a number the user supplied is not a hallucination
+ * risk) — formatting-insensitive.
+ */
+export function ungroundedNumbers(answer: string, results: unknown[], question = '', traceArgs: unknown[] = []): string[] {
+  const hay = JSON.stringify([results, traceArgs, question]).replace(/,/g, '');
   const bad: string[] = [];
   for (const m of answer.replace(/\[[^\]]*\]/g, '').matchAll(/\d[\d,]*\.?\d*/g)) {
     const raw = m[0].replace(/,/g, '').replace(/\.$/, '');
@@ -121,17 +125,20 @@ async function claudeAnswer(question: string, apiKey: string): Promise<AskResult
   for (let turn = 0; turn < MAX_TOOL_CALLS + 2; turn++) {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST', headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model, max_tokens: 1200, system: SYSTEM, tools: calls >= MAX_TOOL_CALLS ? [] : TOOL_DEFS, messages }),
+      body: JSON.stringify({ model, max_tokens: 3000, output_config: { effort: 'medium' }, system: SYSTEM, tools: calls >= MAX_TOOL_CALLS ? [] : TOOL_DEFS, messages }),
     });
     if (!res.ok) throw new Error(`Claude API ${res.status}: ${(await res.text()).slice(0, 200)}`);
     const body: any = await res.json();
+    // Sonnet 5 runs adaptive thinking by default, sharing max_tokens with tool_use/text output; a cap hit
+    // mid tool-call or mid-answer must not be treated as a normal turn (partial JSON, a cut-off answer).
+    if (body.stop_reason === 'max_tokens') throw new Error(`Claude API: hit max_tokens before finishing (output_tokens=${body.usage?.output_tokens})`);
     messages.push({ role: 'assistant', content: body.content });
     const uses = (body.content ?? []).filter((c: any) => c.type === 'tool_use');
     if (body.stop_reason !== 'tool_use' || uses.length === 0) {
       let answer = (body.content ?? []).filter((c: any) => c.type === 'text').map((c: any) => c.text).join('\n').trim();
       const offices = collectOffices(results).length ? collectOffices(results) : DEFAULT_OFFICES;
       if (!/confirm with:/i.test(answer)) answer += `\nConfirm with: ${offices.join('; ')}.`;
-      const bad = ungroundedNumbers(answer, results);
+      const bad = ungroundedNumbers(answer, results, question, trace.map((t) => t.args));
       if (bad.length) answer += `\n(Note: these numbers could not be matched to tool results and should be treated as unverified: ${bad.join(', ')}.)`;
       return { answer, pins: collectPins(results), trace, mode: 'claude', confirmWith: offices };
     }

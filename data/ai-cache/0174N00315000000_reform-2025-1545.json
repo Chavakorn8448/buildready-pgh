@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water and sewer service available is unknown and was not checked as part of the score, so you should ask PWSA for an availability letter [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law) would allow up to 2 accessory dwelling units by right on this R1A-VH zoned parcel, each no bigger than 1,000 sq ft and 30 ft tall, with no owner-occupancy requirement; this bill is currently held in council with a hearing scheduled [zoning.district, reform.status].",
+  "parking-minimum": "The same proposed, not-yet-law bill would remove off-street parking minimums, which could free up land and money for more housing units if it passes [reform.status].",
+  "affordable-housing-bonus": "This proposed, not-yet-law bill would also offer an optional Affordable Housing Bonus, and this parcel is outside the Inclusionary Housing Overlay so that separate program does not apply here [overlay.iz, reform.status].",
+  "gap-financing": "This parcel sits in a neighborhood with a low median assessed land value per square foot, so gap financing (extra funding to cover the difference between costs and typical value) will likely be needed; this is just a note, not a penalty on the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is vacant land in a low-value area, it may qualify for PHFA infill or blight-related scoring, but you should confirm this against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the URA (Urban Redevelopment Authority), so acquiring it may go through a public disposition process, which could be easier but is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water/sewer availability letter from PWSA to resolve the unknown utility status [utilities.water_sewer].",
+  "Confirm the status of proposed Bill 2025-1545 (ADUs, parking minimums, affordable housing bonus) with the Zoning Administrator before relying on it, since it is not yet law [reform.status].",
+  "Ask the Department of City Planning to confirm details of the optional Affordable Housing Bonus described in the proposed bill [overlay.iz, reform.status].",
+  "Discuss gap financing and infill/blight eligibility with PHFA or a lender underwriter given the low neighborhood land values [hood.median_land_psf].",
+  "Confirm the parcel's URA ownership and disposition process, and verify zoning and ADU rules with the Zoning Administrator and PWSA before proceeding [owner.type, reform.status, utilities.water_sewer].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether this lot has water and sewer service available is currently unknown and hasn't been verified [utilities.water_sewer]. You'll want to check with the water/sewer authority before relying on this being ready for development [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law) could allow up to two small accessory dwelling units by right on this RM-M zoned lot, each no larger than 1,000 square feet and no taller than 30 feet, without requiring the owner to live on site [zoning.district, reform.status]. This bill is currently 'Held In Council' with a hearing scheduled, so it is not something you can rely on yet [reform.status].",
+  "parking-minimum": "Another proposed change (also not law yet) would remove the requirement to build a minimum number of off-street parking spaces, which could free up land and budget for housing instead [reform.status]. This is still pending in City Council and has not been enacted [reform.status].",
+  "affordable-housing-bonus": "This parcel is not inside the Inclusionary Housing Overlay, and a proposed (not yet passed) rule would let a developer opt into an Affordable Housing Bonus program [overlay.iz, reform.status]. Since the bill is still pending, this bonus is not currently available [reform.status].",
+  "gap-financing": "This lot sits in a neighborhood with a low median assessed land value per square foot, which suggests that a project here may need extra 'gap' funding beyond typical financing to pencil out [hood.median_land_psf]. This is just a note for planning purposes, not a penalty against the parcel [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related scoring used by PHFA in certain funding programs, but this should be confirmed against PHFA's current criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is currently owned by the City, which may make it possible to acquire through a public property-disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a formal water and sewer availability letter to confirm whether the lot can be served, since this is currently unknown [utilities.water_sewer].",
+  "Do not rely on the proposed accessory dwelling unit, parking, or affordable-housing-bonus rules for planning purposes until Bill 2025-1545 passes, since it is still 'Held In Council' [reform.status].",
+  "If pursuing financing, discuss gap-financing needs and PHFA infill/blight eligibility with a lender or PHFA program staff given the low neighborhood land value [hood.median_land_psf, landuse.vacant].",
+  "Look into the City's property-disposition process to understand how to acquire this City-owned vacant parcel [owner.type].",
+  "Confirm all zoning, ADU, parking, and affordable-housing-bonus details with the Zoning Administrator and Department of City Planning, and confirm water/sewer with PWSA and financing eligibility with PHFA/lender underwriting [zoning.district, reform.status, utilities.water_sewer, hood.median_land_psf].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

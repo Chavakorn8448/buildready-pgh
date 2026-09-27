@@ -20,6 +20,19 @@ describe('bottom-line summary (test fixtures)', () => {
     expect(s.nextSteps.some((x) => x.who === 'Zoning Board of Adjustment')).toBe(true);
     expect(s.barriers.find((b) => b.id === 'hazard-slope25')!.text).not.toMatch(/pin/);
   });
+  it('the headline never states the score cap twice, across all three G3 message shapes', () => {
+    const g3 = (message: string) => ({ id: 'G3' as const, name: 'n', triggered: true, effect: 'cap' as const, cap: 70, message, reviewBy: 'Zoning Board of Adjustment' });
+    const caseA = summarize(base({ score: 40, gates: [g3('Housing not permitted in HC: use variance or rezoning needed; score capped at 40.')] }));
+    const caseB = summarize(base({ score: 70, gates: [g3('Housing only by exception in H: score capped at 70.')] }));
+    const caseC = summarize(base({ score: 40, gates: [g3('Unverified: housing permission for zoning SP-5 could not be established: score capped at 40.')] }));
+    for (const s of [caseA, caseB, caseC]) {
+      expect(s.headline.match(/score capped at/gi) ?? []).toHaveLength(0); // the cap number appears once, via "the score is capped at N", never via the gate's own trailing clause
+      expect(s.headline).not.toMatch(/\.\./); // no doubled trailing period either
+    }
+    expect(caseA.headline).toMatch(/because housing not permitted in HC\.$/);
+    expect(caseB.headline).toMatch(/because housing only by exception in H\.$/);
+    expect(caseC.headline).toMatch(/because unverified: housing permission for zoning SP-5 could not be established\.$/);
+  });
   it('no score explains why', () => {
     const s = summarize(base({ score: null, gates: [{ id: 'G1', name: 'n', triggered: true, effect: 'no_score', message: 'Parcel is outside City of Pittsburgh limits: no score — check municipal code.', reviewBy: 'x' }] }));
     expect(s.verdict).toBe('no-score');

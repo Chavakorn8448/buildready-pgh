@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether the site has water and sewer service hookups is unknown and hasn't been checked, so you should request an availability letter from PWSA [utilities.water_sewer].",
+  "parking-minimum": "Off-street parking rules may apply based on the zoning district (R1A-VH), but the exact requirement for this site hasn't been confirmed [zoning.district]. Required parking can take up land and add cost, which may reduce how many homes fit on the lot [zoning.district].",
+  "adu": "Accessory dwelling units (small secondary homes) are only allowed in a specific overlay area under current rules, limited to one per lot with the owner living on site, but whether this parcel is in that overlay hasn't been checked [zoning.district].",
+  "gap-financing": "This parcel is in a neighborhood with a low median land value per square foot, which suggests project financing may need extra gap funding; this is just a note, not a score penalty [hood.median_land_psf].",
+  "phfa-infill": "Because this is vacant land in a lower-value area, it may qualify for infill or blight-related scoring in PHFA (a state housing finance agency) funding applications, but this should be confirmed against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the URA (Urban Redevelopment Authority), which may make it somewhat easier to acquire through a public disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water and sewer availability letter from PWSA to confirm utility service to the site [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm the exact off-street parking requirement for this R1A-VH parcel [zoning.district].",
+  "Ask the Zoning Administrator whether this parcel falls within the ADU overlay district before planning any accessory dwelling unit [zoning.district].",
+  "Check current PHFA application scoring criteria to see if this vacant, low-value infill lot qualifies for infill or blight points [landuse.vacant, hood.median_land_psf].",
+  "Contact the URA property-disposition process to ask about acquiring this URA-owned parcel, and confirm all open items with PWSA, the Zoning Administrator, and PHFA / lender underwriting [owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; URA property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

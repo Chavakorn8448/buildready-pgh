@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether water and sewer service is available for this parcel is currently unknown, so you should request a PWSA availability letter to confirm [utilities.water_sewer].This is not something the scoring tool checks [utilities.water_sewer].",
+  "parking-minimum": "Under the zoning district RM-M, off-street parking minimums may apply, but the tool has not confirmed the exact requirement for this use [zoning.district].Required parking can take up space and add cost, which may reduce how many homes fit on the lot [zoning.district].",
+  "adu": "Accessory dwelling units (ADUs, small secondary homes on a lot) are currently only allowed in a special ADU overlay district with owner-occupancy and a one-per-lot limit, and it's unverified whether this parcel is in that overlay [zoning.district].",
+  "gap-financing": "This parcel is in a neighborhood with a lower median assessed land value per square foot, so extra funding to cover project costs (gap financing) may be needed; this is a note, not a penalty to the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related scoring under PHFA (Pennsylvania Housing Finance Agency) programs, but you should confirm against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is listed as owned by the City, which may make it easier (but not guaranteed) to acquire through a public disposition process [owner.type]."
+ },
+ "nextSteps": [
+  "Request a formal water/sewer availability letter to resolve the unknown utility status [utilities.water_sewer].",
+  "Confirm the exact off-street parking requirement for this district and use with the Zoning Administrator [zoning.district].",
+  "Verify whether this parcel falls within an ADU overlay district before assuming ADU eligibility [zoning.district].",
+  "Check current PHFA scoring criteria to see if this vacant, lower-value lot qualifies for infill funding support [landuse.vacant, hood.median_land_psf].",
+  "Confirm ownership and disposition process details with the City property-disposition process, and verify parking and ADU questions with the Zoning Administrator, and utility availability with PWSA [owner.type, zoning.district, utilities.water_sewer].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; City property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

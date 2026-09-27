@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water and sewer service is unknown and hasn't been verified, and this isn't factored into the score [utilities.water_sewer]. You should request a PWSA availability letter to confirm [utilities.water_sewer].",
+  "parking-minimum": "This parcel is zoned R2-H, and off-street parking rules may apply, but the exact requirement for this district hasn't been checked [zoning.district]. Required parking can take up space and add cost, which may reduce the number of homes that fit on the site [zoning.district].",
+  "adu": "Accessory dwelling units (ADUs, small secondary homes on a lot) are currently only allowed in a specific ADU overlay district, limited to one per lot with an owner living on site, but whether this parcel is in that overlay hasn't been checked [zoning.district].",
+  "hazard-undermined": "The entire parcel overlaps a mapped undermined area, meaning underground mining may have occurred here [hazard.undermined]. A mine subsidence or geotechnical review is recommended to check ground stability [hazard.undermined].",
+  "gap-financing": "This parcel is in a neighborhood with a low median assessed land value, which often means projects need extra 'gap' financing to become feasible; this is just a note, not a penalty to the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is vacant land in a low-value area, it may qualify for infill or blight-related scoring under PHFA (Pennsylvania Housing Finance Agency) programs, but this should be confirmed against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the City, which may make it somewhat easier to acquire through a public disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water and sewer availability letter from PWSA to confirm service capacity [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm the exact off-street parking requirement for this R2-H parcel [zoning.district].",
+  "Ask the Zoning Administrator whether this parcel falls within the ADU overlay district before planning any accessory dwelling unit [zoning.district].",
+  "Arrange a mine subsidence or geotechnical review given the full undermined-area overlap before any construction planning [hazard.undermined].",
+  "Confirm with: PWSA; Zoning Administrator; mine subsidence / geotechnical review; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 1
+}

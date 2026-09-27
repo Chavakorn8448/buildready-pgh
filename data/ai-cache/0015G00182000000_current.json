@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has adequate water and sewer service is unknown, so you should ask PWSA for an availability letter to confirm [utilities.water_sewer].",
+  "parking-minimum": "Because the parcel is zoned R2-H, off-street parking rules may apply, but this tool has not checked the exact requirement for this district, so it's unverified [zoning.district]. Required parking can take up land and add cost, which may reduce how many homes fit on the site [zoning.district].",
+  "adu": "Accessory Dwelling Units (small secondary homes) are only allowed in certain overlay areas with owner-occupancy and a one-per-lot limit under current rules, but whether this parcel is in that overlay is unverified [zoning.district].",
+  "hazard-undermined": "City mapping shows that 100% of this parcel sits over a previously mined (undermined) area, so a mine subsidence or geotechnical review should be done before building [hazard.undermined].",
+  "gap-financing": "This parcel is in a neighborhood with low median land value, meaning projects here often need extra 'gap' financing to be built [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related funding programs, but you should check current PHFA criteria to confirm [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel appears to be owned by the City, which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Contact PWSA to request a water and sewer availability letter for this parcel [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm the exact off-street parking requirement that applies to this R2-H parcel [zoning.district].",
+  "Ask the Zoning Administrator whether this parcel falls within an ADU overlay district before planning an accessory dwelling unit [zoning.district].",
+  "Arrange a mine subsidence or geotechnical review given the full undermined-area overlap before any construction planning [hazard.undermined].",
+  "Confirm with: PWSA; Zoning Administrator; mine subsidence / geotechnical review; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 1
+}

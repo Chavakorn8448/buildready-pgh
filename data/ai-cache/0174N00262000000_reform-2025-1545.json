@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether the parcel has access to water and sewer service is currently unknown and hasn't been checked or scored [utilities.water_sewer]. You should ask the water authority to confirm availability before relying on this [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law) would allow up to 2 accessory dwelling units by right, with size and height limits, but this depends on Bill 2025-1545 which is still being considered by Council [zoning.district, reform.status]. Since it is only proposed, it cannot be counted on yet [reform.status].",
+  "parking-minimum": "The same proposed, not-yet-law bill would remove the requirement to build off-street parking, potentially freeing up land and money for housing instead [reform.status]. This is still under Council review and not in effect [reform.status].",
+  "affordable-housing-bonus": "The proposed bill also includes an optional bonus for adding affordable housing, available since this parcel is not in the existing Inclusionary Housing Overlay [overlay.iz, reform.status]. This bonus is not law yet and depends on the bill passing [reform.status].",
+  "gap-financing": "This parcel is in a neighborhood with low assessed land values, which often means projects need extra funding help (called 'gap financing') to become financially workable [hood.median_land_psf]. This is just a note, not a penalty against the parcel [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a low-value area, it may qualify for special infill or blight-related scoring under state housing finance agency (PHFA) programs [landuse.vacant, hood.median_land_psf]. You should check this against PHFA's current criteria before assuming eligibility [hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the City, which may make it easier to acquire through the City's public property disposition process, though this is not guaranteed [owner.type]. Anyone interested should confirm the exact process directly with the City [owner.type]."
+ },
+ "nextSteps": [
+  "Request a formal water and sewer availability letter to resolve the unknown utility status [utilities.water_sewer].",
+  "Track Bill 2025-1545 in City Council, since its ADU, parking, and bonus provisions are proposed and not yet law [reform.status].",
+  "Ask a lender or PHFA about gap financing needs given the low land values in this neighborhood [hood.median_land_psf].",
+  "Check current PHFA infill/blight scoring criteria to see if this vacant lot qualifies [landuse.vacant, hood.median_land_psf].",
+  "Confirm zoning, ADU rules, water/sewer access, and City-owned property disposition steps with the Zoning Administrator, PWSA, Department of City Planning, PHFA, and the City property-disposition process [zoning.district, utilities.water_sewer, reform.status, owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this property has adequate water and sewer service is unknown and was not factored into the score, so you'll need to check with PWSA directly [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law) could allow up to 2 accessory dwelling units by right, each no larger than 1,000 sq ft and 30 ft tall, without requiring the owner to live on site, if the zoning district qualifies [zoning.district, reform.status]. This bill is currently held in City Council and not in effect [reform.status].",
+  "parking-minimum": "The same proposed bill would remove required off-street parking minimums, which could free up land and money for more housing, but this is not law yet [reform.status].",
+  "affordable-housing-bonus": "The proposed bill also includes an optional Affordable Housing Bonus program, and this parcel is outside the Inclusionary Housing Overlay so it may be eligible if the bill passes [overlay.iz, reform.status]. This is still proposed, not law [reform.status].",
+  "hazard-slope25": "About 27.9% of this parcel has slopes of 25% or greater, which can affect what can be built and may require extra geotechnical review [hazard.slope25].",
+  "hazard-undermined": "The entire parcel (100%) sits in an area marked as undermined, meaning past underground mining could affect ground stability and may require further geotechnical review [hazard.undermined]."
+ },
+ "nextSteps": [
+  "Request a water/sewer availability letter from PWSA since this was not scored and remains unknown [utilities.water_sewer].",
+  "Confirm current zoning district rules and whether the proposed ADU and parking changes have taken effect with the Zoning Administrator before relying on them [zoning.district, reform.status].",
+  "Ask the Department of City Planning whether the Affordable Housing Bonus program applies to this parcel if Bill 2025-1545 passes [overlay.iz, reform.status].",
+  "Get a geotechnical review addressing both the steep slope and undermined conditions on this parcel before planning construction [hazard.slope25, hazard.undermined].",
+  "Confirm all findings with the Zoning Administrator, Department of City Planning, PWSA, and geotechnical/mine subsidence reviewers noted above before proceeding [zoning.district, reform.status, overlay.iz, utilities.water_sewer, hazard.slope25, hazard.undermined].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; geotechnical review (Code Ch. 915); mine subsidence / geotechnical review."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

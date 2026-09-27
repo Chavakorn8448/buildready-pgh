@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether water and sewer service is available for this parcel is unknown and hasn't been verified, so this should be checked directly with the water authority [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law) would allow up to 2 accessory dwelling units by right, each no bigger than 1,000 sq ft and 30 ft tall, without requiring the owner to live on-site, based on the current RM-M zoning district [zoning.district, reform.status]. This bill is still 'Held In Council' with a hearing planned, so it cannot be relied on yet [reform.status].",
+  "parking-minimum": "The same proposed bill would remove the requirement for off-street parking spaces, which could free up land and money for more housing, but this is not yet law [reform.status].",
+  "affordable-housing-bonus": "The proposed bill also includes an optional Affordable Housing Bonus, and this parcel is outside the existing Inclusionary Housing Overlay, but again this is only proposed, not law [overlay.iz, reform.status].",
+  "gap-financing": "This parcel is in an area with a low median assessed land value per square foot, which suggests that a project here may need gap financing to be feasible; this is a note, not a penalty against the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related scoring under PHFA funding programs, but this should be confirmed against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the City, which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a formal water/sewer availability letter to confirm service capacity for this parcel [utilities.water_sewer].",
+  "Track Bill 2025-1545 status, since the ADU, parking, and affordable housing bonus provisions are proposed and not yet law [reform.status].",
+  "Discuss gap financing options and PHFA infill/blight eligibility with a lender or funder given the low neighborhood land values [hood.median_land_psf].",
+  "Ask about the City's property disposition process to explore acquiring this City-owned parcel [owner.type].",
+  "Confirm all zoning, ADU, parking, and affordable housing bonus questions with the Zoning Administrator and Department of City Planning, and confirm PHFA program details with PHFA / lender underwriting [reform.status, overlay.iz].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

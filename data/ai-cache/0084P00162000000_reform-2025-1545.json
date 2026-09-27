@@ -1,0 +1,18 @@
+{
+ "flags": {
+  "water-sewer": "Whether there is enough water and sewer capacity for this property is unknown, since this information isn't tracked or scored in this tool [utilities.water_sewer]. You would need to request an availability letter from PWSA (the water/sewer utility) to confirm this before moving forward [utilities.water_sewer].",
+  "adu": "There is a proposed rule (Bill 2025-1545), not yet law, that was held in Council with a public hearing planned, which would allow up to 2 small accessory dwelling units (backyard-style extra homes) by right if this parcel is confirmed to be in the RM-M zoning district [zoning.district, reform.status]. Since this is only proposed, it cannot currently be relied on for any project [reform.status].",
+  "parking-minimum": "The same proposed bill would eliminate the requirement to build a minimum number of off-street parking spaces, which could free up land and money for more housing, but this is not yet law [reform.status].",
+  "affordable-housing-bonus": "The proposed bill also includes an optional Affordable Housing Bonus, which appears to be available here since the parcel is not inside the Inclusionary Housing Overlay area [overlay.iz]. This bonus is not law yet and would need confirmation if it ever takes effect [reform.status]."
+ },
+ "nextSteps": [
+  "Request a formal water and sewer capacity availability letter from PWSA before relying on any development plans [utilities.water_sewer].",
+  "Treat all mentions of accessory dwelling units, parking minimum removal, and the affordable housing bonus as proposed ideas only, not current law, since Bill 2025-1545 is still held in Council [reform.status].",
+  "Do not assume the zoning district or use table findings are final without independent confirmation, since some zoning source confidence is only medium [zoning.district, zoning.district_parcels_layer, zoning.use_table].",
+  "Confirm current zoning rules, use permissions, and status of Bill 2025-1545 with the Zoning Administrator and Department of City Planning before proceeding [reform.status, zoning.use_table].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

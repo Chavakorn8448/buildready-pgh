@@ -1,0 +1,23 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water and sewer service is unknown and was not checked in this tool, so you would need to confirm this separately [utilities.water_sewer].It's a good idea to request an availability letter from the water authority before moving forward [utilities.water_sewer].",
+  "adu": "This flag is based on a PROPOSED rule (Bill 2025-1545), which is not law yet and is currently held in council [reform.status]. If it passes, it could allow up to two accessory dwelling units (small secondary homes on the same lot) by right in this R2-H zoning district, without requiring the owner to live on site [zoning.district, reform.status].",
+  "parking-minimum": "This is also part of the PROPOSED bill, not current law [reform.status]. If passed, it would remove the requirement to build a minimum number of off-street parking spaces, which could free up land and money for more housing [reform.status].",
+  "affordable-housing-bonus": "This is another PROPOSED provision, not yet law [reform.status]. It would offer an optional bonus for including affordable housing, and this parcel is not inside the existing Inclusionary Housing Overlay area, which is a separate, already-in-effect affordable housing zone [overlay.iz, reform.status].",
+  "hazard-undermined": "The entire parcel is located in an area marked as undermined, meaning there may have once been underground mining beneath it [hazard.undermined]. This should be reviewed by a mine subsidence or geotechnical specialist before construction [hazard.undermined].",
+  "gap-financing": "This parcel is in a neighborhood with a low median land value, which often means projects here may need extra 'gap' financing to become feasible [hood.median_land_psf]. This is noted as information only, not a penalty against the parcel [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for special infill or blight-related scoring under PHFA (a state housing finance agency) programs [landuse.vacant, hood.median_land_psf]. You would need to check this against PHFA's current criteria to confirm eligibility [hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the City, which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]. You would need to go through the City's formal process to pursue this [owner.type]."
+ },
+ "nextSteps": [
+  "Request a written water and sewer availability confirmation before planning further, since this was not verified [utilities.water_sewer].",
+  "Check with the Zoning Administrator on the current status of the proposed ADU and parking rules, since they are not law yet [reform.status].",
+  "Have a mine subsidence or geotechnical professional review the undermined area before any construction planning [hazard.undermined].",
+  "Discuss financing options with a lender or PHFA, given the low neighborhood land values noted here [hood.median_land_psf].",
+  "Confirm all zoning, hazard, and financing details with the Zoning Administrator, Department of City Planning, PWSA, mine subsidence/geotechnical review, PHFA, and the City property-disposition process before proceeding [reform.status, hazard.undermined, hood.median_land_psf, owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; mine subsidence / geotechnical review; PHFA / lender underwriting."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

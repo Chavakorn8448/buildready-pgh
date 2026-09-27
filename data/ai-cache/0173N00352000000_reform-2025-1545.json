@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water and sewer service confirmed is unknown, so you should ask PWSA for an availability letter before moving forward [utilities.water_sewer].This is not factored into the score at all [utilities.water_sewer].",
+  "lot-below-minimum": "The lot is about 1,774 square feet, which is smaller than the 3,000 square foot minimum lot size normally required in its R2-L zoning district [lot.area, zoning.district].This likely means you'd need a variance (special permission) from the Zoning Board of Adjustment, or you could look into combining this lot with a neighboring one [lot.area, zoning.district].",
+  "adu": "There's a proposed rule, not yet law, that could let this parcel add up to two small accessory dwelling units (extra housing units on the same lot) by right, without requiring the owner to live there, if the bill passes [zoning.district, reform.status].This bill is currently 'Held In Council' and not in effect, so it cannot be relied on yet [reform.status].",
+  "parking-minimum": "The same proposed, not-yet-law bill would remove the requirement to build a minimum number of off-street parking spaces, which could free up land and money for more housing [reform.status].Again, this rule is still pending in Council and is not currently in effect [reform.status].",
+  "affordable-housing-bonus": "The proposed bill would also offer an optional Affordable Housing Bonus for parcels outside the Inclusionary Housing Overlay, and this parcel is outside that overlay [overlay.iz, reform.status].This bonus is not law yet, since the bill is still pending [reform.status].",
+  "gap-financing": "This parcel is in an area with low median assessed land value per square foot, which often means projects here need extra 'gap financing' (additional funding to cover costs beyond what the property value supports) [hood.median_land_psf].This is just a note, not a penalty against the parcel's score [hood.median_land_psf]."
+ },
+ "nextSteps": [
+  "Contact PWSA to confirm water and sewer availability for this parcel before planning further [utilities.water_sewer].",
+  "Speak with the Zoning Board of Adjustment about options for the lot's small size, including a possible variance or lot combination [lot.area, zoning.district].",
+  "Track the status of Bill 2025-1545 since it is still 'Held In Council' and not law, and do not rely on its proposed ADU, parking, or bonus provisions yet [reform.status].",
+  "Check with PHFA or a lender about gap financing options given the low land values in this neighborhood [hood.median_land_psf].",
+  "Confirm all zoning, ADU, and bonus questions with the Zoning Administrator, and confirm lot size and variance questions with the Zoning Board of Adjustment [zoning.district, reform.status, lot.area].",
+  "Confirm with: PWSA; Zoning Board of Adjustment; Zoning Administrator; Department of City Planning; PHFA / lender underwriting."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

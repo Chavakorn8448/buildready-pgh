@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether this lot has access to water and sewer service is unknown and hasn't been checked in this tool, so you'll want to request a PWSA availability letter [utilities.water_sewer].",
+  "adu": "There's a proposed rule, not yet law, that could allow up to 2 accessory dwelling units by right (each up to 1,000 sq ft and 30 ft tall, with no owner-occupancy requirement) on this R1A-M zoned parcel [zoning.district, reform.status]. This proposal was held in council with a hearing planned, so it cannot be relied on yet [reform.status].",
+  "parking-minimum": "Another proposed rule would remove off-street parking minimums, which could free up land and money for more housing, but this is not law yet [reform.status].",
+  "affordable-housing-bonus": "A proposed Affordable Housing Bonus could apply since this parcel is outside the Inclusionary Housing Overlay area, but again this is only proposed and not law [overlay.iz, reform.status].",
+  "gap-financing": "This parcel is in a neighborhood with a low median assessed land value per square foot, so gap financing (extra funding to cover a project shortfall) may likely be needed; this is just a note, not a penalty to the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a low-value area, it may qualify for infill or blight-related scoring under PHFA programs, but you should confirm this against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the City, which may make it easier (though not guaranteed) to acquire through a public disposition process [owner.type]."
+ },
+ "nextSteps": [
+  "Request a PWSA availability letter to confirm water and sewer access before planning any construction [utilities.water_sewer].",
+  "Do not rely on the proposed accessory dwelling unit, parking, or affordable housing bonus rules until Bill 2025-1545 is passed into law [reform.status].",
+  "Talk to a lender or PHFA about gap financing options given the neighborhood's low land values [hood.median_land_psf].",
+  "Check with the City property-disposition process about how to acquire this City-owned vacant lot [owner.type].",
+  "Confirm all zoning, ADU, parking, and affordable housing bonus questions with the Zoning Administrator and confirm land use and bonus eligibility with the Department of City Planning [zoning.district, overlay.iz].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

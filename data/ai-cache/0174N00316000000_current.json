@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this lot has water and sewer service is currently unknown and hasn't been checked, so you'll need to request an availability letter from PWSA to confirm [utilities.water_sewer]. This factor is not included in the feasibility score [utilities.water_sewer].",
+  "parking-minimum": "The site is in the R1A-VH zoning district, and off-street parking minimums (rules about how many parking spaces must be built) may apply, though this tool hasn't checked the exact requirement for this district [zoning.district]. If parking is required, it uses up land and adds construction costs, which could reduce how many homes fit on the lot [zoning.district].",
+  "adu": "Accessory Dwelling Units (small secondary homes on the same lot, called ADUs) are currently only allowed in a specific ADU overlay district, require owner-occupancy, and are limited to one per lot, but whether this parcel falls in that overlay has not been checked [zoning.district].",
+  "gap-financing": "This parcel is in Homewood South, a neighborhood with a low median assessed land value per square foot, which suggests that outside financial help (gap financing) may be needed to make a project work [hood.median_land_psf]. This is only a note, not a penalty to the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related scoring benefits under PHFA (Pennsylvania Housing Finance Agency) funding programs [landuse.vacant, hood.median_land_psf]. You should confirm this against current PHFA scoring criteria before relying on it [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the URA (Urban Redevelopment Authority), a public agency, which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a formal water and sewer availability letter from PWSA to resolve the unknown utility status [utilities.water_sewer].",
+  "Confirm with the Zoning Administrator whether off-street parking minimums apply to this R1A-VH lot and how much parking would be required [zoning.district].",
+  "Ask the Zoning Administrator to verify whether this parcel is inside the ADU overlay district before planning an accessory dwelling unit [zoning.district].",
+  "Check current PHFA infill/blight scoring criteria and discuss gap financing options with a lender to confirm funding feasibility [hood.median_land_psf, landuse.vacant].",
+  "Contact the URA property-disposition process to ask about acquiring this publicly owned parcel [owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; URA property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

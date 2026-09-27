@@ -1,0 +1,20 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water and sewer access is unknown and unverified, so you should request an availability letter from PWSA [utilities.water_sewer].This tool never scores water/sewer capacity [utilities.water_sewer].",
+  "parking-minimum": "The property is zoned R1A-VH, and off-street parking minimums may apply under city rules, though the exact requirement for this district hasn't been confirmed [zoning.district].If parking is required, it can take up land and add construction costs, potentially reducing how many homes fit on the site [zoning.district].",
+  "adu": "Accessory Dwelling Units (small secondary housing units) are currently only allowed in a special ADU overlay district, limited to one per lot, and require the owner to live on site; whether this parcel falls in that overlay is unverified [zoning.district].",
+  "gap-financing": "This parcel is in a neighborhood with a low median assessed land value per square foot, which suggests that extra 'gap' financing may be needed to make a project feasible; this is a note, not a penalty [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related scoring under PHFA (Pennsylvania Housing Finance Agency) programs, but this should be confirmed against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the City, which may make it easier to acquire through the City's public disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water and sewer availability letter from PWSA to confirm utility access [utilities.water_sewer].",
+  "Confirm with the Zoning Administrator whether off-street parking minimums apply to this R1A-VH parcel [zoning.district].",
+  "Ask the Zoning Administrator whether this parcel falls within an ADU overlay district before planning an accessory dwelling unit [zoning.district].",
+  "Discuss gap financing options with PHFA or a lender given the neighborhood's low land value [hood.median_land_psf].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; City property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 1
+}

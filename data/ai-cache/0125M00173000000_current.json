@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has access to water and sewer service is unknown and hasn't been verified, so you should ask PWSA (the water authority) for an availability letter [utilities.water_sewer]. This isn't factored into the score at all [utilities.water_sewer].",
+  "parking-minimum": "There may be a rule requiring a certain number of off-street parking spaces under a city code chapter, but this tool hasn't checked whether it applies to this specific site or use, so it's unverified [zoning.district]. If it does apply, needing to fit parking spaces on the lot could reduce how many homes you can build [zoning.district].",
+  "adu": "Accessory Dwelling Units (small secondary homes on a lot) are currently only allowed in a special overlay area, limited to one per lot, and the owner must live on site, but whether this parcel is in that overlay area has not been checked [zoning.district]. This means ADU eligibility here is unverified [zoning.district].",
+  "gap-financing": "This parcel sits in a neighborhood where assessed land values are low, which often means projects here need extra 'gap' financing (funding to cover the difference between costs and what the finished property is worth) [hood.median_land_psf]. This is just a note, not a penalty against the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is vacant land in a lower-value area, it may qualify for special scoring under a state housing finance agency (PHFA) program aimed at infill and blight-reduction projects [landuse.vacant, hood.median_land_psf]. You should confirm this against PHFA's current criteria before relying on it [hood.median_land_psf].",
+  "public-owner": "This parcel is owned by the City, which may make it somewhat easier to acquire through the City's public property-disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a formal water and sewer availability letter from PWSA before assuming service is in place [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm whether off-street parking minimums apply to this site and use [zoning.district].",
+  "Ask the Zoning Administrator to confirm whether this parcel falls within the ADU overlay district before planning any accessory dwelling unit [zoning.district].",
+  "Check current PHFA scoring criteria to see if this vacant, lower-value lot qualifies for infill/blight financing points [landuse.vacant, hood.median_land_psf].",
+  "Confirm final zoning permissions, parking rules, ADU eligibility, and public land acquisition steps with the Zoning Administrator, PWSA, PHFA, and the City property-disposition process [zoning.district, utilities.water_sewer, hood.median_land_psf, owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; City property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

@@ -33,7 +33,21 @@ Rules you must follow:
 3. If a fact's value is null or its confidence is "unknown", say it is unknown or unverified. Never guess.
 4. If ruleSetStatus is "proposed", say the rule is proposed and not law.
 5. Do not give legal, financial, or zoning advice, do not make a zoning determination, and do not change or restate the score as your own judgment.
-6. Output JSON only, with this shape: {"flags": {"<flag id>": "<1-2 short sentences>"}, "nextSteps": ["<step>", ...]}. Include only flags that are in packet.flags. nextSteps has 3-5 short imperative steps; the last step must name the human review office(s) to confirm with (use the reviewBy values from packet.flags), and every step needs a citation too.`;
+6. Output matches the required JSON schema: {"flags": [{"id": "<flag id from packet.flags>", "text": "<1-2 short sentences>"}, ...], "nextSteps": ["<step>", ...]}. Include one array entry per flag in packet.flags, in the same order. nextSteps has 3-5 short imperative steps; the last step must name the human review office(s) to confirm with (use the reviewBy values from packet.flags), and every step needs a citation too.`;
+
+/** Fixed-shape JSON schema for Claude's structured-outputs feature (output_config.format): guarantees parseable
+ * JSON on every call. Flag ids vary per parcel, so they cannot be object keys (structured outputs requires a
+ * fixed, enumerable shape) — the model returns an array of {id, text} pairs instead; validateExplanation()
+ * turns that back into the Record<string,string> the rest of the app reads. */
+export const EXPLANATION_SCHEMA = {
+  type: 'object',
+  properties: {
+    flags: { type: 'array', items: { type: 'object', properties: { id: { type: 'string' }, text: { type: 'string' } }, required: ['id', 'text'], additionalProperties: false } },
+    nextSteps: { type: 'array', items: { type: 'string' } },
+  },
+  required: ['flags', 'nextSteps'],
+  additionalProperties: false,
+} as const;
 
 /** Splits on . ! ? followed by whitespace/end, but never inside [brackets] (fact ids contain dots) or inside numbers like 1.5. */
 function sentences(text: string): string[] {
@@ -65,8 +79,9 @@ export function validateExplanation(raw: unknown, packet: EvidencePacket, model:
   const flagIds = new Set(packet.flags.map((f) => f.id));
   const j: any = raw && typeof raw === 'object' ? raw : {};
   const flags: Record<string, string> = {}; let dropped = 0;
-  for (const [id, text] of Object.entries(j.flags ?? {})) {
-    if (!flagIds.has(id) || typeof text !== 'string') continue;
+  for (const item of Array.isArray(j.flags) ? j.flags : []) {
+    const id = item?.id, text = item?.text;
+    if (typeof id !== 'string' || !flagIds.has(id) || typeof text !== 'string') continue;
     const v = validateText(text, factIds); dropped += v.dropped;
     if (v.kept) flags[id] = v.kept;
   }
@@ -88,10 +103,17 @@ export async function callClaude(packet: EvidencePacket, opts: { apiKey: string;
   const res = await f('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-api-key': opts.apiKey, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model, max_tokens: 1500, system: SYSTEM_PROMPT, messages: [{ role: 'user', content: `EVIDENCE PACKET:\n${JSON.stringify(packet)}` }] }),
+    body: JSON.stringify({
+      model, max_tokens: 4096, system: SYSTEM_PROMPT,
+      output_config: { effort: 'medium', format: { type: 'json_schema', schema: EXPLANATION_SCHEMA } },
+      messages: [{ role: 'user', content: `EVIDENCE PACKET:\n${JSON.stringify(packet)}` }],
+    }),
   });
   if (!res.ok) throw new Error(`Claude API ${res.status}: ${(await res.text()).slice(0, 300)}`);
   const body: any = await res.json();
+  // Sonnet 5 runs adaptive thinking by default; its output tokens share the max_tokens budget with the
+  // visible JSON, so a run that hits the cap mid-JSON must be surfaced (not silently parsed as "no JSON").
+  if (body.stop_reason === 'max_tokens') throw new Error(`Claude API: hit max_tokens before finishing (stop_reason=max_tokens, output_tokens=${body.usage?.output_tokens})`);
   const text: string = (body.content ?? []).map((c: any) => c.text ?? '').join('');
   const m = /\{[\s\S]*\}/.exec(text);
   if (!m) throw new Error('model returned no JSON');

@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether the parcel has access to water and sewer service is currently unknown and not verified [utilities.water_sewer]. You should reach out to the water authority to confirm before moving forward [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law) could allow up to two accessory dwelling units by right, each no bigger than 1,000 square feet and no taller than 30 feet, without requiring the owner to live on site, but this depends on the bill passing since it is currently held in council [zoning.district, reform.status]. This only applies because the zoning district is listed as R1A-VH [zoning.district].",
+  "parking-minimum": "A proposed rule (not law yet) would remove the requirement to build off-street parking spaces, which could free up land and money for more housing, but this rule has not been adopted and is still held in council [reform.status].",
+  "affordable-housing-bonus": "A proposed rule (not law yet) would let this parcel optionally use an Affordable Housing Bonus program, since it is outside the Inclusionary Housing Overlay area [overlay.iz, reform.status]. This bonus does not currently exist in law and depends on the bill passing [reform.status].",
+  "gap-financing": "This parcel sits in a neighborhood with a low median assessed land value, which suggests that a project here may need extra 'gap' funding to be financially feasible; this is only a general note, not a penalty against the parcel [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related scoring under state housing finance programs, but this should be checked against current program rules [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the Urban Redevelopment Authority (URA), which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Contact PWSA to confirm whether water and sewer service is available for this parcel [utilities.water_sewer].",
+  "Check with the Zoning Administrator to confirm current zoning rules, since the ADU and parking changes are still proposed and not yet law [zoning.district, reform.status].",
+  "Ask the Department of City Planning whether the Affordable Housing Bonus program applies, since it is also still proposed [overlay.iz, reform.status].",
+  "Discuss financing options with PHFA or a lender, since the low land value in this area may mean extra funding is needed [hood.median_land_psf].",
+  "Confirm parcel ownership and acquisition steps with the URA property-disposition process, since the parcel is currently URA-owned [owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

@@ -1,0 +1,20 @@
+{
+ "flags": {
+  "water-sewer": "Whether this lot has water and sewer service is unknown and hasn't been checked, so you should request a PWSA availability letter to confirm [utilities.water_sewer].",
+  "parking-minimum": "This site is in the R1A-VH zoning district, and off-street parking rules that could apply are not verified here [zoning.district]. If required, parking can take up land and add cost, which may reduce how many homes fit on the lot [zoning.district].",
+  "adu": "Accessory Dwelling Units (small secondary homes on the same lot) are currently only allowed in a special overlay area, limited to one per lot, and require the owner to live on-site; whether this parcel is in that overlay has not been checked [zoning.district].",
+  "gap-financing": "This parcel sits in Homewood South, a neighborhood with a low median land value, so getting extra ('gap') financing may be necessary — this is just a note, not a penalty [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for PHFA infill or blight-related scoring, but this should be confirmed against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the City, which may make it easier (though not guaranteed) to acquire through the City's property-disposition process [owner.type]."
+ },
+ "nextSteps": [
+  "Request a PWSA availability letter to confirm water and sewer service before planning construction [utilities.water_sewer].",
+  "Confirm with the Zoning Administrator whether off-street parking minimums apply to this site under its R1A-VH district [zoning.district].",
+  "Check with the Zoning Administrator whether this parcel falls inside the ADU overlay district if you plan to add a secondary unit [zoning.district].",
+  "Discuss financing options with PHFA or a lender, since gap financing may be needed in this lower-value neighborhood [hood.median_land_psf].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; City property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 1
+}

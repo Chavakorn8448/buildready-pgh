@@ -1,0 +1,17 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has enough water and sewer capacity for new housing is unknown and hasn't been checked, so someone should ask PWSA directly for an availability letter [utilities.water_sewer].This factor isn't included in the score at all [utilities.water_sewer].",
+  "parking-minimum": "The site is zoned RM-M, and rules on how many off-street parking spaces are required for this district and use haven't been verified here [zoning.district]. Required parking can take up land and add cost, which may reduce the number of homes that fit on the lot [zoning.district].",
+  "adu": "Under the current zoning code, accessory dwelling units (small secondary housing units) are only allowed in a specific ADU overlay area, limited to one per lot, and require the owner to live on site, but whether this parcel falls in that overlay hasn't been checked [zoning.district]. This means it's unverified whether an ADU would be allowed here [zoning.district]."
+ },
+ "nextSteps": [
+  "Confirm current water and sewer capacity for this parcel by requesting an availability letter from PWSA [utilities.water_sewer].",
+  "Ask the Zoning Administrator to verify the specific off-street parking requirements that apply to the RM-M district for this use [zoning.district].",
+  "Ask the Zoning Administrator to confirm whether this parcel is located within the ADU overlay district before assuming an accessory dwelling unit is allowed [zoning.district].",
+  "Review the by-right housing use determination and zoning district match, since one zoning source lists 'RM-M' with medium confidence [zoning.district_parcels_layer, zoning.use_table].",
+  "Confirm with: PWSA; Zoning Administrator."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 1
+}

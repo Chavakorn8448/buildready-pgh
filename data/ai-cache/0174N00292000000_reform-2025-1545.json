@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether water and sewer service is available for this parcel is unknown and hasn't been checked, so you'll need to ask PWSA directly [utilities.water_sewer].",
+  "adu": "There's a proposed rule (Bill 2025-1545, currently held in council with a hearing set) that would allow up to 2 accessory dwelling units by right in this zoning district, but this is not law yet [zoning.district, reform.status].",
+  "parking-minimum": "The same proposed bill would remove required off-street parking minimums, which could free up land and money for more housing, but again this is only proposed and not law [reform.status].",
+  "affordable-housing-bonus": "The proposed bill also includes an optional Affordable Housing Bonus, and this parcel is outside the existing Inclusionary Housing Overlay, but the bonus is not yet law [overlay.iz, reform.status].",
+  "gap-financing": "This parcel is in an area with lower typical land value, so a project here would likely need extra 'gap' financing to fill funding shortfalls; this is just a note, not a penalty against the parcel [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related scoring in PHFA funding applications, but you should confirm this against PHFA's current criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "This parcel appears to be owned by the City, which may make it easier (though not guaranteed) to acquire through the City's public disposition process [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water and sewer availability letter from PWSA to confirm service capacity [utilities.water_sewer].",
+  "Check with the Zoning Administrator on the current status of Bill 2025-1545 before assuming ADU or parking rules apply, since it is still proposed [reform.status].",
+  "Ask the Department of City Planning about the Affordable Housing Bonus proposal and whether it applies to this parcel [overlay.iz, reform.status].",
+  "Discuss financing options with PHFA or a lender given the lower land value in this neighborhood [hood.median_land_psf].",
+  "Confirm ownership and disposition process details with the City property-disposition process office and verify zoning details with the Zoning Administrator [owner.type, zoning.district].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

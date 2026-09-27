@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether water and sewer service is available for this parcel is currently unknown and was not scored [utilities.water_sewer]. You should check with the water authority directly to confirm before planning any construction [utilities.water_sewer].",
+  "adu": "There is a proposed rule (not yet law) that could allow up to 2 accessory dwelling units by right, each no larger than 1,000 square feet and no taller than 30 feet, without requiring the owner to live on site [zoning.district, reform.status]. This rule is still under review by City Council and is not something you can rely on yet [reform.status].",
+  "parking-minimum": "A proposed rule (not yet law) would remove the requirement to build a minimum number of off-street parking spaces, which could free up land and money for more housing [reform.status]. This is still pending in City Council and not currently in effect [reform.status].",
+  "affordable-housing-bonus": "A proposed rule (not yet law) would offer an optional Affordable Housing Bonus for this parcel, since it is outside the Inclusionary Housing Overlay area [overlay.iz, reform.status]. This bonus is not law yet and is still pending City Council action [reform.status].",
+  "gap-financing": "This parcel is in a neighborhood with a low median assessed land value per square foot, which often means projects here may need extra financing help to close funding gaps [hood.median_land_psf]. This is just a note for planning purposes, not a penalty against the parcel [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for special infill or blight-related scoring under state housing finance agency (PHFA) programs [landuse.vacant, hood.median_land_psf]. You should confirm eligibility directly against current PHFA criteria before relying on this [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "This parcel is owned by the Urban Redevelopment Authority (URA), a public agency, which may make it easier — though not guaranteed — to acquire through a public disposition process [owner.type]. You would need to go through the URA's property disposition process to explore this option [owner.type]."
+ },
+ "nextSteps": [
+  "Request a written water/sewer availability confirmation before making any development plans [utilities.water_sewer].",
+  "Track the status of Bill 2025-1545 in City Council, since the ADU, parking, and affordable housing bonus rules are proposed and not yet law [reform.status].",
+  "Confirm current PHFA infill/blight scoring criteria if seeking that type of funding [landuse.vacant, hood.median_land_psf].",
+  "Contact the URA about their property disposition process to ask about acquiring this parcel [owner.type].",
+  "Confirm all zoning, utility, and funding details with the Zoning Administrator, Department of City Planning, PWSA, PHFA, and URA property-disposition process before proceeding [reform.status, utilities.water_sewer, owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

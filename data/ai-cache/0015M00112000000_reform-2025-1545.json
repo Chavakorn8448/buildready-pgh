@@ -1,0 +1,23 @@
+{
+ "flags": {
+  "water-sewer": "Whether water and sewer service is available for this parcel is unknown and was not scored, so you should check separately [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law) would let this parcel, zoned R2-H, have up to two accessory dwelling units by right, each no bigger than 1,000 square feet and 30 feet tall, without an owner-occupancy requirement [zoning.district, reform.status]. This bill is currently held in City Council and not in effect [reform.status].",
+  "parking-minimum": "A proposed rule (not yet law) would remove the requirement to build a minimum number of off-street parking spaces, which could free up land and money for more housing [reform.status]. This rule is still pending and has not passed [reform.status].",
+  "affordable-housing-bonus": "A proposed rule (not yet law) would let this parcel opt into an Affordable Housing Bonus program, since it is not inside the Inclusionary Housing Overlay [overlay.iz, reform.status]. This bonus is not currently in effect [reform.status].",
+  "hazard-undermined": "The entire parcel sits in an area mapped as undermined, meaning old underground mining may be present [hazard.undermined]. A geotechnical or mine subsidence review would be needed to understand what this means for construction [hazard.undermined].",
+  "gap-financing": "This parcel is in a neighborhood with low assessed land values, so projects here often need extra 'gap' financing beyond a typical loan [hood.median_land_psf]. This is a general note, not a penalty against the parcel [hood.median_land_psf].",
+  "phfa-infill": "Because this is vacant land in a lower-value area, it may qualify for special infill or blight-related scoring in state housing funding programs [landuse.vacant, hood.median_land_psf]. Anyone applying for such funding should confirm current program rules directly with that funder [hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the URA (a public redevelopment authority), which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]. Interested parties would need to go through the URA's own process to confirm [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water and sewer availability letter to fill in this unknown before planning any construction [utilities.water_sewer].",
+  "Keep in mind that the ADU, parking, and affordable housing bonus rules are proposed and not yet law, so do not rely on them for current plans [reform.status].",
+  "Get a geotechnical or mine subsidence assessment because the entire parcel overlaps a mapped undermined area [hazard.undermined].",
+  "Check current funding criteria with PHFA if seeking gap or infill financing, since this is a lower land-value neighborhood [hood.median_land_psf].",
+  "Confirm zoning status, proposed rule applicability, and property acquisition steps with the Zoning Administrator, Department of City Planning, and the URA property-disposition process [zoning.district, overlay.iz, owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; mine subsidence / geotechnical review; PHFA / lender underwriting."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

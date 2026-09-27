@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water and sewer service available is unknown and was not scored, so you'd need to request an availability letter from PWSA to confirm [utilities.water_sewer].",
+  "parking-minimum": "The parcel's zoning district is R2-H, and off-street parking rules under city code may apply but were not checked in detail, which could affect how many homes fit on the site [zoning.district].",
+  "adu": "Accessory dwelling units (small secondary housing units) are currently only allowed in a special overlay area with owner-occupancy rules, and whether this parcel is in that overlay wasn't checked [zoning.district].",
+  "hazard-undermined": "The entire parcel sits over a mapped undermined area, meaning past underground mining may affect ground stability, so a mine subsidence or geotechnical review is recommended [hazard.undermined].",
+  "gap-financing": "This parcel is in a neighborhood with low median land value, so extra 'gap' financing may be needed to make a project work financially; this is just a note, not a penalty [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for special infill or blight-focused scoring under PHFA funding programs, but this should be confirmed against current PHFA rules [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the URA (a public redevelopment authority), which may make it easier, though not guaranteed, to acquire through a public disposition process [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water and sewer availability letter to confirm service access [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm parking requirements and whether ADU rules apply to this parcel [zoning.district].",
+  "Arrange a mine subsidence or geotechnical review given the full undermined-area overlap [hazard.undermined].",
+  "Check current PHFA scoring criteria and financing options given the low-value area and vacant status [hood.median_land_psf, landuse.vacant].",
+  "Confirm ownership and disposition process details with the URA property-disposition office [owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; mine subsidence / geotechnical review; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

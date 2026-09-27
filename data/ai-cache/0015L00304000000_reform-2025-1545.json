@@ -1,0 +1,23 @@
+{
+ "flags": {
+  "water-sewer": "Whether water and sewer service is available for this parcel is unknown and was not scored, so you'll need to request an availability letter from PWSA [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law, still held in council with a hearing scheduled) would allow up to 2 accessory dwelling units by right on this R2-H zoned parcel [zoning.district, reform.status].",
+  "parking-minimum": "This same proposed rule would remove off-street parking minimums, which could free up land and money for more housing, but again this is not current law [reform.status].",
+  "affordable-housing-bonus": "The proposed rule also includes an optional Affordable Housing Bonus, available since the parcel is outside the Inclusionary Housing Overlay, though this is also not yet law [overlay.iz, reform.status].",
+  "hazard-undermined": "The entire parcel overlaps a mapped undermined area (former underground mining), so a mine subsidence or geotechnical review is recommended [hazard.undermined].",
+  "gap-financing": "This parcel is in a neighborhood with low median assessed land value, so gap financing (extra funding to cover a shortfall) may likely be needed; this is a note, not a penalty [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant infill lot in a low-value area, it may qualify for PHFA infill/blight scoring, but this should be confirmed against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "Since the parcel is owned by the City, acquiring it may be easier through a public disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water/sewer availability letter to resolve the unknown utility status [utilities.water_sewer].",
+  "Confirm current zoning use permissions and any proposed rule changes with the Zoning Administrator, since Bill 2025-1545 is still proposed and not law [zoning.district, reform.status].",
+  "Arrange a mine subsidence or geotechnical review given the parcel is 100% within an undermined area [hazard.undermined].",
+  "Check financing options, including possible gap financing and PHFA infill/blight eligibility, with PHFA and lender underwriting [hood.median_land_psf, landuse.vacant].",
+  "Confirm the Affordable Housing Bonus details and public disposition process with the Department of City Planning and City property-disposition process [overlay.iz, owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; mine subsidence / geotechnical review; PHFA / lender underwriting."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

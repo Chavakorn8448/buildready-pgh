@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether the parcel has water and sewer service is currently unknown and hasn't been checked, so you'd need to request an availability letter from PWSA [utilities.water_sewer].",
+  "parking-minimum": "This parcel is zoned RM-M, and off-street parking minimums may apply under the zoning code, though the exact requirement hasn't been verified [zoning.district]. Required parking can take up land and add cost, potentially reducing how many homes fit on the site [zoning.district].",
+  "adu": "Accessory dwelling units (small secondary housing units) are currently only allowed in a special overlay district with owner-occupancy rules, and it's unverified whether this RM-M parcel falls inside that overlay [zoning.district].",
+  "gap-financing": "This is a lower assessed land value neighborhood (Homewood South), so projects here may likely need extra gap financing, though this is just a note and not a scoring penalty [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for PHFA infill or blight-related scoring, but this should be confirmed against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is listed as City-owned, which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a formal water/sewer availability letter from PWSA to confirm service capacity [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm whether off-street parking minimums apply to this RM-M parcel under the current code [zoning.district].",
+  "Ask the Zoning Administrator whether this parcel falls within the ADU overlay district before planning any accessory dwelling unit [zoning.district].",
+  "Check current PHFA underwriting and infill/blight scoring criteria to see if gap financing or infill scoring applies to this vacant, lower-value lot [hood.median_land_psf, landuse.vacant].",
+  "Confirm parcel ownership and disposition process details with the City property-disposition process office, and verify zoning and parking findings with the Zoning Administrator and PWSA [owner.type, zoning.district, utilities.water_sewer].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; City property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

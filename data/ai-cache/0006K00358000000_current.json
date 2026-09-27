@@ -1,0 +1,19 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has adequate water and sewer service is unknown and not verified, so you should request a PWSA availability letter [utilities.water_sewer].This factor is not included in the score at all [utilities.water_sewer].",
+  "parking-minimum": "The zoning district is R1A-H, and parking rules under Chapter 914 may require off-street parking, though the exact requirement for this site has not been checked [zoning.district].Required parking can take up space and add cost, which may reduce how many homes fit on the lot [zoning.district].",
+  "adu": "Accessory Dwelling Units (small secondary housing units) are currently only allowed in a specific ADU overlay district with owner-occupancy and a one-per-lot limit, but whether this parcel is in that overlay has not been checked [zoning.district].",
+  "hazard-slope25": "About 27.9% of this parcel has slopes of 25% or greater, which can trigger geotechnical review under city code [hazard.slope25].",
+  "hazard-undermined": "The entire parcel (100%) sits in a mapped undermined area, meaning past underground mining may affect ground stability, so a mine subsidence or geotechnical review would be needed [hazard.undermined]."
+ },
+ "nextSteps": [
+  "Request a formal water and sewer availability letter from PWSA to confirm service capacity for this parcel [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm actual off-street parking requirements under Chapter 914 for this district [zoning.district].",
+  "Ask the Zoning Administrator whether this parcel falls within the ADU overlay district before planning any accessory dwelling unit [zoning.district].",
+  "Arrange a geotechnical review given the parcel's slope and undermined-area overlaps before finalizing site plans [hazard.slope25, hazard.undermined].",
+  "Confirm with: PWSA; Zoning Administrator; geotechnical review (Code Ch. 915); mine subsidence / geotechnical review."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 1
+}

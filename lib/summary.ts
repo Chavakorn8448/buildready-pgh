@@ -48,7 +48,17 @@ export function summarize(r: ScoreResult, opts?: { transit?: boolean; byRight?: 
 
   let verdict: Summary['verdict']; let headline: string;
   if (r.score === null) { verdict = 'no-score'; headline = gate ? `No score: ${gate.message.replace(/^.*?: /, '')}` : 'No score for this parcel.'; }
-  else if (cap) { verdict = 'hard'; headline = `Hard to build housing here as things stand: the score is capped at ${cap.cap} because ${cap.message.replace(/;.*$/, '').replace(/^Housing /, 'housing ').replace(/: use variance or rezoning needed/, '')}.`; }
+  else if (cap) {
+    verdict = 'hard';
+    // cap.message already ends in its own "...score capped at N." clause (semicolon- or colon-separated
+    // depending on which G3 branch fired) — strip it so we don't state the cap twice.
+    const reason = cap.message
+      .replace(/\s*[;:]\s*score capped at \d+\.?\s*$/i, '')
+      .replace(/^Housing /, 'housing ')
+      .replace(/^Unverified: /, 'unverified: ')
+      .replace(/: use variance or rezoning needed$/, '');
+    headline = `Hard to build housing here as things stand: the score is capped at ${cap.cap} because ${reason}.`;
+  }
   else if (r.score >= 70 && barriers.every((b) => !b.id.startsWith('hazard-') && b.id !== 'lot-below-minimum')) { verdict = 'strong'; headline = 'A strong candidate on the checks we can run: housing is allowed and nothing major is in the way.'; }
   else if (r.score >= 55) { verdict = 'workable'; headline = 'Workable, but with items to review before committing.'; }
   else { verdict = 'hard'; headline = 'Difficult on the checks we can run; several items would need review.'; }

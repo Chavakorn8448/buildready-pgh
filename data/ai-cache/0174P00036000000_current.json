@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this lot has water and sewer service available is currently unknown, so you should request a PWSA availability letter to confirm [utilities.water_sewer].",
+  "parking-minimum": "The zoning district is R1A-VH, and off-street parking rules under a separate chapter of the code may apply, but this tool did not check the exact parking requirement for this district [zoning.district]. Required parking can take up land and add cost, reducing how many homes could fit on the lot [zoning.district].",
+  "adu": "Under the current zoning district, accessory dwelling units (small secondary homes, called ADUs) are only allowed in a specific ADU overlay area, limited to one per lot with an owner living on site, but this tool did not check whether this parcel is inside that overlay [zoning.district].",
+  "gap-financing": "This parcel is in Homewood South, where the typical assessed land value per square foot is low, so developers may need extra 'gap' financing to make a project work here [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for special infill or blight-related scoring under PHFA funding programs, but this should be confirmed against PHFA's current criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "This parcel appears to be owned by the City, which may make it easier to acquire through a public property disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a written water and sewer availability confirmation for this parcel [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm the exact off-street parking requirement for this R1A-VH property [zoning.district].",
+  "Ask the Zoning Administrator whether this parcel falls within the ADU overlay district before planning any accessory dwelling unit [zoning.district].",
+  "Talk to a lender or PHFA about potential gap financing given the low neighborhood land values [hood.median_land_psf].",
+  "Confirm with PHFA whether this vacant, City-owned parcel qualifies for infill/blight scoring, and confirm ownership and acquisition steps with the City property-disposition process [landuse.vacant, owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; City property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

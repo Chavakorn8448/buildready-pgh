@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether water and sewer service is available for this parcel is unknown and not verified, so this was not scored [utilities.water_sewer]. You should request a PWSA availability letter to confirm [utilities.water_sewer].",
+  "parking-minimum": "The property is zoned R2-H, and off-street parking minimums may apply under city rules, but the specific requirement for this site was not checked [zoning.district]. Required parking can take up land and add building costs, which may reduce how many homes fit on the lot [zoning.district].",
+  "adu": "Under current code, accessory dwelling units (ADUs, or small secondary housing units) are only allowed in a specific ADU overlay district, limited to one per lot with an owner living on-site, but whether this parcel is in that overlay was not checked [zoning.district]. This means it's unverified whether an ADU could be added here [zoning.district].",
+  "hazard-undermined": "This entire parcel is located in an area with historic underground mining activity (\"undermined area\"), covering 100% of the lot [hazard.undermined]. This may require a mine subsidence or geotechnical review before building [hazard.undermined].",
+  "gap-financing": "This parcel is in Beltzhoover, a neighborhood with a low median assessed land value per square foot, which suggests gap financing (extra funding beyond typical loans) may be needed to make a project work [hood.median_land_psf]. This is only a note, not a penalty in the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a low-value area, it may qualify for infill or blight-related scoring under PHFA (Pennsylvania Housing Finance Agency) funding programs [landuse.vacant, hood.median_land_psf]. You should confirm this against current PHFA criteria before relying on it [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the URA (Urban Redevelopment Authority), a public agency, which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]. You would need to go through the URA's property-disposition process to pursue acquisition [owner.type]."
+ },
+ "nextSteps": [
+  "Request a PWSA availability letter to confirm water and sewer service before planning any construction [utilities.water_sewer].",
+  "Confirm the exact off-street parking requirement for the R2-H district and this specific use with the Zoning Administrator [zoning.district].",
+  "Check whether this parcel falls within an ADU overlay district if you plan to add a second small housing unit [zoning.district].",
+  "Arrange a mine subsidence or geotechnical review given that the entire parcel sits in an undermined area [hazard.undermined].",
+  "Confirm financing eligibility and requirements with PHFA, and confirm zoning, parking, and ADU questions with the Zoning Administrator, and confirm acquisition steps with the URA property-disposition process [zoning.district, hood.median_land_psf, owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; mine subsidence / geotechnical review; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

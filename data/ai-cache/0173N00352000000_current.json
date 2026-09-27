@@ -1,0 +1,20 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has enough water/sewer service is not known and is not part of the score, so you should ask PWSA directly for an availability letter [utilities.water_sewer].",
+  "lot-below-minimum": "The lot is about 1,774 square feet, which is smaller than the 3,000 square foot minimum lot size normally required in its R2-L zoning district, so a variance (special permission) may be needed, or you may need to combine it with a neighboring lot [lot.area, zoning.district].",
+  "parking-minimum": "There may be a minimum number of off-street parking spaces required under city rules, but this tool did not check the exact requirement for this district and use, so it is unverified; parking requirements can use up land and add cost, shrinking how many homes fit on site [zoning.district].",
+  "adu": "Accessory Dwelling Units (small secondary homes on the same lot) are currently only allowed in specific overlay areas, limited to one per lot, and require the owner to live on site; whether this parcel is in that overlay area was not checked, so this is unverified [zoning.district].",
+  "gap-financing": "This neighborhood has a low median land value per square foot, which suggests that a project here would likely need extra 'gap' financing (funding to cover the difference between cost and value); this is just informational and is not counted against the score [hood.median_land_psf]."
+ },
+ "nextSteps": [
+  "Request a written water/sewer availability letter from PWSA before assuming service capacity, since this was not verified [utilities.water_sewer].",
+  "Consult the Zoning Board of Adjustment about whether a variance is needed for the lot size, which is below the 3,000 sq ft minimum for R2-L, or explore combining lots [lot.area, zoning.district].",
+  "Confirm exact off-street parking requirements and any ADU overlay eligibility with the Zoning Administrator, since both are currently unverified [zoning.district].",
+  "Discuss financing options with PHFA or a lender, since the neighborhood's low land values suggest gap financing may be needed [hood.median_land_psf].",
+  "Confirm all zoning, parking, ADU, and financing details with the Zoning Board of Adjustment, Zoning Administrator, PWSA, and PHFA / lender underwriting before proceeding [zoning.district, utilities.water_sewer, hood.median_land_psf].",
+  "Confirm with: PWSA; Zoning Board of Adjustment; Zoning Administrator; PHFA / lender underwriting."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

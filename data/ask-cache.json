@@ -1,37 +1,23 @@
 {
  "top 3 city owned vacant lots in homewood for a duplex if the adu bill passes and what is blocking them": {
-  "answer": "1051 matching lots in Homewood owned by City; the top 3 by score under the PROPOSED Bill 2025-1545 rules: A lot counts if a two-unit building is allowed by right in its zoning, or if it would be ADU-ready (house + ADU) under the proposed bill.\n1. 0 BENNETT ST (0125M00012000000), Homewood South: score 100 (current code 94). No gate or warning flags.\n2. 0 KELLY ST (0125M00173000000), Homewood South: score 100 (current code 94). No gate or warning flags.\n3. 0 KELLY ST (0125M00175000000), Homewood South: score 100 (current code 94). No gate or warning flags.\nWater and sewer capacity is unknown for every lot until PWSA issues an availability letter.\nConfirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria.",
+  "answer": "Top 3 city-owned vacant lots in Homewood South, all zoned RM-M, tied at score 100 under the proposed reform (94 under current rules) — duplex is already allowed by right in RM-M today [zoning.use_table]; the ADU bonus (up to 2 extra units) is what's still proposed [reform.status].\n\n- **0 Bennett St** (PIN 0125M00012000000) — 3,665 sq ft [lot.area], no environmental/historic/flood overlaps [hazard.slope25, hazard.landslide, hazard.undermined, hazard.flood, overlay.historic]\n- **0 Kelly St** (PIN 0125M00173000000) — 3,462 sq ft [lot.area], same clean hazard profile, 100% in major transit buffer [overlay.transit]\n- **0 Kelly St** (PIN 0125M00175000000) — 3,566 sq ft [lot.area], same clean hazard profile, 100% in major transit buffer [overlay.transit]\n\nWhat's blocking / open items (same for all three):\n- **ADU bonus not law yet** — Bill 2025-1545 is \"Held In Council,\" hearing 2026-09-23 [reform.status]; the score-to-100 and 2-extra-ADU potential only applies if it passes.\n- **Water/sewer capacity unknown** — no PWSA availability letter on file [utilities.water_sewer].\n- **Low land value area** — median $0.93/sq ft in Homewood South, below the $2.68 low-value cutoff, so gap financing will likely be needed [hood.median_land_psf].\n- **Acquisition** — these are City-owned; you'd need to go through the City's property-disposition process (not guaranteed) [owner.type].\n\nNo zoning gates, no slope/landslide/undermined/flood/historic conflicts were found on any of the three.\n\nConfirm with: Zoning Administrator; Zoning Board of Adjustment; PWSA; Department of City Planning; City property-disposition process",
   "pins": [
    "0125M00012000000",
    "0125M00173000000",
-   "0125M00175000000",
-   "0125M00316000000",
-   "0125M00320000000"
+   "0125M00175000000"
   ],
   "trace": [
    {
     "tool": "search_parcels",
     "args": {
-     "limit": 5,
-     "vacant": true,
-     "ruleset": "reform",
-     "neighborhood": "Homewood",
      "owner": "City",
-     "allows_by_right": "two_unit"
-    },
-    "summary": "966 matches; showing 5, top 0 BENNETT ST (94)"
-   },
-   {
-    "tool": "search_parcels",
-    "args": {
-     "limit": 5,
      "vacant": true,
-     "ruleset": "reform",
      "neighborhood": "Homewood",
-     "owner": "City",
-     "adu_ready_under_reform": true
+     "ruleset": "reform",
+     "allows_by_right": "two_unit",
+     "limit": 3
     },
-    "summary": "1051 matches; showing 5, top 0 BENNETT ST (94)"
+    "summary": "966 matches; showing 3, top 0 BENNETT ST (94)"
    },
    {
     "tool": "get_parcel",
@@ -58,7 +44,7 @@
     "summary": "0 KELLY ST: score 100, 0 gate(s), 7 flag(s)"
    }
   ],
-  "mode": "engine-only",
+  "mode": "claude",
   "confirmWith": [
    "PWSA",
    "Zoning Administrator",
@@ -68,79 +54,50 @@
   ]
  },
  "which ura owned vacant lots score 70 or higher and are smaller than their district minimum": {
-  "answer": "110 matching lots owned by URA; the top 5 by score:\n1. 0 CRAWFORD ST (0009R00156000000), Crawford-Roberts: score 77. Blocking or to review: Lot (1,238 sq ft) is below the 2,400 sq ft minimum for RM-M: variance likely, or combine with adjacent lot.\n2. 0 CRAWFORD ST (0009R00159000000), Crawford-Roberts: score 77. Blocking or to review: Lot (1,108 sq ft) is below the 2,400 sq ft minimum for RM-M: variance likely, or combine with adjacent lot.\n3. 0 CRAWFORD ST (0009R00160000000), Crawford-Roberts: score 77. Blocking or to review: Lot (1,112 sq ft) is below the 2,400 sq ft minimum for RM-M: variance likely, or combine with adjacent lot.\n4. 0 TRENT ST (0010J00080000000), Middle Hill: score 74. Blocking or to review: Lot (1,446 sq ft) is below the 2,400 sq ft minimum for RM-M: variance likely, or combine with adjacent lot.\n5. 0 TRENT ST (0010J00084000000), Middle Hill: score 74. Blocking or to review: Lot (1,182 sq ft) is below the 2,400 sq ft minimum for RM-M: variance likely, or combine with adjacent lot.\nWater and sewer capacity is unknown for every lot until PWSA issues an availability letter.\nConfirm with: PWSA; Zoning Board of Adjustment; Zoning Administrator; URA property-disposition process; PHFA / lender underwriting.",
+  "answer": "Found 110 URA-owned vacant lots meeting the criteria (score ≥70 and below district minimum, current ruleset). Here are the top 20 by score:\n\n- **Crawford-Roberts** (RM-M): 0 Crawford St — pins 0009R00156000000 (1,238 sf), 0009R00159000000 (1,108 sf), 0009R00160000000 (1,112 sf) — score 77 (83 if reform passes) [current.score] [reform.score_proposed]\n- **Middle Hill** (RM-M): multiple 0 Trent St, 0 Wooster St, and 0 Elmore St parcels (lot sizes 563–2,170 sf) — score 74 (80 if reform passes) [current.score] [reform.score_proposed]\n\nAll listed rows show `belowDistrictMinimum: true` and are ADU-ready under the proposed reform [reform.aduReady]. Note: 90 more parcels beyond this list of 20 match the same filters (total = 110); ask if you'd like the rest.\n\nConfirm with: City Zoning Administrator; Zoning Board of Adjustment",
   "pins": [
    "0009R00156000000",
    "0009R00159000000",
    "0009R00160000000",
    "0010J00080000000",
-   "0010J00084000000"
+   "0010J00084000000",
+   "0010J00099000000",
+   "0010J00100000000",
+   "0010J00101000000",
+   "0010J00103000000",
+   "0010J00104000000",
+   "0010J00105000000",
+   "0010J00150000000",
+   "0010K00094000000",
+   "0010K00095000000",
+   "0010K00095000A00",
+   "0010K00095000B00",
+   "0010K00096000000",
+   "0010K00097000000",
+   "0010K00099000000",
+   "0010K00100000000"
   ],
   "trace": [
    {
     "tool": "search_parcels",
     "args": {
-     "limit": 5,
-     "vacant": true,
-     "ruleset": "current",
      "owner": "URA",
+     "vacant": true,
+     "below_district_minimum": true,
      "min_score": 70,
-     "below_district_minimum": true
+     "limit": 20
     },
-    "summary": "110 matches; showing 5, top 0 CRAWFORD ST (77)"
-   },
-   {
-    "tool": "get_parcel",
-    "args": {
-     "pin": "0009R00156000000",
-     "ruleset": "current"
-    },
-    "summary": "0 CRAWFORD ST: score 77, 0 gate(s), 5 flag(s)"
-   },
-   {
-    "tool": "get_parcel",
-    "args": {
-     "pin": "0009R00159000000",
-     "ruleset": "current"
-    },
-    "summary": "0 CRAWFORD ST: score 77, 0 gate(s), 5 flag(s)"
-   },
-   {
-    "tool": "get_parcel",
-    "args": {
-     "pin": "0009R00160000000",
-     "ruleset": "current"
-    },
-    "summary": "0 CRAWFORD ST: score 77, 0 gate(s), 5 flag(s)"
-   },
-   {
-    "tool": "get_parcel",
-    "args": {
-     "pin": "0010J00080000000",
-     "ruleset": "current"
-    },
-    "summary": "0 TRENT ST: score 74, 0 gate(s), 7 flag(s)"
-   },
-   {
-    "tool": "get_parcel",
-    "args": {
-     "pin": "0010J00084000000",
-     "ruleset": "current"
-    },
-    "summary": "0 TRENT ST: score 74, 0 gate(s), 7 flag(s)"
+    "summary": "110 matches; showing 20, top 0 CRAWFORD ST (77)"
    }
   ],
-  "mode": "engine-only",
+  "mode": "claude",
   "confirmWith": [
-   "PWSA",
-   "Zoning Board of Adjustment",
-   "Zoning Administrator",
-   "URA property-disposition process",
-   "PHFA / lender underwriting"
+   "City Zoning Administrator",
+   "Zoning Board of Adjustment"
   ]
  },
  "how many lots would gain by right adu potential in hazelwood if bill 2025 1545 passes": {
-  "answer": "Hazelwood: 493 residential lots no longer need a lot-size variance under Bill 2025-1579 (in effect), and up to 2,627 would gain by-right ADU potential if Bill 2025-1545 passes (PROPOSED, not law; an upper bound because current by-right ADU coverage is not in the data). Limits: Counts the lot-size rule and the ADU eligibility rule only; setbacks, height, building code and utilities are not checked.\nConfirm with: City Zoning Administrator; Zoning Board of Adjustment.",
+  "answer": "In Hazelwood, **2,627 residential lots** (out of 3,452 total) would gain by-right ADU potential if Bill 2025-1545 passes — but this bill is **PROPOSED only** (currently \"Held In Council,\" with a public hearing scheduled 2026-09-23), not yet law [gainByRightAdu_Bill2025_1545_PROPOSED, proposedBillStatus].\n\n- Total residential parcels in Hazelwood: 3,452\n- Would gain by-right ADU potential under proposed Bill 2025-1545: 2,627\n- Note: this count only checks the ADU eligibility rule — setbacks, height, building code, and utility capacity are not verified [limits]\n\nConfirm with: City Zoning Administrator; Zoning Board of Adjustment",
   "pins": [],
   "trace": [
    {
@@ -151,7 +108,7 @@
     "summary": "Hazelwood: 493 no longer need variance; 2,627 gain ADU (proposed)"
    }
   ],
-  "mode": "engine-only",
+  "mode": "claude",
   "confirmWith": [
    "City Zoning Administrator",
    "Zoning Board of Adjustment"

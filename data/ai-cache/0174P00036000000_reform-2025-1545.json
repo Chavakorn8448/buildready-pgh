@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "It's currently unknown whether this lot has water/sewer service, and this tool does not check that for you [utilities.water_sewer]. You'll need to request an availability letter from PWSA to confirm [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law) would allow up to 2 accessory dwelling units by right on this R1A-VH parcel, each up to 1,000 sq ft and 30 ft tall, without an owner-occupancy requirement [zoning.district, reform.status]. This bill is still 'Held In Council' with a hearing scheduled, so it cannot be relied on yet [reform.status].",
+  "parking-minimum": "The same proposed bill would remove off-street parking minimums, which could free up land and money for more housing, but again this is not law yet [reform.status].",
+  "affordable-housing-bonus": "The proposed bill also includes an optional Affordable Housing Bonus, and this parcel is outside the Inclusionary Housing Overlay so that separate mandatory program does not apply here [overlay.iz, reform.status]. This bonus program is still proposed, not law [reform.status].",
+  "gap-financing": "This parcel is in an area with a lower typical land value per square foot (Homewood South median $0.93/sq ft), which suggests gap financing may be needed; this is just a note, not a penalty to the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill/blight-related scoring under PHFA programs, but you should confirm this against PHFA's current criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the City, which may make it easier (though not guaranteed) to acquire through a public disposition process [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water/sewer availability letter from PWSA to resolve the unknown utility status [utilities.water_sewer].",
+  "Confirm with the Zoning Administrator whether the proposed ADU and parking rules in Bill 2025-1545 have advanced past 'Held In Council' status before relying on them [reform.status].",
+  "Check with the Department of City Planning on the status and details of the optional Affordable Housing Bonus mentioned in the proposed bill [overlay.iz, reform.status].",
+  "Verify current PHFA infill/blight scoring criteria for this vacant, lower-value parcel with PHFA application scoring criteria [landuse.vacant, hood.median_land_psf].",
+  "Confirm acquisition options for this City-owned parcel with the City property-disposition process, and confirm zoning and utility findings with the Zoning Administrator and PWSA [owner.type, utilities.water_sewer].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

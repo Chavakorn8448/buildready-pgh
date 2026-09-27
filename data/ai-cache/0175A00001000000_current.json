@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water and sewer service is unknown and not verified, and this factor is never included in the score [utilities.water_sewer]. You should ask PWSA for an availability letter to confirm.[utilities.water_sewer]",
+  "parking-minimum": "The zoning district is R1A-VH, and parking rules that may require off-street parking spaces have not been checked for this specific site [zoning.district]. Required parking can take up land and add cost, potentially reducing how many homes can fit [zoning.district].",
+  "adu": "Accessory Dwelling Units (small secondary housing units, called ADUs) are only allowed in certain overlay districts under current rules, limited to one per lot with owner-occupancy required, but whether this parcel is in that overlay has not been checked [zoning.district]. This means ADU potential here is unverified [zoning.district].",
+  "gap-financing": "This parcel is in a neighborhood with a low median assessed land value per square foot, which suggests that additional 'gap' financing may be needed to make a project work [hood.median_land_psf]. This is just a note and not a penalty to the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related scoring under PHFA (Pennsylvania Housing Finance Agency) funding programs [landuse.vacant, hood.median_land_psf]. This should be confirmed against current PHFA criteria [hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the URA (Urban Redevelopment Authority), which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]. Confirm the process directly with the URA [owner.type]."
+ },
+ "nextSteps": [
+  "Contact PWSA to request a written water/sewer availability letter for this parcel [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm parking minimum requirements and whether the ADU overlay applies to this parcel [zoning.district].",
+  "Check current PHFA infill/blight scoring criteria to see if this vacant, low-value parcel qualifies for extra funding points [landuse.vacant, hood.median_land_psf].",
+  "Discuss potential gap financing needs with a lender given the low neighborhood land values [hood.median_land_psf].",
+  "Confirm parcel acquisition steps and status with the URA property-disposition process and the Zoning Administrator [owner.type, zoning.district].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; URA property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water and sewer service is unknown and hasn't been checked, so you should ask PWSA for an availability letter [utilities.water_sewer].",
+  "parking-minimum": "This parcel is in the RM-M zoning district, and off-street parking rules under Chapter 914 may apply, though the exact requirement hasn't been verified for this site [zoning.district]. Required parking can take up land and add cost, potentially reducing how many homes fit [zoning.district].",
+  "adu": "Accessory dwelling units (ADUs, small secondary homes on a lot) are currently only allowed in a specific ADU overlay district with owner-occupancy and a one-per-lot limit, and it's unverified whether this parcel is in that overlay [zoning.district].",
+  "gap-financing": "This parcel sits in a neighborhood with a low median assessed land value per square foot, so gap financing (extra funding to cover a shortfall) may be needed; this is just a note, not a penalty to the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related scoring under PHFA (Pennsylvania Housing Finance Agency) programs, but this should be confirmed against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the City, which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water/sewer availability letter from PWSA before relying on this site being ready to build [utilities.water_sewer].",
+  "Confirm actual off-street parking requirements for this site with the Zoning Administrator, since Chapter 914 rules were not modeled in detail [zoning.district].",
+  "Check with the Zoning Administrator whether this parcel falls inside an ADU overlay district before planning any accessory dwelling unit [zoning.district].",
+  "Discuss gap financing options and PHFA infill/blight scoring eligibility with a lender or PHFA program contact given the low neighborhood land values [hood.median_land_psf, landuse.vacant].",
+  "Confirm all zoning, parking, ADU, and acquisition details with the Zoning Administrator, PWSA, PHFA, and the City property-disposition process before moving forward [zoning.district, utilities.water_sewer, owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; City property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this lot has enough water and sewer service is unknown, so you should ask PWSA for an availability letter before relying on it [utilities.water_sewer].This detail is never factored into the score shown [utilities.water_sewer].",
+  "parking-minimum": "The zoning district is R1A-VH, and rules about required off-street parking for this district haven't been checked, so parking minimums may still apply [zoning.district].If parking is required, it can take up land and add cost, potentially reducing how many homes fit on the site [zoning.district].",
+  "adu": "Accessory Dwelling Units (small secondary homes) are currently only allowed in a specific ADU overlay area, limited to one per lot with the owner living on-site, and it hasn't been confirmed whether this parcel falls in that overlay [zoning.district].",
+  "gap-financing": "This neighborhood has a low median assessed land value per square foot, which suggests that extra 'gap' funding may be needed to make a project financially work here [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for PHFA's infill or blight-focused scoring criteria, but this should be checked against PHFA's current rules [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the URA (Urban Redevelopment Authority), a public agency, which may make it somewhat easier — though not guaranteed — to acquire through their property disposition process [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water/sewer availability letter from PWSA before assuming service capacity [utilities.water_sewer].",
+  "Confirm with the Zoning Administrator whether off-street parking minimums apply to this R1A-VH district parcel [zoning.district].",
+  "Ask the Zoning Administrator whether this parcel is within the ADU overlay district if you're considering an accessory dwelling unit [zoning.district].",
+  "Check current PHFA application scoring criteria to see if this vacant, low-value infill lot qualifies for extra points [landuse.vacant, hood.median_land_psf].",
+  "Confirm acquisition steps and lender underwriting needs with the URA property-disposition process, PHFA / lender underwriting, and the Zoning Administrator [owner.type, hood.median_land_psf, zoning.district].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; URA property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

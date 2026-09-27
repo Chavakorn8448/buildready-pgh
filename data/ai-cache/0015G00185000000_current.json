@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water/sewer service available is unknown and not checked as part of this tool's score, so you'll need to ask PWSA directly for an availability letter [utilities.water_sewer].",
+  "parking-minimum": "This parcel is in the R2-H zoning district, and off-street parking rules may apply that this tool does not verify; parking requirements can reduce how many homes fit on the lot [zoning.district].",
+  "adu": "Accessory dwelling units (small secondary housing units) are only allowed in a specific ADU overlay area with owner-occupancy and a one-per-lot limit, and whether this parcel is in that overlay is unverified [zoning.district].",
+  "hazard-undermined": "The entire parcel overlaps a mapped undermined area, meaning past underground mining may affect the ground below, so a geotechnical review is recommended [hazard.undermined].",
+  "gap-financing": "This parcel is in a neighborhood with low assessed land value, so projects here may likely need extra ('gap') financing beyond typical loans; this is a note, not a penalty to the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a low land-value area, it may qualify for infill or blight-related scoring in PHFA (Pennsylvania Housing Finance Agency) funding applications, but this should be confirmed against current PHFA criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the City, which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water/sewer availability letter from PWSA to confirm service can reach this parcel [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm parking requirements and whether the parcel falls within the ADU overlay district [zoning.district].",
+  "Arrange a mine subsidence or geotechnical review given the full undermined-area overlap before planning construction [hazard.undermined].",
+  "Check with PHFA on current infill/blight and gap-financing scoring criteria for this site [hood.median_land_psf, landuse.vacant].",
+  "Confirm parcel acquisition steps with the City's property-disposition process and verify all zoning details with the Zoning Administrator [owner.type, zoning.district].",
+  "Confirm with: PWSA; Zoning Administrator; mine subsidence / geotechnical review; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

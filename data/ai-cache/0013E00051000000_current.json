@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water and sewer service is unknown and was not scored, so you'd need to ask PWSA for an availability letter [utilities.water_sewer].",
+  "lot-min-unverified": "The zoning district is H [zoning.district], and this tool does not check whether a minimum lot size applies in H, even though the lot is measured at about 8,688 to 10,454 sq ft depending on source [lot.area, lot.area_assessor].",
+  "housing-exception-only": "In zoning district H, housing is only allowed if the city grants a special exception or administrator approval, it is not automatically allowed [zoning.district, zoning.use_table]. This exception requirement is also why the overall score is capped [zoning.district].",
+  "parking-minimum": "This parcel is in district H [zoning.district], and city rules may require a minimum number of off-street parking spaces, but this tool does not check the exact requirement.",
+  "adu": "Accessory dwelling units (ADUs, small secondary housing units) are currently only allowed in certain designated overlay districts, limited to one per lot with an owner living on site, and this tool does not check whether this parcel falls in that overlay [zoning.district].",
+  "hazard-slope25": "The entire parcel (100%) is mapped as having a slope of 25% or greater, which is a steep-slope condition [hazard.slope25].",
+  "hazard-landslide": "The entire parcel (100%) is mapped as landslide-prone [hazard.landslide].",
+  "hazard-undermined": "Nearly the entire parcel (98.9%) is mapped as sitting over a previously undermined area, meaning past underground mining occurred there [hazard.undermined]."
+ },
+ "nextSteps": [
+  "Request a water and sewer availability letter from PWSA since this was not verified [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm whether any minimum lot size applies to this H district parcel given its measured area [zoning.district, lot.area, lot.area_assessor].",
+  "Ask the Zoning Administrator whether an ADU overlay applies here and what off-street parking minimums would apply under the zoning code [zoning.district].",
+  "Arrange a geotechnical review to address the mapped 100% slope, 100% landslide-prone, and 98.9% undermined conditions before proceeding [hazard.slope25, hazard.landslide, hazard.undermined].",
+  "Confirm with: Zoning Board of Adjustment; PWSA; Zoning Administrator; Zoning Administrator / Zoning Board of Adjustment; geotechnical review (Code Ch. 915)."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 7
+}

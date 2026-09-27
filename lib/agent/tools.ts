@@ -2,7 +2,7 @@
  * Phase 12: agent tools. Thin wrappers over the deterministic engine and the local snapshot (no network).
  * Every result is small JSON that carries its source names so the model (or offline router) can cite them.
  */
-import { getIndex, getMeta, getPacket, getReformImpact } from '../web/server-data';
+import { getIndex, getMeta, getPacket, getReformImpact, search } from '../web/server-data';
 import { comparePacket, runPacket, type RuleSetId } from '../web/run';
 import { parseZoning } from '../zoning';
 import { CURRENT_LOT_MIN } from '../zoning';
@@ -22,13 +22,22 @@ export const TOOL_DEFS = [
       ruleset: { type: 'string', enum: ['current', 'reform'] }, allows_by_right: { type: 'string', enum: [...HOUSING_TYPES], description: 'require this housing type by right in the base zoning' },
       adu_ready_under_reform: { type: 'boolean' }, below_district_minimum: { type: 'boolean' }, limit: { type: 'number' } } } },
   { name: 'get_parcel', description: 'Evidence packet for one parcel: score, gates, sub-scores, flags (with reviewBy offices) and cited facts under a rule set.',
-    input_schema: { type: 'object', properties: { pin: { type: 'string' }, ruleset: { type: 'string', enum: ['current', 'reform'] } }, required: ['pin'] } },
-  { name: 'score_parcels', description: 'Scores for up to 10 parcels under a rule set.', input_schema: { type: 'object', properties: { pins: { type: 'array', items: { type: 'string' } }, ruleset: { type: 'string', enum: ['current', 'reform'] } }, required: ['pins'] } },
-  { name: 'check_hazards', description: 'Slope, landslide, undermined, flood, historic, inclusionary overlaps for a parcel, with map pins.', input_schema: { type: 'object', properties: { pin: { type: 'string' } }, required: ['pin'] } },
+    input_schema: { type: 'object', properties: { pin: { type: 'string', description: "A 16-character parcel ID (dashes optional), OR a plain address like '5925 Walnut St' or '5815 5th Ave' — this tool resolves either. If an address matches more than one parcel, it returns the candidates instead of a result; call again with one of their pins." }, ruleset: { type: 'string', enum: ['current', 'reform'] } }, required: ['pin'] } },
+  { name: 'score_parcels', description: 'Scores for up to 10 parcels under a rule set.', input_schema: { type: 'object', properties: { pins: { type: 'array', items: { type: 'string' }, description: 'Parcel IDs or addresses (mix of either is fine).' }, ruleset: { type: 'string', enum: ['current', 'reform'] } }, required: ['pins'] } },
+  { name: 'check_hazards', description: 'Slope, landslide, undermined, flood, historic, inclusionary overlaps for a parcel, with map pins.', input_schema: { type: 'object', properties: { pin: { type: 'string', description: 'Parcel ID or address.' } }, required: ['pin'] } },
   { name: 'lookup_zoning_rule', description: 'Which housing types a zoning district allows (by right / exception / not at all) with the Zoning Code section, plus the current lot minimum for R-district density suffixes.', input_schema: { type: 'object', properties: { district: { type: 'string', description: 'e.g. R1D-L, RM-M, LNC' } }, required: ['district'] } },
   { name: 'reform_impact', description: 'Counts of lots that no longer need a lot-size variance (Bill 2025-1579, in effect) and lots that would gain by-right ADU potential (Bill 2025-1545, PROPOSED), citywide or for one neighborhood.', input_schema: { type: 'object', properties: { neighborhood: { type: 'string' } } } },
-  { name: 'draft_site_memo', description: 'Site memo text (score, flags, sources, review offices) for up to 3 parcels.', input_schema: { type: 'object', properties: { pins: { type: 'array', items: { type: 'string' } }, ruleset: { type: 'string', enum: ['current', 'reform'] } }, required: ['pins'] } },
+  { name: 'draft_site_memo', description: 'Site memo text (score, flags, sources, review offices) for up to 3 parcels.', input_schema: { type: 'object', properties: { pins: { type: 'array', items: { type: 'string' }, description: 'Parcel IDs or addresses.' }, ruleset: { type: 'string', enum: ['current', 'reform'] } }, required: ['pins'] } },
 ] as const;
+
+/** Resolves a parcel ID OR an address to one parcel ID (reuses the same lookup as the search box and the CLI). */
+function resolvePin(input: string): { pin: string } | { error: string; candidates?: { pin: string; address: string }[] } {
+  const q = String(input).trim();
+  const r = search(q, 5);
+  if (r.rows.length === 1) return { pin: r.rows[0].pin };
+  if (r.rows.length > 1) return { error: `"${q}" matches ${r.rows.length} parcels; call again with one of these pins`, candidates: r.rows.map((x) => ({ pin: x.pin, address: x.address })) };
+  return { error: r.note ?? `"${q}" did not match a parcel ID or address in the snapshot` };
+}
 
 /** exact name, else every neighborhood whose name starts with the text (e.g. "Homewood" -> North/South/West), else contains. */
 const hoodMatch = (name: string): { id: number; name: string }[] => {
@@ -40,7 +49,10 @@ const hoodMatch = (name: string): { id: number; name: string }[] => {
   return starts.length ? starts : hs.filter((h) => h.name.toLowerCase().includes(q));
 };
 
-function compactResult(pin: string, rs: RuleSetId, full = false) {
+function compactResult(pinOrAddress: string, rs: RuleSetId, full = false) {
+  const resolved = resolvePin(pinOrAddress);
+  if ('error' in resolved) return resolved;
+  const pin = resolved.pin;
   const f = getPacket(pin); if (!f) return { error: `parcel ${pin} not in the City of Pittsburgh snapshot` };
   const r = runPacket(f.packet, getMeta(), rs);
   const cmp = comparePacket(f.packet, getMeta());
@@ -91,7 +103,11 @@ export function runTool(name: ToolName, args: any): any {
     }
     case 'get_parcel': return compactResult(String(args.pin).toUpperCase(), rsOf(args.ruleset), true);
     case 'score_parcels': return { results: (args.pins as string[]).slice(0, 10).map((p) => { const r = compactResult(String(p).toUpperCase(), rsOf(args.ruleset)); return r.error ? r : { pin: r.pin, address: r.address, score: r.score, scoreCurrent: r.scoreCurrent, scoreIfReformPasses: r.scoreIfReformPasses, gates: r.gates.map((g: any) => g.id) }; }), source: SRC };
-    case 'check_hazards': { const f = getPacket(String(args.pin).toUpperCase()); return f ? { pin: f.row.pin, hazards: hazardsOf(f.packet), source: 'City of Pittsburgh ArcGIS hazard layers (snapshot ' + meta.generatedAt + ')' } : { error: 'parcel not in snapshot' }; }
+    case 'check_hazards': {
+      const resolved = resolvePin(String(args.pin)); if ('error' in resolved) return resolved;
+      const f = getPacket(resolved.pin);
+      return f ? { pin: f.row.pin, address: f.packet.p.address, hazards: hazardsOf(f.packet), source: 'City of Pittsburgh ArcGIS hazard layers (snapshot ' + meta.generatedAt + ')' } : { error: 'parcel not in snapshot' };
+    }
     case 'lookup_zoning_rule': {
       const z = parseZoning(String(args.district).toUpperCase(), meta.permittedUses);
       const col = z.column ? meta.permittedUses.districts[z.column] : null;

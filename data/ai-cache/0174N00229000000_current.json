@@ -1,0 +1,20 @@
+{
+ "flags": {
+  "water-sewer": "Whether water and sewer service is available for this parcel is unknown and was not checked or scored [utilities.water_sewer]. You should ask PWSA for an availability letter before relying on this site.[utilities.water_sewer]",
+  "parking-minimum": "This parcel is zoned R1A-VH, and off-street parking minimums may apply under a separate chapter of the zoning code, but the tool did not check the exact requirement for this district [zoning.district]. Required parking can take up space and add cost, which may reduce how many homes could fit here [zoning.district].",
+  "adu": "Accessory dwelling units (ADUs, meaning small secondary homes on the same lot) are currently only allowed in a special ADU overlay area with owner-occupancy rules, and whether this parcel is in that overlay was not checked [zoning.district]. This means ADU potential here is unverified [zoning.district].",
+  "gap-financing": "This parcel is in a neighborhood with a low median assessed land value per square foot, suggesting that a project here may need extra funding sources ('gap financing') beyond typical financing [hood.median_land_psf]. This is just a note, not a penalty to the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for special infill or blight-related scoring under state housing funding programs (PHFA) [landuse.vacant, hood.median_land_psf]. You would need to confirm this against current PHFA scoring rules [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "This parcel is owned by the City, which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]. You would need to go through the City's property-disposition process to confirm [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water and sewer availability letter for this parcel before proceeding [utilities.water_sewer].",
+  "Check with the Zoning Administrator on exact off-street parking requirements for this R1A-VH parcel [zoning.district].",
+  "Confirm whether this parcel sits within the ADU overlay district if an accessory dwelling unit is part of your plan [zoning.district].",
+  "Discuss gap financing options and PHFA infill/blight scoring eligibility with a lender or PHFA before finalizing a funding plan [hood.median_land_psf, landuse.vacant].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; City property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 1
+}

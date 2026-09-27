@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has adequate water and sewer service is unknown and unverified, so it's not included in the score [utilities.water_sewer]. You should check with the water authority directly before proceeding.[utilities.water_sewer]",
+  "parking-minimum": "Off-street parking rules may apply based on the zoning district (R1A-VH), but this tool hasn't checked the exact requirement for this use [zoning.district]. Required parking can take up space and add cost, potentially reducing how many homes fit on the site [zoning.district].",
+  "adu": "Accessory dwelling units (ADUs, or small secondary housing units) are only allowed in a specific overlay district under current rules, limited to one per lot with an owner living on-site, and this tool did not check whether this parcel is in that overlay [zoning.district]. This is unverified, so confirm separately [zoning.district].",
+  "gap-financing": "This parcel is in a neighborhood with low median assessed land value, which often means projects need extra 'gap' financing (funding to cover the difference between costs and typical returns) [hood.median_land_psf]. This is just a note, not a penalty against the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a low-value area, it may qualify for special infill or blight-related funding programs through PHFA (Pennsylvania Housing Finance Agency) [landuse.vacant, hood.median_land_psf]. You'll need to confirm eligibility against PHFA's current criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel is owned by the URA (Urban Redevelopment Authority), a public agency, which may make it easier to acquire through a public disposition process, though this is not guaranteed [owner.type]. Confirm the process directly with the URA [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water and sewer availability letter from PWSA to confirm service capacity for this parcel [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm exact off-street parking requirements for this district and use [zoning.district].",
+  "Ask the Zoning Administrator to confirm whether this parcel falls within an ADU overlay district before planning any accessory unit [zoning.district].",
+  "Check current PHFA application scoring criteria to see if this vacant, low-value infill parcel qualifies for funding [landuse.vacant, hood.median_land_psf].",
+  "Confirm acquisition steps and terms with the URA property-disposition process, and verify parking and ADU questions with the Zoning Administrator, and utility questions with PWSA [owner.type, zoning.district, utilities.water_sewer].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; URA property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

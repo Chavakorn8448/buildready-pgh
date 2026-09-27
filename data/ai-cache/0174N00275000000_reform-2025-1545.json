@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has access to water and sewer service is unknown and hasn't been verified, so you'd need to check with PWSA directly [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law) could allow up to two accessory dwelling units by right on this R1A-VH zoned parcel, each no more than 1,000 square feet and 30 feet tall, without requiring the owner to live on-site [zoning.district, reform.status]. This bill is currently held in City Council and not something you can rely on yet [reform.status].",
+  "parking-minimum": "A proposed rule (not yet law) would remove the requirement for off-street parking, potentially freeing up land and money for more housing [reform.status]. This is still under Council review and not in effect [reform.status].",
+  "affordable-housing-bonus": "A proposed rule (not yet law) would offer an optional Affordable Housing Bonus, since this parcel is outside the Inclusionary Housing Overlay [overlay.iz, reform.status]. This proposal has not been adopted [reform.status].",
+  "gap-financing": "This parcel is in a neighborhood with a low median land value per square foot, meaning outside financial help (gap financing) may likely be needed to make a project work [hood.median_land_psf]. This is just a note, not a penalty against the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for PHFA infill or blight-related scoring, but you should confirm this against PHFA's current criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "This parcel is owned by the City, which may make it easier (though not guaranteed) to acquire through a public disposition process [owner.type]."
+ },
+ "nextSteps": [
+  "Request a formal water and sewer availability letter from PWSA before proceeding [utilities.water_sewer].",
+  "Track Bill 2025-1545's status, since the ADU, parking, and affordable housing bonus provisions are proposed and not yet law [reform.status].",
+  "Discuss financing options, including possible gap financing, given the low neighborhood land value [hood.median_land_psf].",
+  "Look into PHFA's infill/blight scoring criteria to see if this vacant lot qualifies [landuse.vacant, hood.median_land_psf].",
+  "Confirm zoning details, proposed rule status, and acquisition steps with the Zoning Administrator, Department of City Planning, PWSA, PHFA, and the City property-disposition process [zoning.district, reform.status, utilities.water_sewer, owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

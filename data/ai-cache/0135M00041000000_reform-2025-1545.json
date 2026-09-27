@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "It's not known whether this parcel has water or sewer service available, since that information isn't in the public data used here [utilities.water_sewer]. You'll want to check with the water authority before moving forward [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law) would allow up to 2 small accessory dwelling units by right on this R2-L zoned parcel, each no more than 1,000 square feet and 30 feet tall, without requiring the owner to live on site [zoning.district, reform.status]. This bill is currently held in City Council with a hearing set for a future date, so it does not apply yet [reform.status].",
+  "parking-minimum": "Another proposed change in the same bill would remove requirements for off-street parking spaces, which could free up land and money for more housing [reform.status]. This is also not law yet, since the bill is held in Council [reform.status].",
+  "affordable-housing-bonus": "The same proposed bill includes an optional Affordable Housing Bonus program for parcels outside the Inclusionary Housing Overlay, and this parcel is outside that overlay [overlay.iz]. This bonus is not yet in effect since the bill is still pending [reform.status].",
+  "hazard-flood": "According to FEMA flood maps, the entire parcel sits within a designated Special Flood Hazard Area [hazard.flood]. This is an important factor to confirm with a floodplain administrator before planning any construction [hazard.flood].",
+  "gap-financing": "This parcel is in a neighborhood with relatively low assessed land values per square foot, which often means additional funding sources (gap financing) may be needed to make a project financially work [hood.median_land_psf]. This is only a note, not a scoring penalty [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a lower-value area, it may qualify for infill or blight-related scoring under PHFA housing funding programs [landuse.vacant, hood.median_land_psf]. Eligibility should be confirmed against PHFA's current criteria [hood.median_land_psf]."
+ },
+ "nextSteps": [
+  "Contact PWSA to confirm whether water and sewer service is available at this parcel [utilities.water_sewer].",
+  "Check with the Zoning Administrator on the status of Bill 2025-1545 before relying on the proposed ADU or parking rules [reform.status].",
+  "Ask the Department of City Planning whether the Affordable Housing Bonus applies once the bill is finalized [reform.status].",
+  "Contact the Floodplain administrator or use a FEMA flood determination to understand building requirements given the 100% flood zone overlap [hazard.flood].",
+  "Confirm financing and infill eligibility with PHFA and lender underwriting before finalizing project plans [hood.median_land_psf].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; Floodplain administrator / FEMA flood determination; PHFA / lender underwriting."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

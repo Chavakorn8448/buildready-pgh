@@ -1,0 +1,22 @@
+{
+ "flags": {
+  "water-sewer": "Whether this parcel has water and sewer service is unknown and hasn't been checked yet [utilities.water_sewer]. You'll want to confirm this with PWSA before moving forward [utilities.water_sewer].",
+  "adu": "A proposed rule (not yet law) would allow up to 2 accessory dwelling units by right on this RM-M zoned parcel, each no bigger than 1,000 square feet and 30 feet tall, with no requirement that the owner live on site [zoning.district, reform.status]. This bill is currently held in City Council with a hearing scheduled, so it cannot be relied on yet [reform.status].",
+  "parking-minimum": "The same proposed, not-yet-law bill would eliminate required off-street parking spaces, which could free up land and money for more housing [reform.status]. Since the bill is still held in Council, this benefit is not currently in effect [reform.status].",
+  "affordable-housing-bonus": "A proposed, not-yet-law optional Affordable Housing Bonus could apply here since the parcel is outside the Inclusionary Housing Overlay [overlay.iz, reform.status]. This is still pending and not guaranteed [reform.status].",
+  "gap-financing": "This parcel is in a neighborhood with low assessed land values, so projects here may likely need extra 'gap' financing to pencil out; this is just a note, not a penalty to the score [hood.median_land_psf].",
+  "phfa-infill": "Because this is a vacant lot in a low-value area, it may qualify for infill or blight-related scoring under PHFA funding programs, but you should confirm this against PHFA's current criteria [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel appears to be owned by the City, which may make it easier (though not guaranteed) to acquire through the City's public property disposition process [owner.type]."
+ },
+ "nextSteps": [
+  "Request a water and sewer availability letter from PWSA to confirm service to this parcel [utilities.water_sewer].",
+  "Contact the Zoning Administrator to confirm current zoning rules, since the ADU and parking changes are proposed and not yet law [reform.status].",
+  "Check with the Department of City Planning about whether the Affordable Housing Bonus applies, since it is also still proposed [overlay.iz, reform.status].",
+  "Ask PHFA about current infill/blight scoring criteria and gap financing options for this low-value, vacant parcel [hood.median_land_psf, landuse.vacant].",
+  "Confirm ownership and disposition process details with the City property-disposition process and the Zoning Administrator [owner.type, reform.status].",
+  "Confirm with: PWSA; Zoning Administrator; Department of City Planning; PHFA / lender underwriting; PHFA application scoring criteria."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}

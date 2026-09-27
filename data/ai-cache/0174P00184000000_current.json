@@ -1,0 +1,21 @@
+{
+ "flags": {
+  "water-sewer": "Whether this lot has enough water and sewer capacity is unknown and not verified, so you should ask PWSA (the water authority) directly [utilities.water_sewer].",
+  "parking-minimum": "The zoning district is RM-M, and city rules may require a certain amount of off-street parking, but exactly how much applies here hasn't been checked [zoning.district]. Needing more parking can use up land and money that would otherwise go toward building homes [zoning.district].",
+  "adu": "Accessory dwelling units (small secondary homes on a lot) are only allowed in certain overlay areas, limited to one per lot, and require the owner to live on site, but whether this parcel falls in that overlay area hasn't been confirmed [zoning.district].",
+  "gap-financing": "This parcel is in a neighborhood with a low typical land value per square foot, which often means a project here may need extra 'gap' financing to become affordable to build [hood.median_land_psf].",
+  "phfa-infill": "Since this is a vacant lot in a lower-value area, it may qualify for special infill or blight-focused funding programs through PHFA, but you should confirm this against PHFA's current scoring rules [landuse.vacant, hood.median_land_psf].",
+  "public-owner": "The parcel appears to be owned by the City, which may make it easier to acquire through the City's public property disposition process, though this is not guaranteed [owner.type]."
+ },
+ "nextSteps": [
+  "Request a formal water and sewer availability letter from PWSA to confirm utility capacity for this parcel [utilities.water_sewer].",
+  "Ask the Zoning Administrator to confirm the exact parking requirements that apply to this RM-M district site under Chapter 914 [zoning.district].",
+  "Ask the Zoning Administrator to confirm whether this parcel sits within an ADU overlay district before planning any accessory dwelling unit [zoning.district].",
+  "Check with PHFA to see if this vacant, low-value infill lot qualifies for their infill or blight-reduction funding criteria [landuse.vacant, hood.median_land_psf].",
+  "Confirm ownership and acquisition steps with the City's property-disposition process office since the parcel is listed as City-owned [owner.type].",
+  "Confirm with: PWSA; Zoning Administrator; PHFA / lender underwriting; PHFA application scoring criteria; City property-disposition process."
+ ],
+ "model": "claude-sonnet-5",
+ "generatedAt": "2026-09-27",
+ "dropped": 0
+}
