@@ -42,7 +42,7 @@ export function SearchBox({ onPick, placeholder, autoFocus, size = 'lg' }: { onP
         }}
         placeholder={placeholder ?? 'Parcel ID or address, e.g. 5925 Walnut St'}
         aria-label="Search by parcel ID or address"
-        className={`w-full rounded-2xl border border-line bg-surface px-5 outline-none transition focus:border-accent ${size === 'lg' ? 'h-14 text-lg' : 'h-10 text-sm'}`}
+        className={`w-full rounded-2xl border border-line bg-surface px-5 outline-none transition focus:border-accent ${size === 'lg' ? 'h-12 text-base sm:h-14 sm:text-lg' : 'h-11 text-sm sm:h-10'}`}
       />
       {open && q.trim().length >= 3 && (hits.length > 0 || note) && (
         <div className="absolute z-40 mt-2 w-full overflow-hidden rounded-2xl border border-line bg-surface2 shadow-2xl">

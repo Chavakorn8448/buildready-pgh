@@ -27,9 +27,8 @@
 
 html, body { background: var(--bg); color: var(--text); }
 body { font-family: var(--font-geist-sans), system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-a { color: inherit; }
+@layer base { a { color: inherit; } input, select, button { font: inherit; color: inherit; } }
 ::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); }
-input, select, button { font: inherit; color: inherit; }
 @layer components {
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
 .btn { border: 1px solid var(--border); background: var(--surface-2); border-radius: 999px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: border-color .15s, background .15s; }
@@ -48,3 +47,10 @@ input[type=range] { accent-color: var(--accent); }
   .no-print { display: none !important; }
   .card { border-color: #ccc; background: #fff; }
 }
+
+@media (pointer: coarse) {
+  .pin { width: 32px; height: 32px; font-size: 14px; }
+  input[type=range] { height: 28px; }
+}
+html { -webkit-text-size-adjust: 100%; }
+body { overflow-x: hidden; }

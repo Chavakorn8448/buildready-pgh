@@ -33,6 +33,7 @@ export default function MapExplorer() {
   const [starter, setStarter] = useState(false);
   const [adu, setAdu] = useState(false);
   const [showAsk, setShowAsk] = useState(true);
+  const [tab, setTab] = useState<'map' | 'filters' | 'ask'>('map'); // phones: one panel at a time
   const [highlight, setHighlight] = useState<string[]>([]);
 
   useEffect(() => {
@@ -97,12 +98,13 @@ export default function MapExplorer() {
   }, [filtered, ready, highlight]);
 
   const top = useMemo(() => [...filtered].sort((a, b) => (b.properties.score ?? -1) - (a.properties.score ?? -1)).slice(0, 40), [filtered]);
-  const fly = (f: Feat) => mapRef.current?.flyTo({ center: f.c, zoom: 17, duration: 900 });
+  const fly = (f: Feat) => { setTab('map'); setTimeout(() => { mapRef.current?.resize(); mapRef.current?.flyTo({ center: f.c, zoom: 17, duration: 900 }); }, 60); };
+  useEffect(() => { if (tab === 'map') setTimeout(() => mapRef.current?.resize(), 60); }, [tab]);
   const showPins = (pins: string[]) => { setHighlight(pins); const fs = feats.filter((f) => pins.includes(f.properties.pin)); if (fs.length && mapRef.current && mlRef.current) { const b = new mlRef.current.LngLatBounds(); fs.forEach((f) => b.extend(f.c)); mapRef.current.fitBounds(b, { padding: 120, maxZoom: 16, duration: 900 }); } };
 
   return (
-    <div className="grid h-[calc(100vh-56px)] grid-cols-[320px_1fr] lg:grid-cols-[320px_1fr_auto]">
-      <aside className="overflow-y-auto border-r border-line bg-bg p-4">
+    <div className="flex h-[calc(100dvh-56px)] flex-col lg:grid lg:grid-cols-[320px_1fr_auto]">
+      <aside className={`${tab === 'filters' ? 'block' : 'hidden'} min-h-0 flex-1 overflow-y-auto border-r border-line bg-bg p-4 lg:block lg:flex-none`}>
         <h1 className="text-lg font-semibold tracking-tight">Opportunity map</h1>
         <p className="mt-1 text-xs leading-relaxed text-muted">Vacant publicly owned lots, colored by Development Ease Score. {feats.length ? `${filtered.length.toLocaleString()} of ${feats.length.toLocaleString()} lots shown.` : loadErr ?? 'Loading…'}</p>
         <div className="mt-4 space-y-4 text-sm">
@@ -129,10 +131,15 @@ export default function MapExplorer() {
         </ul>
         <p className="mt-4 text-[11px] leading-relaxed text-muted">Click a lot on the map to open its report. Lots smaller than their district minimum are flagged &quot;combine with adjacent lot?&quot;.</p>
       </aside>
-      <div className="relative min-h-0"><div ref={el} className="h-full w-full" />
+      <div className={`${tab === 'map' ? 'block' : 'hidden'} relative min-h-0 flex-1 lg:block`}><div ref={el} className="h-full w-full" />
         <button onClick={() => setShowAsk(!showAsk)} className="btn absolute bottom-6 right-3 hidden lg:block">{showAsk ? 'Hide' : 'Ask'} panel</button>
       </div>
-      {showAsk && <div className="hidden w-[380px] border-l border-line lg:block"><AskPanel onPins={showPins} /></div>}
+      <div className={`${tab === 'ask' ? 'block' : 'hidden'} min-h-0 flex-1 lg:w-[380px] lg:flex-none lg:border-l lg:border-line ${showAsk ? 'lg:block' : 'lg:hidden'}`}><AskPanel onPins={showPins} onViewMap={() => { setTab('map'); }} /></div>
+      <nav className="flex shrink-0 border-t border-line bg-bg lg:hidden" aria-label="Map sections">
+        {([['map', 'Map'], ['filters', `Filters · ${filtered.length.toLocaleString()}`], ['ask', 'Ask']] as const).map(([k, label]) => (
+          <button key={k} onClick={() => setTab(k)} aria-current={tab === k} className={`flex-1 py-3 text-sm ${tab === k ? 'font-semibold text-accent' : 'text-muted'}`}>{label}</button>
+        ))}
+      </nav>
     </div>
   );
 }

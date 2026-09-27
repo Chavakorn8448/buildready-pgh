@@ -16,9 +16,9 @@ export default async function Memo({ params, searchParams }: { params: Promise<{
   const ai = getAiCache(id.toUpperCase(), rs);
   const p = found.packet.p;
   return (
-    <main className="mx-auto max-w-3xl px-8 py-8 text-[13px] leading-relaxed print:max-w-none print:p-0" style={{ background: '#fff', color: '#111' }}>
+    <main className="mx-auto max-w-3xl break-words px-4 py-6 text-[13px] leading-relaxed sm:px-8 sm:py-8 print:max-w-none print:p-0" style={{ background: '#fff', color: '#111' }}>
       <div className="no-print mb-4 flex justify-end"><PrintButton /></div>
-      <header className="flex items-start justify-between border-b border-neutral-300 pb-3">
+      <header className="flex flex-wrap items-start justify-between gap-3 border-b border-neutral-300 pb-3">
         <div>
           <div className="text-[11px] uppercase tracking-wider text-neutral-500">BuildReady PGH · site memo</div>
           <h1 className="text-xl font-semibold">{p.address || '(no street address)'}</h1>
@@ -29,9 +29,9 @@ export default async function Memo({ params, searchParams }: { params: Promise<{
       <p className="mt-2 text-neutral-600"><b>Rule set:</b> {r.ruleSet.label}{r.ruleSet.status === 'proposed' ? ` — ${r.ruleSet.statusNote}` : ''} · data snapshot {meta.generatedAt}</p>
       {r.gates.filter((g) => g.triggered).map((g) => <p key={g.id} className="mt-2 rounded border border-red-300 bg-red-50 p-2"><b>{g.id} {g.name}:</b> {g.message} {g.reviewBy && `Confirm with: ${g.reviewBy}.`}</p>)}
       {r.subScores && (
-        <table className="mt-4 w-full border-collapse text-left"><thead><tr className="border-b border-neutral-300"><th className="py-1">Sub-score</th><th>Score</th><th>Weight</th><th>Notes</th></tr></thead><tbody>
+        <div className="mt-4 overflow-x-auto"><table className="w-full border-collapse text-left"><thead><tr className="border-b border-neutral-300"><th className="py-1">Sub-score</th><th>Score</th><th>Weight</th><th>Notes</th></tr></thead><tbody>
           {Object.entries(r.subScores).map(([k, s]) => <tr key={k} className="border-b border-neutral-200 align-top"><td className="py-1 capitalize">{k}</td><td>{Math.round(s.score)}</td><td>{s.weight}</td><td className="text-neutral-600">{s.notes.join('; ')}</td></tr>)}
-        </tbody></table>
+        </tbody></table></div>
       )}
       <h2 className="mt-5 font-semibold">Flags to review</h2>
       <ul className="mt-1 space-y-2">
@@ -42,7 +42,7 @@ export default async function Memo({ params, searchParams }: { params: Promise<{
       </ul>
       {ai?.nextSteps?.length ? <><h2 className="mt-5 font-semibold">Next steps</h2><ol className="list-decimal pl-5">{ai.nextSteps.map((s: string, i: number) => <li key={i}>{s}</li>)}</ol></> : null}
       <h2 className="mt-5 font-semibold">Sources</h2>
-      <ul className="text-[11px] text-neutral-600">{[...new Map(r.facts.map((f) => [f.sourceUrl, f])).values()].map((f) => <li key={f.sourceUrl}>{f.source} — {f.sourceUrl} (retrieved {f.retrievedAt})</li>)}</ul>
+      <ul className="break-all text-[11px] text-neutral-600">{[...new Map(r.facts.map((f) => [f.sourceUrl, f])).values()].map((f) => <li key={f.sourceUrl}>{f.source} — {f.sourceUrl} (retrieved {f.retrievedAt})</li>)}</ul>
       <p className="mt-5 border-t border-neutral-300 pt-2 text-[11px] text-neutral-600">Decision support only, not legal, financial, or zoning advice. Zoning determinations come from the City Zoning Administrator or Zoning Board of Adjustment. Public data as provided, may be stale; no setback, height, building-code, or water/sewer capacity checks (request a PWSA availability letter).</p>
     </main>
   );

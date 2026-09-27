@@ -7,7 +7,7 @@ export function Term({ k, children }: { k: string; children?: React.ReactNode })
   return (
     <span className="group relative inline-block">
       <span className="term" tabIndex={0} aria-describedby={`t-${k}`}>{children ?? k}</span>
-      <span id={`t-${k}`} role="tooltip" className="pointer-events-none invisible absolute bottom-full left-0 z-40 mb-2 w-64 rounded-lg border border-line bg-surface2 p-2.5 text-xs font-normal leading-snug text-fg opacity-0 shadow-xl transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+      <span id={`t-${k}`} role="tooltip" className="pointer-events-none invisible absolute bottom-full left-0 z-40 mb-2 w-64 rounded-lg border border-line bg-surface2 p-2.5 text-xs font-normal leading-snug text-fg opacity-0 shadow-xl transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 max-sm:fixed max-sm:inset-x-3 max-sm:bottom-3 max-sm:left-3 max-sm:mb-0 max-sm:w-auto max-sm:p-3 max-sm:text-sm">
         {def}
       </span>
     </span>

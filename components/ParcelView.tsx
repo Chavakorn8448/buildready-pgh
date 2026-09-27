@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CONFIG } from '@/lib/config';
 import { fromPacket, type Packet } from '@/lib/packets';
 import { comparePacket, runPacket, withWeights, type Meta, type RuleSetId } from '@/lib/web/run';
@@ -27,6 +27,8 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
   const [rs, setRs] = useState<RuleSetId>('current');
   const [weights, setWeights] = useState({ ...CONFIG.weights });
   const [hot, setHot] = useState<string | null>(null);
+  const [layersOpen, setLayersOpen] = useState(false);
+  useEffect(() => { if (window.innerWidth >= 1024) setLayersOpen(true); }, []);
   const [vis, setVis] = useState<Record<string, boolean>>({ pieces: true, zoning: false, transit_buffer: true, fema2014: false, landslide: false, undermined: false, historic: false, iz_overlay: false });
   const config = useMemo(() => withWeights(weights), [weights]);
   const cmp = useMemo(() => comparePacket(packet, meta, config), [packet, meta, config]);
@@ -62,32 +64,38 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
   const delta = cmp.delta;
 
   return (
-    <div className="mx-auto grid max-w-[1500px] gap-5 px-5 py-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+    <div className="mx-auto grid max-w-[1500px] gap-4 px-3 py-3 sm:gap-5 sm:px-5 sm:py-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
       {/* LEFT: map */}
       <div className="no-print lg:sticky lg:top-[76px] lg:h-[calc(100vh-96px)]">
-        <div className="relative h-[52vh] lg:h-full">
+        <div className="relative h-[46dvh] min-h-[300px] lg:h-full">
           <ParcelMap geometry={parcel.geometry} centroid={parcel.centroid} pins={pins} pieces={pieces} hot={hot} onHover={setHot} visible={vis} />
-          <div className="absolute left-3 top-3 max-w-[70%] rounded-xl border border-line bg-bg/85 p-2.5 text-xs backdrop-blur">
-            <div className="mb-1.5 font-medium text-muted">Map layers</div>
-            <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-              <Check label="Overlap on this lot" on={vis.pieces} set={(v) => setVis({ ...vis, pieces: v })} color="#ff8a4c" />
-              {LAYER_DEFS.map((d) => <Check key={d.key} label={d.label} on={!!vis[d.key]} set={(v) => setVis({ ...vis, [d.key]: v })} color={d.color} />)}
-            </div>
-            <div className="mt-2 flex items-center gap-3 border-t border-line pt-2 text-[11px] text-muted">
-              <span><i className="mr-1 inline-block h-2 w-2 rounded-full" style={{ background: 'var(--red)' }} />gate</span>
-              <span><i className="mr-1 inline-block h-2 w-2 rounded-full" style={{ background: 'var(--amber)' }} />friction</span>
-              <span><i className="mr-1 inline-block h-2 w-2 rounded-full" style={{ background: 'var(--green)' }} />in your favor</span>
-            </div>
+          <div className="absolute left-2 top-2 max-w-[calc(100%-64px)] rounded-xl border border-line bg-bg/90 p-2 text-xs backdrop-blur sm:left-3 sm:top-3 sm:p-2.5">
+            <button onClick={() => setLayersOpen(!layersOpen)} aria-expanded={layersOpen} className="flex w-full items-center justify-between gap-3 font-medium text-muted">
+              <span>Map layers</span><span aria-hidden>{layersOpen ? '−' : '+'}</span>
+            </button>
+            {layersOpen && (
+              <>
+                <div className="mt-1.5 grid grid-cols-1 gap-x-3 gap-y-1.5 sm:grid-cols-2 sm:gap-y-1">
+                  <Check label="Overlap on this lot" on={vis.pieces} set={(v) => setVis({ ...vis, pieces: v })} color="#ff8a4c" />
+                  {LAYER_DEFS.map((d) => <Check key={d.key} label={d.label} on={!!vis[d.key]} set={(v) => setVis({ ...vis, [d.key]: v })} color={d.color} />)}
+                </div>
+                <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-line pt-2 text-[11px] text-muted">
+                  <span><i className="mr-1 inline-block h-2 w-2 rounded-full" style={{ background: 'var(--red)' }} />gate</span>
+                  <span><i className="mr-1 inline-block h-2 w-2 rounded-full" style={{ background: 'var(--amber)' }} />friction</span>
+                  <span><i className="mr-1 inline-block h-2 w-2 rounded-full" style={{ background: 'var(--green)' }} />in your favor</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
 
       {/* RIGHT: panel */}
       <div className="space-y-5">
-        <section className="card p-5">
+        <section className="card p-4 sm:p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight">{parcel.address || '(no street address)'}</h1>
+              <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">{parcel.address || '(no street address)'}</h1>
               <p className="mt-1 text-sm text-muted">
                 {hood} · <Term k="zoning district">zoning</Term> <span className="text-fg">{parcel.zoningDistrict ?? 'unknown'}</span> · {parcel.vacant ? 'vacant' : parcel.vacant === false ? 'built' : 'vacancy unknown'} · {parcel.ownerType ?? 'owner unknown'}-owned · {parcel.lotAreaSqft ? `${Math.round(parcel.lotAreaSqft).toLocaleString()} sq ft` : 'lot area unknown'}
               </p>
@@ -100,17 +108,17 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
           </div>
 
           {/* reform toggle */}
-          <div className="no-print mt-4 inline-flex rounded-full border border-line bg-surface2 p-1 text-sm" role="tablist" aria-label="Rule set">
+          <div className="no-print mt-4 flex w-full rounded-full border border-line bg-surface2 p-1 text-xs sm:inline-flex sm:w-auto sm:text-sm" role="tablist" aria-label="Rule set">
             {(['current', 'reform-2025-1545'] as RuleSetId[]).map((id) => (
               <button key={id} role="tab" aria-selected={rs === id} onClick={() => setRs(id)}
-                className={`rounded-full px-4 py-1.5 transition ${rs === id ? 'bg-accent font-semibold text-black' : 'text-muted hover:text-fg'}`}>
-                {id === 'current' ? 'Current code' : 'Proposed (Bill 2025-1545)'}
+                className={`flex-1 rounded-full px-3 py-2 transition sm:flex-none sm:px-4 sm:py-1.5 ${rs === id ? 'bg-accent font-semibold text-black' : 'text-muted hover:text-fg'}`}>
+                {id === 'current' ? 'Current code' : <><span className="sm:hidden">Proposed reform</span><span className="hidden sm:inline">Proposed (Bill 2025-1545)</span></>}
               </button>
             ))}
           </div>
           {rs === 'reform-2025-1545' && <p className="mt-2 rounded-lg border border-[var(--amber)]/40 bg-[var(--amber)]/10 px-3 py-2 text-xs text-[var(--amber)]">{res.ruleSet.statusNote}</p>}
 
-          <div className="mt-5 flex flex-wrap items-center gap-6">
+          <div className="mt-5 flex flex-wrap items-center gap-4 sm:gap-6">
             <ScoreDial score={res.score} cap={capGate?.cap ?? null} />
             <div className="min-w-[220px] flex-1">
               <div className="text-xs uppercase tracking-wider text-muted">Development Ease Score</div>
@@ -136,7 +144,7 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
 
         {/* sub-scores */}
         {res.subScores && (
-          <section className="card p-5">
+          <section className="card p-4 sm:p-5">
             <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted">What drives the score</h2>
             <div className="space-y-3.5">
               {Object.entries(res.subScores).map(([k, s]) => <Bar key={k} label={SUB_LABEL[k].label} tip={SUB_LABEL[k].tip} score={s.score} weight={s.weight} contribution={s.contribution} notes={s.notes} />)}
@@ -154,8 +162,8 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
               const fact: Fact | undefined = f.factIds.map((id) => factById.get(id)).find((x) => x && x.sourceUrl);
               const text = aiFlags[f.id];
               return (
-                <article key={f.id} onMouseEnter={() => setHot(f.id)} onMouseLeave={() => setHot(null)}
-                  className={`card p-4 transition ${hot === f.id ? `ring-1 ${tone.ring}` : ''}`}>
+                <article key={f.id} onMouseEnter={() => setHot(f.id)} onMouseLeave={() => setHot(null)} onClick={() => setHot(hot === f.id ? null : f.id)}
+                  className={`card p-3.5 transition sm:p-4 ${hot === f.id ? `ring-1 ${tone.ring}` : ''}`}>
                   <div className="flex items-start gap-3">
                     <span className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-bold ${n ? 'text-black' : 'bg-white/10 text-muted'} ${n ? tone.dot : ''}`}>{n ?? '·'}</span>
                     <div className="min-w-0 flex-1">
@@ -181,12 +189,12 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
         </section>
 
         {/* weights */}
-        <details className="no-print card p-5">
+        <details className="no-print card p-4 sm:p-5">
           <summary className="cursor-pointer text-sm font-semibold uppercase tracking-wider text-muted">Adjust weights</summary>
           <p className="mt-2 text-xs text-muted">Weights are a judgment call; change them to match your priorities. Scores update instantly and nothing is saved.</p>
           <div className="mt-3 space-y-3">
             {(Object.keys(CONFIG.weights) as (keyof typeof CONFIG.weights)[]).map((k) => (
-              <label key={k} className="grid grid-cols-[110px_1fr_36px] items-center gap-3 text-sm">
+              <label key={k} className="grid grid-cols-[92px_1fr_30px] items-center gap-2 text-sm sm:grid-cols-[110px_1fr_36px] sm:gap-3">
                 <span>{SUB_LABEL[k].label}</span>
                 <input type="range" min={0} max={60} value={weights[k]} onChange={(e) => setWeights({ ...weights, [k]: Number(e.target.value) })} />
                 <span className="text-right tabular-nums">{weights[k]}</span>
@@ -197,11 +205,11 @@ export default function ParcelView({ packet, meta, hood, ai }: { packet: Packet;
         </details>
 
         {/* evidence */}
-        <details className="card p-5">
+        <details className="card p-4 sm:p-5">
           <summary className="cursor-pointer text-sm font-semibold uppercase tracking-wider text-muted">Evidence: every fact and its source ({res.facts.length})</summary>
           <div className="mt-3 divide-y divide-line">
             {res.facts.map((f) => (
-              <div key={f.id} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 py-2 text-sm">
+              <div key={f.id} className="grid grid-cols-[1fr_auto] gap-x-3 gap-y-0.5 py-2 text-sm break-words">
                 <div><span className="text-muted">{f.label}:</span> <b className="font-medium">{f.value === null ? 'unknown' : String(f.value)}</b>
                   {(f.confidence === 'unknown' || f.confidence === 'low') && <span className="ml-2 rounded-full border border-[var(--amber)]/60 px-2 py-0.5 text-[10px] font-semibold uppercase text-[var(--amber)]">Unverified</span>}</div>
                 <div className="text-right text-xs text-muted">{f.confidence}</div>

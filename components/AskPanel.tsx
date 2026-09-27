@@ -11,7 +11,7 @@ const EXAMPLES = [
   'How many lots would gain by-right ADU potential in Hazelwood if Bill 2025-1545 passes?',
 ];
 
-export function AskPanel({ onPins }: { onPins?: (pins: string[]) => void }) {
+export function AskPanel({ onPins, onViewMap }: { onPins?: (pins: string[]) => void; onViewMap?: () => void }) {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [q, setQ] = useState('');
   const [busy, setBusy] = useState(false);
@@ -42,6 +42,7 @@ export function AskPanel({ onPins }: { onPins?: (pins: string[]) => void }) {
           <div key={i} className={m.role === 'user' ? 'ml-6 rounded-2xl bg-surface2 px-3 py-2' : ''}>
             {m.role === 'assistant' && m.mode && <div className="mb-1 text-[10px] uppercase tracking-wider text-muted">{m.mode === 'claude' ? 'Claude + engine tools' : m.mode === 'cached' ? 'Cached showcase answer' : 'Engine-only answer (no LLM key configured)'}</div>}
             <Rendered text={m.text} />
+            {m.pins && m.pins.length > 0 && onViewMap && <button className="btn mt-2 lg:hidden" onClick={() => { onPins?.(m.pins!); onViewMap(); }}>Show {m.pins.length} lot{m.pins.length === 1 ? '' : 's'} on the map</button>}
             {m.pins && m.pins.length > 0 && <div className="mt-2 flex flex-wrap gap-1.5">{m.pins.slice(0, 8).map((p) => <Link key={p} href={`/parcel/${p}`} className="btn font-mono text-[11px]">{p}</Link>)}</div>}
             {m.confirmWith && m.confirmWith.length > 0 && !/confirm with:/i.test(m.text) && <p className="mt-2 text-xs text-muted">Confirm with: {m.confirmWith.join('; ')}.</p>}
             {m.trace && m.trace.length > 0 && (
@@ -54,7 +55,7 @@ export function AskPanel({ onPins }: { onPins?: (pins: string[]) => void }) {
         <div ref={end} />
       </div>
       <form onSubmit={(e) => { e.preventDefault(); ask(q); }} className="border-t border-line p-3">
-        <div className="flex gap-2"><input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Ask about lots or the reform…" className="h-10 flex-1 rounded-xl border border-line bg-surface px-3 text-sm outline-none focus:border-accent" /><button className="btn btn-accent" disabled={busy}>Ask</button></div>
+        <div className="flex gap-2"><input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Ask about lots or the reform…" className="h-11 flex-1 sm:h-10 rounded-xl border border-line bg-surface px-3 text-sm outline-none focus:border-accent" /><button className="btn btn-accent" disabled={busy}>Ask</button></div>
       </form>
     </div>
   );
